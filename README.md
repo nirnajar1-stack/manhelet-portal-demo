@@ -8,12 +8,11 @@
 - עברית מלאה · RTL
 - **נתוני דמה בלבד** — אין חיבור ל־Salesforce / DB
 
-האפליקציה נמצאת בתיקיית `portal/` ונפרדת מאפליקציית Flutter Life.
+ריפו ייעודי לאבטיפוס הפורטל בלבד (יוצא מ־`Life` / `portal/` אחרי מיזוג PR #13). אין כאן את אפליקציית Flutter Life.
 
 ## הרצה מקומית
 
 ```bash
-cd portal
 npm install
 npm run dev
 ```
