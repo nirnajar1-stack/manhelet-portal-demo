@@ -41,6 +41,19 @@ npm run preview
 | בית המנהלת | `/org` |
 | סביבת מולקולה | `/molecule` |
 | פורטל משפחות | `/family` |
+| סייר מודל שיקום (דמו) | `/rehab-demo` |
+
+### סייר מודל שיקום (`rehab_demo/`)
+
+דמו ארכיטקטורת נתונים מבודד (PGlite / Postgres schema `rehab_demo`): מיגרציות, seed דטרמיניסטי, בדיקות שלמות והרשאות, ו־UI עברית RTL.
+
+```bash
+npm run rehab:export   # schema + seed + snapshot
+npm test               # integrity + permissions
+npm run dev            # /rehab-demo
+```
+
+פירוט: [`rehab_demo/RUNBOOK.md`](./rehab_demo/RUNBOOK.md) · החלטות: [`rehab_demo/REHAB_MODEL_DECISIONS.md`](./rehab_demo/REHAB_MODEL_DECISIONS.md).
 
 החלפת תפקיד/משתמש: מתפריט הפרופיל בסרגל העליון.
 

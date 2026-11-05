@@ -7,6 +7,7 @@ import {
   CalendarDays,
   CheckSquare,
   CircleHelp,
+  Database,
   Home,
   Menu,
   Plus,
@@ -30,6 +31,7 @@ const matamNav = [
   { to: '/programs', label: 'תוכניות, אירועים והטבות', icon: CalendarDays },
   { to: '/knowledge', label: 'מרכז ידע ונהלים', icon: BookOpen },
   { to: '/org', label: 'בית המנהלת', icon: Building2 },
+  { to: '/rehab-demo', label: 'סייר מודל שיקום', icon: Database },
 ]
 
 const moleculeNav = [

@@ -12,6 +12,14 @@ import { TaskCenter } from '@/pages/TaskCenter'
 import { TaskDetail } from '@/pages/TaskDetail'
 import { UnitCase } from '@/pages/UnitCase'
 import { UnitsList } from '@/pages/UnitsList'
+import { RehabDemoLayout } from '@/pages/rehab-demo/RehabDemoLayout'
+import { RehabErd } from '@/pages/rehab-demo/RehabErd'
+import { RehabHouseholds } from '@/pages/rehab-demo/RehabHouseholds'
+import { RehabOverview } from '@/pages/rehab-demo/RehabOverview'
+import { RehabPermissions } from '@/pages/rehab-demo/RehabPermissions'
+import { RehabProgramDetail } from '@/pages/rehab-demo/RehabProgramDetail'
+import { RehabPrograms } from '@/pages/rehab-demo/RehabPrograms'
+import { RehabScenarios } from '@/pages/rehab-demo/RehabScenarios'
 import { AppProvider, useApp } from '@/state/AppContext'
 
 function RoleHome() {
@@ -40,6 +48,15 @@ function Bootstrap() {
         <Route path="org" element={<OrgHome />} />
         <Route path="molecule" element={<MoleculeHome />} />
         <Route path="family" element={<FamilyPortal />} />
+        <Route path="rehab-demo" element={<RehabDemoLayout />}>
+          <Route index element={<RehabOverview />} />
+          <Route path="erd" element={<RehabErd />} />
+          <Route path="households" element={<RehabHouseholds />} />
+          <Route path="programs" element={<RehabPrograms />} />
+          <Route path="programs/:programId" element={<RehabProgramDetail />} />
+          <Route path="scenarios" element={<RehabScenarios />} />
+          <Route path="permissions" element={<RehabPermissions />} />
+        </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
