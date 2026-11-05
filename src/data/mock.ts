@@ -5,6 +5,7 @@ import type {
   KnowledgeItem,
   NotificationItem,
   OrgNewsItem,
+  ProgramItem,
   RehabNote,
   Task,
   TreatmentUnit,
@@ -565,9 +566,9 @@ export const familyRequests: FamilyRequest[] = [
 export const knowledgeItems: KnowledgeItem[] = [
   {
     id: 'k-1',
-    title: 'מדריך פתיחת משימה',
+    title: 'עדכון נוהל סיוע בדיור זמני — 2025',
     category: 'נהלים',
-    summary: 'איך לפתוח משימה מתוך תיק או מכל מקום.',
+    summary: 'שינויים בהארכת סבסוד, מסלול ועדת חריגים ותיעוד מול מולקולת דיור.',
   },
   {
     id: 'k-2',
@@ -586,6 +587,57 @@ export const knowledgeItems: KnowledgeItem[] = [
     title: 'תבנית סיכום ביקור',
     category: 'כלים',
     summary: 'תבנית מבנית לתיעוד ביקור.',
+  },
+]
+
+export const programs: ProgramItem[] = [
+  {
+    id: 'p-respite-1',
+    title: 'סוף שבוע הפוגה משפחתי',
+    summary: 'נופש קצר עם ליווי מקצועי ליחידות בדרום — רישום נסגר בקרוב.',
+    kind: 'respite',
+    kindLabel: 'הפוגה',
+    registrationStatus: 'closing',
+    dateLabel: '18–20 ביולי',
+    audience: 'יחידות מרחב דרום',
+    location: 'מתחם הפוגה בנגב',
+    support: 'עו״ס + מדריך קבוצה',
+    utilization: 72,
+    note: 'שימו לב: נדרשת התאמת נגישות להסעה למשפחת ביטון.',
+    unitStatuses: [
+      { familyName: 'כהן', status: 'interested' },
+      { familyName: 'לוי', status: 'hesitant' },
+      { familyName: 'מזרחי', status: 'declined' },
+    ],
+  },
+  {
+    id: 'p-workshop-1',
+    title: 'סדנת צילום ותיעוד אישי',
+    summary: 'מפגש יצירתי קצר לחיזוק ביטוי רגשי וקהילתי.',
+    kind: 'workshop',
+    kindLabel: 'סדנה',
+    registrationStatus: 'open',
+    dateLabel: 'יום ה׳ הקרוב',
+    audience: 'בני משפחה בוגרים',
+    location: 'מתחם קהילתי מרכז',
+    support: 'מנחה אמנותי',
+    participants: [
+      { name: 'אורי כהן', action: 'שליחת הצעה' },
+      { name: 'יואב לוי', status: 'טרם נוצר קשר', action: 'יצירת קשר' },
+      { name: 'שירה ביטון', status: 'נרשמה' },
+    ],
+  },
+  {
+    id: 'p-benefit-1',
+    title: 'מענק ציוד ביתי בסיסי',
+    summary: 'הטבה לשיקום דיור — פתיחת בקשה ליחידה זכאית.',
+    kind: 'benefit',
+    kindLabel: 'הטבה',
+    registrationStatus: 'active',
+    audience: 'יחידות עם צורך דיור מאומת',
+    location: 'הגשה דיגיטלית',
+    support: 'רכז הטבות מרחבי',
+    amountLabel: 'עד ₪7,500 ליחידה',
   },
 ]
 

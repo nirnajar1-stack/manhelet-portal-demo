@@ -7,6 +7,7 @@ import { MatamHome } from '@/pages/MatamHome'
 import { MoleculeHome } from '@/pages/MoleculeHome'
 import { NewTask } from '@/pages/NewTask'
 import { OrgHome } from '@/pages/OrgHome'
+import { Programs } from '@/pages/Programs'
 import { TaskCenter } from '@/pages/TaskCenter'
 import { TaskDetail } from '@/pages/TaskDetail'
 import { UnitCase } from '@/pages/UnitCase'
@@ -35,6 +36,7 @@ function Bootstrap() {
         <Route path="units" element={<UnitsList />} />
         <Route path="units/:unitId" element={<UnitCase />} />
         <Route path="knowledge" element={<Knowledge />} />
+        <Route path="programs" element={<Programs />} />
         <Route path="org" element={<OrgHome />} />
         <Route path="molecule" element={<MoleculeHome />} />
         <Route path="family" element={<FamilyPortal />} />

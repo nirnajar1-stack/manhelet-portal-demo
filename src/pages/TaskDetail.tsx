@@ -1,6 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ChevronDown, ChevronUp, Lock, Users } from 'lucide-react'
+import {
+  ChevronDown,
+  ChevronUp,
+  Lock,
+  Mail,
+  Phone,
+  Printer,
+  Users,
+} from 'lucide-react'
 import { AssumptionBanner } from '@/components/ui/assumption'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -62,7 +70,6 @@ export function TaskDetail() {
       }
       setForbidden(false)
       setTask(t)
-      // Access-filtered load — molecule never gets internal, even for "הכול"
       setMessages(await loadChatter(t.id))
     })()
   }, [taskId, getTask, loadChatter, currentUser])
@@ -79,7 +86,6 @@ export function TaskDetail() {
     return tabs
   }, [canSeeInternal])
 
-  // View filter only — never expands beyond access-filtered messages
   const visibleMessages = applyChatterViewFilter(messages, chatterFilter)
 
   if (forbidden) {
@@ -107,6 +113,16 @@ export function TaskDetail() {
   const creator = getUser(task.creatorId)
   const participants = task.participantIds.map(getUser).filter(Boolean)
   const waiting = task.waitingOnIds.map(getUser).filter(Boolean)
+
+  const created = new Date(task.createdAt)
+  const due = task.dueDate ? new Date(task.dueDate) : null
+  const nowMs = new Date(task.updatedAt).getTime()
+  const daysOpen = Math.max(
+    1,
+    Math.round((nowMs - created.getTime()) / 86400000),
+  )
+  const slaTargetDays = 7
+  const progress = Math.min(100, Math.round((daysOpen / slaTargetDays) * 100))
 
   async function onReply() {
     if (!body.trim() || !task) return
@@ -152,128 +168,119 @@ export function TaskDetail() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl space-y-4">
-      <div className="text-[13px] text-slate-gray">
+    <div className="space-y-4">
+      <div className="text-[12px] text-slate-gray">
         <Link to="/tasks" className="hover:text-ink-navy">
-          משימות
+          מרכז המשימות
         </Link>
         <span className="mx-1">/</span>
-        <span>{task.number}</span>
+        <Link to={`/units/${task.unitId}`} className="hover:text-ink-navy">
+          יחידת טיפול {unit?.familyName}
+        </Link>
+        <span className="mx-1">/</span>
+        <span className="text-ink-navy">
+          {task.number} — {task.title}
+        </span>
       </div>
 
-      <Panel>
-        <div className="flex flex-wrap gap-2">
-          <Badge tone="muted">{task.number}</Badge>
-          <Badge
-            tone={
-              task.status === 'waiting'
-                ? 'warning'
-                : task.status === 'done' || task.status === 'closed'
-                  ? 'success'
-                  : 'info'
-            }
-          >
-            {statusLabel[task.status]}
-          </Badge>
-          {task.needsAttention && <Badge tone="danger">דורש טיפול</Badge>}
-          <Badge tone="warning">{priorityLabel[task.priority]}</Badge>
-          <Badge tone="muted">
-            {task.domain} · {task.subDomain}
-          </Badge>
-        </div>
-        <h1 className="mt-3 text-[28px] font-bold leading-tight">{task.title}</h1>
-        <p className="mt-2 text-[16px] text-slate-gray">{task.description}</p>
-
-        <div className="mt-5 grid gap-3 sm:grid-cols-2">
-          <Meta label="יחידת טיפול">
-            <Link
-              to={`/units/${task.unitId}`}
-              className="font-semibold text-signal-blue hover:underline"
-            >
-              משפחת {unit?.familyName}
-            </Link>
-          </Meta>
-          <Meta label="בן/בת משפחה">{member?.name ?? '—'}</Meta>
-          <Meta label="אחראי ניהולי">{owner?.name ?? '—'}</Meta>
-          <Meta label="יוצר">{creator?.name ?? '—'}</Meta>
-          <Meta label="משתתפים">
-            {participants.length
-              ? participants.map((p) => p!.name).join(', ')
-              : '—'}
-          </Meta>
-          <Meta label="ממתינים למענה">
-            {waiting.length ? waiting.map((p) => p!.name).join(', ') : '—'}
-          </Meta>
-          <Meta label="תאריך יעד">{task.dueDate ?? '—'}</Meta>
-          <Meta label="עודכן">{formatRelativeHe(task.updatedAt)}</Meta>
-        </div>
-
-        <button
-          type="button"
-          className="mt-4 flex w-full items-center justify-between rounded-md bg-pebble px-3 py-2 text-[13px] font-medium"
-          onClick={() => setTechOpen((v) => !v)}
-        >
-          מידע טכני
-          {techOpen ? (
-            <ChevronUp className="h-4 w-4" />
-          ) : (
-            <ChevronDown className="h-4 w-4" />
-          )}
-        </button>
-        {techOpen && (
-          <dl className="mt-2 grid gap-2 rounded-md border border-hairline p-3 text-[12px] text-slate-gray sm:grid-cols-2">
-            <div>
-              <dt>מזהה פנימי</dt>
-              <dd className="font-mono text-ink-navy">{task.id}</dd>
+      <Panel className="!p-5">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-[13px] font-bold text-mist-gray">
+                #{task.number}
+              </span>
+              <Badge
+                tone={
+                  task.status === 'waiting'
+                    ? 'warning'
+                    : task.status === 'done' || task.status === 'closed'
+                      ? 'success'
+                      : 'info'
+                }
+              >
+                {statusLabel[task.status]}
+                {waiting[0] ? ` — ${waiting[0]!.org ?? waiting[0]!.name}` : ''}
+              </Badge>
+              {task.needsAttention && <Badge tone="danger">דורש טיפול</Badge>}
+              <Badge tone="danger">{priorityLabel[task.priority]}</Badge>
             </div>
-            <div>
-              <dt>נוצר</dt>
-              <dd className="text-ink-navy">{task.createdAt}</dd>
+            <h1 className="mt-2 text-[22px] font-bold leading-snug text-ink-navy md:text-[24px]">
+              {task.title}
+            </h1>
+            <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[12px] text-slate-gray">
+              <span>
+                קהילה:{' '}
+                <Link
+                  to={`/units/${task.unitId}`}
+                  className="font-semibold text-signal-blue hover:underline"
+                >
+                  משפחת {unit?.familyName}
+                  {unit ? ` · ${unit.region}` : ''}
+                </Link>
+              </span>
+              <span>
+                אחראי: <strong className="text-ink-navy">{owner?.name}</strong>
+              </span>
+              <span>
+                מולקולה:{' '}
+                <strong className="text-ink-navy">
+                  {waiting[0]?.name ?? participants[0]?.name ?? '—'}
+                </strong>
+              </span>
             </div>
-            <div>
-              <dt>מקור נתונים</dt>
-              <dd className="text-ink-navy">Mock / stub (לא Salesforce)</dd>
+            <div className="mt-2 flex flex-wrap gap-3 text-[12px] text-mist-gray">
+              <span>נוצר: {task.createdAt.slice(0, 10)}</span>
+              <span>
+                יעד: {task.dueDate ?? '—'}
+                {due
+                  ? ` (${Math.ceil((due.getTime() - nowMs) / 86400000)} ימים)`
+                  : ''}
+              </span>
             </div>
-          </dl>
-        )}
-      </Panel>
+          </div>
 
-      <Panel>
-        <h2 className="mb-3 text-[18px] font-semibold">פעולות</h2>
-        {isMatam ? (
           <div className="flex flex-wrap gap-2">
-            <Button size="sm" variant="outline" onClick={() => onStatus('in_progress')}>
-              סמן בטיפול
-            </Button>
-            <Button size="sm" variant="outline" onClick={() => onStatus('waiting')}>
-              העבר להמתנה
-            </Button>
-            {canCloseTask(currentUser) && (
-              <Button size="sm" variant="dark" onClick={() => setCloseOpen(true)}>
-                סגור / השלם
-              </Button>
+            {isMatam ? (
+              <>
+                <Button size="sm" onClick={() => onStatus('in_progress')}>
+                  עדכון סטטוס
+                </Button>
+                <Button size="sm" variant="outline">
+                  העברת אחריות
+                </Button>
+                {canCloseTask(currentUser) && (
+                  <Button
+                    size="sm"
+                    variant="success"
+                    onClick={() => setCloseOpen(true)}
+                  >
+                    סגירת משימה
+                  </Button>
+                )}
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => void onToggleAttention()}
+                  aria-label="הדפסה / דורש טיפול"
+                >
+                  <Printer className="h-4 w-4" />
+                </Button>
+              </>
+            ) : (
+              <AssumptionBanner>
+                כמולקולה ניתן להגיב — ללא שינוי סטטוס או סגירה.
+              </AssumptionBanner>
             )}
-            <Button size="sm" variant="ghost" onClick={() => void onToggleAttention()}>
-              {task.needsAttention ? 'הסר דורש טיפול' : 'סמן דורש טיפול'}
-            </Button>
           </div>
-        ) : (
-          <div className="space-y-2">
-            <p className="text-[14px] text-slate-gray">
-              כמולקולה ניתן להגיב ולקדם פעולות — ללא שינוי סטטוס או סגירה.
-            </p>
-            <AssumptionBanner>
-              הרשאות מולקולה (ללא שינוי סטטוס/סגירה) — הנחת מוצר מרכזית.
-            </AssumptionBanner>
-          </div>
-        )}
+        </div>
 
         {closeOpen && (
           <div className="mt-4 space-y-3 rounded-lg border border-hairline bg-cloud p-4">
-            <h3 className="text-[16px] font-semibold">סגירת משימה עם תיעוד</h3>
+            <h3 className="text-[15px] font-semibold">סגירת משימה עם תיעוד</h3>
             <p className="text-[13px] text-slate-gray">
               נדרש תיעוד Chatter של לפחות {CLOSE_DOCUMENTATION_MIN_CHARS} תווים
-              לפני סגירה (כלל עסקי מיושר ל־Salesforce).
+              לפני סגירה.
             </p>
             <Textarea
               value={closeDoc}
@@ -285,7 +292,8 @@ export function TaskDetail() {
               aria-label="תיעוד סגירה"
             />
             <p className="text-[12px] text-mist-gray">
-              {closeDoc.trim().length}/{CLOSE_DOCUMENTATION_MIN_CHARS} תווים מינימום
+              {closeDoc.trim().length}/{CLOSE_DOCUMENTATION_MIN_CHARS} תווים
+              מינימום
             </p>
             {closeError && (
               <p className="text-[13px] text-danger" role="alert">
@@ -311,131 +319,300 @@ export function TaskDetail() {
         )}
       </Panel>
 
-      <Panel>
-        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-          <h2 className="text-[18px] font-semibold">התכתבות</h2>
-          <div className="flex gap-1">
-            {viewTabs.map((f) => (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => setChatterFilter(f.id)}
-                className={cn(
-                  'rounded-md px-2.5 py-1 text-[12px] font-medium',
-                  chatterFilter === f.id
-                    ? 'bg-badge-bg text-signal-blue'
-                    : 'text-slate-gray hover:bg-pebble',
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_300px]">
+        <div className="space-y-4">
+          <Panel>
+            <div className="mb-2 flex flex-wrap items-center gap-2">
+              <h2 className="text-[16px] font-semibold">פרטי המשימה ורקע</h2>
+              <Badge tone="muted">
+                {task.domain} › {task.subDomain}
+              </Badge>
+            </div>
+            <p className="text-[14px] leading-relaxed text-slate-gray">
+              {task.description}
+            </p>
+            <div className="mt-4 rounded-md border border-hairline bg-pebble/50 p-3">
+              <p className="mb-2 text-[12px] font-semibold text-slate-gray">
+                קבצים מצורפים
+              </p>
+              <ul className="space-y-2">
+                <li className="flex items-center justify-between text-[13px]">
+                  <span className="font-medium">מכתב בקשה.pdf</span>
+                  <Button size="sm" variant="soft">
+                    הורדה
+                  </Button>
+                </li>
+                <li className="flex items-center justify-between text-[13px]">
+                  <span className="font-medium">אישור גורם מקצועי.pdf</span>
+                  <Button size="sm" variant="soft">
+                    הורדה
+                  </Button>
+                </li>
+              </ul>
+            </div>
+          </Panel>
+
+          <Panel>
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="text-[16px] font-semibold">
+                  תקשורת משותפת עם מולקולות
+                </h2>
+                <Badge tone="muted">{visibleMessages.length}</Badge>
+                {canSeeInternal && (
+                  <Badge tone="warning">
+                    <Lock className="me-1 inline h-3 w-3" />
+                    כולל פנימי
+                  </Badge>
                 )}
-              >
-                {f.label}
-              </button>
-            ))}
-          </div>
-        </div>
+              </div>
+              <div className="flex gap-1">
+                {viewTabs.map((f) => (
+                  <button
+                    key={f.id}
+                    type="button"
+                    onClick={() => setChatterFilter(f.id)}
+                    className={cn(
+                      'rounded-md px-2.5 py-1 text-[12px] font-medium',
+                      chatterFilter === f.id
+                        ? 'bg-ink-navy text-paper'
+                        : 'text-slate-gray hover:bg-pebble',
+                    )}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-        {!canSeeInternal && (
-          <AssumptionBanner className="mb-4">
-            מולקולה רואה רק הודעות משותפות. תצוגת «הכול» מסננת תצוגה בלבד ואינה
-            מעניקה גישה להודעות פנימיות.
-          </AssumptionBanner>
-        )}
-        {canSeeInternal && (
-          <AssumptionBanner className="mb-4">
-            הפרדת Chatter (משותפת / פנימית) דורשת בדיקה מול Salesforce לפני ייצור.
-          </AssumptionBanner>
-        )}
-
-        <ul className="space-y-3">
-          {visibleMessages.map((m) => {
-            const author = getUser(m.authorId)
-            return (
-              <li
-                key={m.id}
-                className="rounded-lg border border-hairline bg-cloud/80 p-3"
-              >
-                <div className="mb-1 flex flex-wrap items-center gap-2">
-                  <span className="text-[13px] font-semibold">
-                    {author?.name ?? 'משתמש'}
-                  </span>
-                  <span className="text-[12px] text-mist-gray">
-                    {formatRelativeHe(m.createdAt)}
-                  </span>
-                  {m.visibility === 'internal' ? (
-                    <Badge tone="warning">
-                      <Lock className="me-1 inline h-3 w-3" />
-                      פנימי
-                    </Badge>
-                  ) : (
-                    <Badge tone="info">
-                      <Users className="me-1 inline h-3 w-3" />
-                      משותף
-                    </Badge>
-                  )}
-                </div>
-                <p className="text-[14px] leading-relaxed">{m.body}</p>
-              </li>
-            )
-          })}
-          {visibleMessages.length === 0 && (
-            <li className="text-[14px] text-slate-gray">אין הודעות בתצוגה זו</li>
-          )}
-        </ul>
-
-        <div className="mt-4 space-y-2 border-t border-hairline pt-4">
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={() => setVisibility('shared')}
-              className={cn(
-                'rounded-md px-2 py-1 text-[12px] font-medium',
-                visibility === 'shared'
-                  ? 'bg-badge-bg text-signal-blue'
-                  : 'text-slate-gray',
-              )}
-            >
-              משותפת
-            </button>
-            {canPostInternalChatter(currentUser) && (
-              <button
-                type="button"
-                onClick={() => setVisibility('internal')}
-                className={cn(
-                  'rounded-md px-2 py-1 text-[12px] font-medium',
-                  visibility === 'internal'
-                    ? 'bg-warning-bg text-warning'
-                    : 'text-slate-gray',
-                )}
-              >
-                פנימית
-              </button>
+            {!canSeeInternal && (
+              <AssumptionBanner className="mb-4">
+                מולקולה רואה רק הודעות משותפות. תצוגת «הכול» מסננת תצוגה בלבד.
+              </AssumptionBanner>
             )}
-          </div>
-          <Textarea
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            placeholder="כתבו תגובה…"
-            aria-label="תגובה חדשה"
-          />
-          <Button size="sm" onClick={() => void onReply()} disabled={!body.trim()}>
-            שליחת תגובה (דמה)
-          </Button>
-        </div>
-      </Panel>
-    </div>
-  )
-}
+            {canSeeInternal && (
+              <AssumptionBanner className="mb-4">
+                הפרדת Chatter (משותפת / פנימית) דורשת בדיקה מול Salesforce לפני
+                ייצור.
+              </AssumptionBanner>
+            )}
 
-function Meta({
-  label,
-  children,
-}: {
-  label: string
-  children: React.ReactNode
-}) {
-  return (
-    <div className="rounded-md bg-pebble/70 px-3 py-2">
-      <div className="text-[11px] font-medium text-mist-gray">{label}</div>
-      <div className="mt-0.5 text-[14px]">{children}</div>
+            <div className="mb-4 space-y-2 rounded-lg border border-hairline bg-cloud/60 p-3">
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setVisibility('shared')}
+                  className={cn(
+                    'rounded-md px-2 py-1 text-[12px] font-medium',
+                    visibility === 'shared'
+                      ? 'bg-badge-bg text-signal-blue'
+                      : 'text-slate-gray',
+                  )}
+                >
+                  משותפת
+                </button>
+                {canPostInternalChatter(currentUser) && (
+                  <button
+                    type="button"
+                    onClick={() => setVisibility('internal')}
+                    className={cn(
+                      'rounded-md px-2 py-1 text-[12px] font-medium',
+                      visibility === 'internal'
+                        ? 'bg-warning-bg text-[#9a6700]'
+                        : 'text-slate-gray',
+                    )}
+                  >
+                    פנימית
+                  </button>
+                )}
+              </div>
+              <Textarea
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
+                placeholder="כתבו עדכון לשיתוף עם המולקולה…"
+                aria-label="תגובה חדשה"
+              />
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex flex-wrap gap-1">
+                  {participants.slice(0, 2).map((p) => (
+                    <Badge key={p!.id} tone="info">
+                      {p!.org ?? p!.name}
+                    </Badge>
+                  ))}
+                </div>
+                <Button
+                  size="sm"
+                  onClick={() => void onReply()}
+                  disabled={!body.trim()}
+                >
+                  פרסום תגובה
+                </Button>
+              </div>
+            </div>
+
+            <ul className="space-y-3">
+              {visibleMessages.map((m) => {
+                const author = getUser(m.authorId)
+                return (
+                  <li
+                    key={m.id}
+                    className="rounded-lg border border-hairline bg-paper p-3"
+                  >
+                    <div className="mb-1 flex flex-wrap items-center gap-2">
+                      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-pebble text-[11px] font-bold">
+                        {author?.avatarInitials ?? '?'}
+                      </span>
+                      <span className="text-[13px] font-semibold">
+                        {author?.name ?? 'משתמש'}
+                      </span>
+                      <span className="text-[12px] text-mist-gray">
+                        {formatRelativeHe(m.createdAt)}
+                      </span>
+                      {m.visibility === 'internal' ? (
+                        <Badge tone="warning">
+                          <Lock className="me-1 inline h-3 w-3" />
+                          פנימי
+                        </Badge>
+                      ) : (
+                        <Badge tone="info">
+                          <Users className="me-1 inline h-3 w-3" />
+                          משותף
+                        </Badge>
+                      )}
+                    </div>
+                    <p className="text-[14px] leading-relaxed">{m.body}</p>
+                  </li>
+                )
+              })}
+              {visibleMessages.length === 0 && (
+                <li className="text-[14px] text-slate-gray">
+                  אין הודעות בתצוגה זו
+                </li>
+              )}
+            </ul>
+          </Panel>
+        </div>
+
+        <div className="space-y-3">
+          <Panel className="!p-4">
+            <h3 className="mb-3 text-[14px] font-semibold">שיוך ותיק ראשי</h3>
+            <div className="flex items-start gap-3">
+              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-ink-navy text-[13px] font-bold text-paper">
+                {member?.name?.slice(0, 1) ?? unit?.familyName.slice(0, 1)}
+              </span>
+              <div>
+                <div className="text-[14px] font-semibold">
+                  {member?.name ?? `משפחת ${unit?.familyName}`}
+                </div>
+                <p className="text-[12px] text-slate-gray">
+                  {member?.relation ?? 'יחידת טיפול'} · {unit?.region}
+                </p>
+                {member?.phone && (
+                  <p className="mt-1 text-[12px] text-mist-gray">{member.phone}</p>
+                )}
+              </div>
+            </div>
+          </Panel>
+
+          <Panel className="!p-4">
+            <h3 className="mb-3 text-[14px] font-semibold">צוות מעורב</h3>
+            <ul className="space-y-2">
+              {[
+                { label: 'מת״ם', user: owner },
+                { label: 'יוצר', user: creator },
+                ...participants.map((p) => ({
+                  label: p!.org ?? 'מולקולה',
+                  user: p,
+                })),
+              ].map((row, idx) => (
+                <li
+                  key={`${row.label}-${idx}`}
+                  className="flex items-center justify-between gap-2"
+                >
+                  <div>
+                    <div className="text-[12px] text-mist-gray">{row.label}</div>
+                    <div className="text-[13px] font-medium">
+                      {row.user?.name ?? '—'}
+                    </div>
+                  </div>
+                  <div className="flex gap-1 text-slate-gray">
+                    <Phone className="h-3.5 w-3.5" />
+                    <Mail className="h-3.5 w-3.5" />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </Panel>
+
+          <Panel className="!p-4">
+            <h3 className="mb-3 text-[14px] font-semibold">ביצוע ולוחות זמנים</h3>
+            <div className="mb-3 grid grid-cols-2 gap-2">
+              <div className="rounded-md bg-pebble px-3 py-2 text-center">
+                <div className="text-[22px] font-bold tabular-nums">{daysOpen}</div>
+                <div className="text-[11px] text-slate-gray">ימי טיפול</div>
+              </div>
+              <div className="rounded-md bg-pebble px-3 py-2 text-center">
+                <div className="text-[22px] font-bold tabular-nums">
+                  {task.hasNewReply ? 0 : 2}
+                </div>
+                <div className="text-[11px] text-slate-gray">מיום התראה</div>
+              </div>
+            </div>
+            <div className="mb-1 flex justify-between text-[11px] text-slate-gray">
+              <span>התקדמות מול יעד SLA ({slaTargetDays} ימים)</span>
+              <span className="font-semibold text-ink-navy">{progress}%</span>
+            </div>
+            <div className="h-2 overflow-hidden rounded-full bg-pebble">
+              <div
+                className="h-full rounded-full bg-signal-blue"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          </Panel>
+
+          <Panel className="!p-4">
+            <h3 className="mb-1 text-[13px] font-semibold">מידע נוהלי</h3>
+            <p className="text-[12px] leading-relaxed text-slate-gray">
+              נוהל טיפול מואץ בוועדות חריגים — ראו מרכז הידע לנוסח המלא.
+            </p>
+            <Link
+              to="/knowledge"
+              className="mt-2 inline-flex text-[12px] font-semibold text-signal-blue hover:underline"
+            >
+              למעבר למרכז הידע ›
+            </Link>
+          </Panel>
+
+          <button
+            type="button"
+            className="flex w-full items-center justify-between rounded-lg border border-hairline bg-paper px-3 py-2 text-[12px] font-medium shadow-soft"
+            onClick={() => setTechOpen((v) => !v)}
+          >
+            מידע טכני
+            {techOpen ? (
+              <ChevronUp className="h-4 w-4" />
+            ) : (
+              <ChevronDown className="h-4 w-4" />
+            )}
+          </button>
+          {techOpen && (
+            <dl className="grid gap-2 rounded-lg border border-hairline bg-paper p-3 text-[12px] text-slate-gray shadow-soft">
+              <div>
+                <dt>מזהה פנימי</dt>
+                <dd className="font-mono text-ink-navy">{task.id}</dd>
+              </div>
+              <div>
+                <dt>עודכן</dt>
+                <dd className="text-ink-navy">{formatRelativeHe(task.updatedAt)}</dd>
+              </div>
+              <div>
+                <dt>מקור נתונים</dt>
+                <dd className="text-ink-navy">Mock / stub (לא Salesforce)</dd>
+              </div>
+            </dl>
+          )}
+        </div>
+      </div>
     </div>
   )
 }

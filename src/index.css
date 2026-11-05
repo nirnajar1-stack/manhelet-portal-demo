@@ -1,40 +1,39 @@
 @import "tailwindcss";
 
 /*
-  Design tokens from DESIGN.md (Calendly — navy ink on cool marble).
-  Gilroy unavailable → Heebo (Hebrew) + Manrope (Latin substitute).
+  Design tokens — Stitch mockup pass (see DESIGN.md).
+  Source: media/stitch-mockups/01–04, 06.
 */
 
 @theme {
-  --color-ink-navy: #0b3558;
-  --color-signal-blue: #006bff;
+  --color-ink-navy: #1a2b4b;
+  --color-deep-navy: #0b3558;
+  --color-signal-blue: #1976d2;
   --color-slate-gray: #476788;
-  --color-mist-gray: #a6bbd1;
-  --color-cloud: #f8f9fb;
+  --color-mist-gray: #8fa3b8;
+  --color-cloud: #f5f7fa;
   --color-paper: #ffffff;
-  --color-pebble: #f0f3f8;
-  --color-hairline: #d4e0ed;
+  --color-pebble: #eef2f7;
+  --color-hairline: #dce3ec;
   --color-carbon: #0a0a0a;
-  --color-coral-magenta: #e55cff;
-  --color-sky-cyan: #0099ff;
-  --color-deep-cobalt: #004eba;
-  --color-badge-bg: #e6f0ff;
-  --color-success: #0f7a4c;
-  --color-success-bg: #e8f7ef;
-  --color-warning: #9a6700;
-  --color-warning-bg: #fff6e0;
-  --color-danger: #b42318;
-  --color-danger-bg: #feeceb;
+  --color-deep-cobalt: #1565c0;
+  --color-badge-bg: #e8f0fe;
+  --color-success: #388e3c;
+  --color-success-bg: #e8f5e9;
+  --color-warning: #f9a825;
+  --color-warning-bg: #fff8e1;
+  --color-danger: #d32f2f;
+  --color-danger-bg: #ffebee;
 
-  --font-sans: "Heebo", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Heebo", "Assistant", ui-sans-serif, system-ui, sans-serif;
 
   --text-caption: 12px;
-  --text-body-sm: 14px;
-  --text-body: 16px;
-  --text-button: 18px;
-  --text-body-lg: 20px;
-  --text-subheading: 28px;
-  --text-heading-sm: 38px;
+  --text-body-sm: 13px;
+  --text-body: 15px;
+  --text-button: 14px;
+  --text-body-lg: 18px;
+  --text-subheading: 22px;
+  --text-heading-sm: 28px;
 
   --spacing-8: 8px;
   --spacing-16: 16px;
@@ -44,18 +43,15 @@
   --spacing-48: 48px;
   --spacing-64: 64px;
 
-  --radius-sm: 4px;
+  --radius-sm: 6px;
   --radius-md: 8px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
   --radius-full: 9999px;
 
-  --shadow-elevated: 0 4px 5px rgba(71, 103, 136, 0.04),
-    0 8px 15px rgba(71, 103, 136, 0.03), 0 30px 50px rgba(71, 103, 136, 0.08);
-  --shadow-soft: 0 4px 5px rgba(71, 103, 136, 0.04),
-    0 4px 10px rgba(71, 103, 136, 0.03), 0 10px 20px rgba(71, 103, 136, 0.05);
-  --shadow-button: 0 4px 5px rgba(71, 103, 136, 0.04),
-    0 8px 15px rgba(71, 103, 136, 0.03), 0 15px 30px rgba(71, 103, 136, 0.06);
+  --shadow-elevated: 0 8px 24px rgba(26, 43, 75, 0.1);
+  --shadow-soft: 0 4px 12px rgba(26, 43, 75, 0.06);
+  --shadow-button: 0 2px 6px rgba(26, 43, 75, 0.12);
 }
 
 @layer base {
@@ -108,5 +104,10 @@
   }
   .text-balance {
     text-wrap: balance;
+  }
+  .portal-card {
+    border-radius: var(--radius-lg);
+    background: var(--color-paper);
+    box-shadow: var(--shadow-soft);
   }
 }

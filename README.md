@@ -26,7 +26,7 @@ npm run build
 npm run preview
 ```
 
-## מסכים (9)
+## מסכים
 
 | מסך | נתיב |
 |-----|------|
@@ -36,7 +36,8 @@ npm run preview
 | פתיחת משימה | `/tasks/new` |
 | יחידות טיפול | `/units` |
 | תיק יחידה | `/units/:unitId` |
-| ידע וכלים | `/knowledge` |
+| תוכניות, אירועים והטבות | `/programs` |
+| מרכז ידע ונהלים | `/knowledge` |
 | בית המנהלת | `/org` |
 | סביבת מולקולה | `/molecule` |
 | פורטל משפחות | `/family` |
@@ -51,14 +52,13 @@ npm run preview
 
 ## Design system
 
-מסמך העיצוב: [`DESIGN.md`](./DESIGN.md) (Calendly — navy ink on cool marble).
+מסמך העיצוב: [`DESIGN.md`](./DESIGN.md) — **Stitch mockups** הם מקור האמת לוויזואל במעבר זה.
 
 יישום הטוקנים בפועל: `src/index.css` (`@theme`).
 
-- Ink Navy `#0b3558`, Signal Blue `#006bff`, Cloud `#f8f9fb`, Paper, Hairline
-- צללים כחולים־אפורים (לא שחור ניטרלי)
-- רדיוסים: כפתורים/שדות 8px, כרטיסי מוצר 16px, פאנלים 24px
-- Gilroy אינו זמין כגופן רשת → **Heebo** (עברית) + **Manrope** (תואם להמלצת DESIGN.md)
+- Ink Navy `#1a2b4b` (כפתורים ראשיים), Signal Blue `#1976d2`, Cloud `#f5f7fa`
+- כרטיסים לבנים, צל רך, רדיוס ~12px; סטטוס־פילים אדום/צהוב/ירוק
+- **Heebo** + **Assistant** (עברית)
 
 ## מבנה קוד
 

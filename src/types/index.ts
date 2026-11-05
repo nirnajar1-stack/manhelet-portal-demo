@@ -134,3 +134,30 @@ export interface KnowledgeItem {
   category: string
   summary: string
 }
+
+export type ProgramKind = 'respite' | 'workshop' | 'benefit'
+
+export interface ProgramItem {
+  id: string
+  title: string
+  summary: string
+  kind: ProgramKind
+  kindLabel?: string
+  registrationStatus: 'open' | 'closing' | 'active'
+  dateLabel?: string
+  audience: string
+  location: string
+  support: string
+  utilization?: number
+  amountLabel?: string
+  note?: string
+  unitStatuses?: {
+    familyName: string
+    status: 'interested' | 'hesitant' | 'declined'
+  }[]
+  participants?: {
+    name: string
+    status?: string
+    action?: string
+  }[]
+}
