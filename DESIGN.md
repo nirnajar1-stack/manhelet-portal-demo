@@ -90,6 +90,14 @@ Font stack: `"Heebo", "Assistant", ui-sans-serif, system-ui, sans-serif`
 - Using «דורש טיפול» as a business task status (it is an indicator)
 - Overriding molecule Chatter / unit affiliation rules for visual reasons
 
+## ui-ux-pro-max skill pass
+
+Applied [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) design/review workflow (2026-11-05) without replacing Stitch branding:
+
+- Skill installed at `.cursor/skills/ui-ux-pro-max/` (also `~/.cursor/skills/ui-ux-pro-max/` for this agent environment)
+- Persisted advisory system: `design-system/manhelet-portal/MASTER.md` (tokens defer to this file + `src/index.css`)
+- UX checklist deltas: stronger muted/status contrast, skip link, `prefers-reduced-motion`, sticky-header `scroll-padding`, 44px touch targets on key controls, `cursor-pointer` / hover transitions, `aria-expanded` / live status for chrome, chip `aria-pressed`, priority labels not color-only
+
 ## Checklist
 
 - [x] Mockup paths cited as source of truth
@@ -97,3 +105,4 @@ Font stack: `"Heebo", "Assistant", ui-sans-serif, system-ui, sans-serif`
 - [x] RTL + Hebrew body font (Heebo)
 - [x] Navy primary buttons + status pills
 - [x] Shared chrome (sidebar, header, env switcher)
+- [x] ui-ux-pro-max skill applied (a11y / interaction pass)

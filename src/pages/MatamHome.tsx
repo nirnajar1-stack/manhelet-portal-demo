@@ -122,12 +122,12 @@ export function MatamHome() {
   const procedure = orgNews.find((o) => o.kind === 'procedure')
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 motion-fade-in">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div>
           <div className="flex items-center gap-2">
             <Briefcase className="h-5 w-5 text-signal-blue" aria-hidden />
-            <h1 className="text-[26px] font-bold leading-tight text-ink-navy md:text-[28px]">
+            <h1 className="text-[26px] font-bold leading-tight text-ink-navy text-balance md:text-[28px]">
               {greetingHe()}, {currentUser.name.split(' ')[0]}
             </h1>
           </div>
@@ -182,9 +182,10 @@ export function MatamHome() {
           <button
             key={m.id}
             type="button"
+            aria-pressed={metric === m.id}
             onClick={() => setMetric((prev) => (prev === m.id ? null : m.id))}
             className={cn(
-              'rounded-lg border border-hairline/70 bg-paper px-4 py-3.5 text-start shadow-soft transition-colors hover:border-signal-blue/30',
+              'cursor-pointer rounded-lg border border-hairline/70 bg-paper px-4 py-3.5 text-start shadow-soft transition-colors duration-200 hover:border-signal-blue/30',
               metric === m.id && 'border-signal-blue ring-1 ring-signal-blue/30',
             )}
           >
@@ -196,7 +197,7 @@ export function MatamHome() {
                 <div className="mt-1.5 text-[13px] font-semibold text-ink-navy">
                   {m.label}
                 </div>
-                <div className="mt-0.5 text-[12px] text-mist-gray">{m.hint}</div>
+                <div className="mt-0.5 text-[12px] text-slate-gray">{m.hint}</div>
               </div>
               <span
                 className={cn(
@@ -240,7 +241,7 @@ export function MatamHome() {
                   aria-selected={tab === t.id}
                   onClick={() => setTab(t.id)}
                   className={cn(
-                    'shrink-0 rounded-md px-3 py-1.5 text-[12px] font-medium whitespace-nowrap',
+                    'min-h-9 shrink-0 cursor-pointer rounded-md px-3 py-1.5 text-[12px] font-medium whitespace-nowrap transition-colors duration-200',
                     tab === t.id
                       ? 'bg-ink-navy text-paper'
                       : 'text-slate-gray hover:bg-pebble',
@@ -258,7 +259,7 @@ export function MatamHome() {
               <span className="text-[13px] text-slate-gray">מסונן לפי מדד אישי</span>
               <button
                 type="button"
-                className="text-[13px] font-semibold text-signal-blue"
+                className="min-h-9 cursor-pointer text-[13px] font-semibold text-signal-blue hover:underline"
                 onClick={() => setMetric(null)}
               >
                 נקה סינון

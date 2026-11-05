@@ -22,12 +22,12 @@ export function Badge({
   return (
     <span
       className={cn(
-        'inline-flex items-center rounded-full px-2.5 py-0.5 text-[12px] font-medium',
+        'inline-flex max-w-full items-center rounded-full px-2.5 py-0.5 text-[12px] font-medium whitespace-nowrap',
         tones[tone],
         className,
       )}
     >
-      {children}
+      <span className="min-w-0 truncate">{children}</span>
     </span>
   )
 }

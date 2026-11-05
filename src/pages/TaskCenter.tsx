@@ -204,10 +204,10 @@ export function TaskCenter() {
   ]
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 motion-fade-in">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-[26px] font-bold text-ink-navy">
+          <h1 className="text-[26px] font-bold text-ink-navy text-balance">
             מרכז המשימות והמעקב
           </h1>
           <p className="mt-1 text-[13px] text-slate-gray">
@@ -219,11 +219,11 @@ export function TaskCenter() {
             + משימה חדשה
           </Button>
           <Button size="sm" variant="outline">
-            <Download className="h-3.5 w-3.5" />
+            <Download className="h-3.5 w-3.5" aria-hidden />
             ייצוא לאקסל
           </Button>
           <Button size="sm" variant="ghost">
-            <Save className="h-3.5 w-3.5" />
+            <Save className="h-3.5 w-3.5" aria-hidden />
             שמירת תצוגה
           </Button>
         </div>
@@ -318,7 +318,7 @@ export function TaskCenter() {
             aria-selected={view === t.id}
             onClick={() => setView(t.id)}
             className={cn(
-              'shrink-0 rounded-md px-3 py-1.5 text-[12px] font-medium',
+              'min-h-9 shrink-0 cursor-pointer rounded-md px-3 py-1.5 text-[12px] font-medium whitespace-nowrap transition-colors duration-200',
               view === t.id
                 ? 'bg-ink-navy text-paper'
                 : 'bg-paper text-slate-gray shadow-soft hover:bg-pebble',
@@ -412,12 +412,13 @@ function Select({
   options: { value: string; label: string }[]
 }) {
   return (
-    <label className="inline-flex items-center gap-1 text-[12px] text-slate-gray">
-      <span className="sr-only">{label}</span>
+    <label className="inline-flex min-h-9 items-center gap-1.5 text-[12px] text-slate-gray">
+      <span className="hidden font-medium sm:inline">{label}</span>
+      <span className="sr-only sm:hidden">{label}</span>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-9 rounded-md border border-hairline bg-paper px-2 text-[12px] text-ink-navy"
+        className="h-9 min-h-9 cursor-pointer rounded-md border border-hairline bg-paper px-2 text-[12px] text-ink-navy transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal-blue"
         aria-label={label}
       >
         {options.map((o) => (
@@ -458,8 +459,9 @@ function TaskTable({
             <button
               type="button"
               onClick={() => onSelect(task)}
+              aria-pressed={selectedId === task.id}
               className={cn(
-                'grid w-full grid-cols-[auto_1fr_140px_120px_100px] items-center gap-2 border-b border-hairline px-4 py-3 text-start hover:bg-pebble/60',
+                'grid w-full cursor-pointer grid-cols-[auto_1fr_140px_120px_100px] items-center gap-2 border-b border-hairline px-4 py-3 text-start transition-colors duration-200 hover:bg-pebble/60',
                 selectedId === task.id && 'bg-badge-bg/40',
               )}
             >
@@ -503,7 +505,7 @@ function DuePill({ task }: { task: Task }) {
   if (task.status === 'done' || task.status === 'closed') {
     return (
       <Badge tone="success">
-        <CheckCircle2 className="me-1 h-3 w-3" />
+        <CheckCircle2 className="me-1 h-3 w-3" aria-hidden />
         הושלמה
       </Badge>
     )

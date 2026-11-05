@@ -18,6 +18,7 @@ import { Input } from '@/components/ui/input'
 import { Panel } from '@/components/ui/card'
 import { fetchKnowledge } from '@/api/stubs'
 import { orgNews } from '@/data/mock'
+import { cn } from '@/lib/utils'
 import type { KnowledgeItem } from '@/types'
 
 const libraries = [
@@ -97,10 +98,12 @@ export function Knowledge() {
   }, [query])
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 motion-fade-in">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-[26px] font-bold text-ink-navy">מרכז ידע ונהלים</h1>
+          <h1 className="text-[26px] font-bold text-ink-navy text-balance">
+            מרכז ידע ונהלים
+          </h1>
           <p className="mt-1 text-[13px] text-slate-gray">
             חיפוש בהוראות שעה, תקנות ונוהלי סיוע לעבודת המת״ם.
           </p>
@@ -127,13 +130,19 @@ export function Knowledge() {
               </div>
               <Button>איתור נוהל</Button>
             </div>
-            <div className="mt-3 flex flex-wrap gap-1.5">
+            <div className="chip-row mt-3" role="list" aria-label="תגיות חיפוש מהיר">
               {quickTags.map((tag) => (
                 <button
                   key={tag}
                   type="button"
+                  role="listitem"
+                  aria-pressed={query === tag}
                   onClick={() => setQuery(tag)}
-                  className="rounded-full border border-hairline bg-pebble px-2.5 py-1 text-[12px] font-medium text-slate-gray hover:border-signal-blue/40 hover:text-ink-navy"
+                  className={cn(
+                    'min-h-9 cursor-pointer rounded-full border border-hairline bg-pebble px-2.5 py-1 text-[12px] font-medium whitespace-nowrap text-slate-gray transition-colors duration-200 hover:border-signal-blue/40 hover:text-ink-navy',
+                    query === tag &&
+                      'border-signal-blue bg-badge-bg text-ink-navy',
+                  )}
                 >
                   {tag}
                 </button>
