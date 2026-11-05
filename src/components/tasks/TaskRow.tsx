@@ -52,10 +52,25 @@ export function TaskRow({
             {task.number}
           </span>
           <span
-            className={cn('h-2 w-2 rounded-full', priorityDot(task.priority))}
-            title={priorityLabel[task.priority]}
-            aria-label={`דחיפות: ${priorityLabel[task.priority]}`}
-          />
+            className="inline-flex items-center gap-1"
+            title={`דחיפות: ${priorityLabel[task.priority]}`}
+          >
+            <span
+              className={cn('h-2 w-2 rounded-full', priorityDot(task.priority))}
+              aria-hidden
+            />
+            <span className="sr-only">דחיפות: {priorityLabel[task.priority]}</span>
+            {(task.priority === 'urgent' || task.priority === 'high') && (
+              <span
+                className={cn(
+                  'text-[11px] font-semibold',
+                  task.priority === 'urgent' ? 'text-danger' : 'text-[#9a6700]',
+                )}
+              >
+                {priorityLabel[task.priority]}
+              </span>
+            )}
+          </span>
           <Badge tone={statusTone(task.status)}>{statusLabel[task.status]}</Badge>
           {task.needsAttention && <Badge tone="danger">דורש טיפול</Badge>}
           {task.hasNewReply && (
@@ -65,7 +80,7 @@ export function TaskRow({
             </span>
           )}
         </div>
-        <h3 className="truncate text-[15px] font-semibold text-ink-navy">
+        <h3 className="truncate text-[15px] font-semibold text-ink-navy text-balance">
           {task.title}
         </h3>
         <p className="mt-1 truncate text-[13px] text-slate-gray">
@@ -108,7 +123,7 @@ export function TaskRow({
         type="button"
         onClick={() => onSelect(task)}
         className={cn(
-          'flex w-full items-start justify-between gap-3 border-b border-hairline px-4 py-3 text-start transition-colors hover:bg-pebble/70',
+          'flex w-full cursor-pointer items-start justify-between gap-3 border-b border-hairline px-4 py-3 text-start transition-colors duration-200 hover:bg-pebble/70 focus-visible:bg-pebble',
           selected && 'bg-badge-bg/50',
           compact && 'px-3 py-2.5',
         )}
@@ -122,7 +137,7 @@ export function TaskRow({
     <Link
       to={`/tasks/${task.id}`}
       className={cn(
-        'flex items-start justify-between gap-3 border-b border-hairline px-4 py-3 transition-colors hover:bg-pebble/70 focus-visible:bg-pebble',
+        'flex cursor-pointer items-start justify-between gap-3 border-b border-hairline px-4 py-3 transition-colors duration-200 hover:bg-pebble/70 focus-visible:bg-pebble',
         selected && 'bg-badge-bg/50',
         compact && 'px-3 py-2.5',
       )}

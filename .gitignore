@@ -22,3 +22,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Python caches (ui-ux-pro-max skill scripts)
+**/__pycache__/
+*.py[cod]
+
+# Accidental root dumps from skill tooling (do not ignore skill package files)
+/core.py
+/design_system.py
+/reasoning_contract.py
+/search.py
+/validate_data.py

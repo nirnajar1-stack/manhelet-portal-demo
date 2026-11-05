@@ -168,9 +168,9 @@ export function TaskDetail() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 motion-fade-in">
       <div className="text-[12px] text-slate-gray">
-        <Link to="/tasks" className="hover:text-ink-navy">
+        <Link to="/tasks" className="hover:text-ink-navy hover:underline">
           מרכז המשימות
         </Link>
         <span className="mx-1">/</span>

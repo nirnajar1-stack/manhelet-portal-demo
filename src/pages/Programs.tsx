@@ -59,14 +59,14 @@ export function Programs() {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 motion-fade-in">
       <div className="text-[12px] text-slate-gray">
         תיקי מת״ם › מרחב דרום › תוכניות, אירועים והטבות
       </div>
 
       <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <h1 className="text-[26px] font-bold text-ink-navy">
+          <h1 className="text-[26px] font-bold text-ink-navy text-balance">
             תוכניות, אירועים והטבות
           </h1>
           <p className="mt-1 max-w-2xl text-[13px] text-slate-gray">
@@ -90,7 +90,7 @@ export function Programs() {
             aria-selected={tab === t.id}
             onClick={() => setTab(t.id)}
             className={cn(
-              'shrink-0 rounded-md px-3 py-1.5 text-[12px] font-medium',
+              'min-h-9 shrink-0 cursor-pointer rounded-md px-3 py-1.5 text-[12px] font-medium whitespace-nowrap transition-colors duration-200',
               tab === t.id
                 ? 'bg-ink-navy text-paper'
                 : 'bg-paper text-slate-gray shadow-soft hover:bg-pebble',
