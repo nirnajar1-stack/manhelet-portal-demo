@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
+  AlertTriangle,
+  Briefcase,
   CalendarDays,
   ChevronLeft,
   ClipboardPlus,
-  FolderSearch,
-  Home,
-  UserRoundSearch,
+  FileText,
+  MessageSquare,
+  Phone,
 } from 'lucide-react'
 import { TaskList } from '@/components/tasks/TaskList'
 import { AssumptionBanner } from '@/components/ui/assumption'
@@ -22,14 +24,6 @@ import type { Task } from '@/types'
 type HomeTab = 'attention' | 'open' | 'waiting' | 'recent' | 'all'
 type MetricFilter = 'open' | 'overdue' | 'updates' | null
 
-const tabs: { id: HomeTab; label: string }[] = [
-  { id: 'attention', label: 'דורש טיפול' },
-  { id: 'open', label: 'פתוחות' },
-  { id: 'waiting', label: 'ממתינות' },
-  { id: 'recent', label: 'עודכנו לאחרונה' },
-  { id: 'all', label: 'כלל המשימות' },
-]
-
 function isOverdue(task: Task) {
   if (!task.dueDate) return false
   if (task.status === 'done' || task.status === 'closed') return false
@@ -44,14 +38,12 @@ export function MatamHome() {
   const { currentUser, tasks, refreshTasks, searchQuery } = useApp()
   const [tab, setTab] = useState<HomeTab>('attention')
   const [metric, setMetric] = useState<MetricFilter>(null)
-  const [orgOpen, setOrgOpen] = useState(true)
   const navigate = useNavigate()
 
   useEffect(() => {
     void refreshTasks()
   }, [refreshTasks])
 
-  // All tasks in units this matam is responsible for (not only assignee)
   const myTasks = useMemo(
     () => matamCaseloadTasks(currentUser, tasks),
     [tasks, currentUser],
@@ -62,6 +54,19 @@ export function MatamHome() {
   ).length
   const overdueCount = myTasks.filter(isOverdue).length
   const updatesCount = myTasks.filter((t) => t.hasNewReply).length
+  const attentionCount = myTasks.filter(requiresAttention).length
+
+  const tabs: { id: HomeTab; label: string; count?: number }[] = [
+    { id: 'attention', label: 'טיפול מיידי', count: attentionCount },
+    { id: 'open', label: 'פתוחות', count: openCount },
+    {
+      id: 'recent',
+      label: 'עודכנו לאחרונה',
+      count: updatesCount,
+    },
+    { id: 'waiting', label: 'ממתינות' },
+    { id: 'all', label: 'הכל' },
+  ]
 
   const filtered = useMemo(() => {
     let list = [...myTasks]
@@ -105,30 +110,42 @@ export function MatamHome() {
           break
       }
     }
-    return list.slice(0, 8)
+    return list.slice(0, 10)
   }, [myTasks, tab, metric, searchQuery])
 
   const myUnits = visibleUnits(currentUser).sort(
     (a, b) => Number(b.needsAttention) - Number(a.needsAttention),
   )
-
-  const pinned = orgNews.find((o) => o.pinned)
-  const updates = orgNews.filter((o) => o.kind === 'news').slice(0, 2)
+  const waitingUnits = myUnits.filter((u) => u.needsAttention).slice(0, 3)
+  const recentFamilies = myUnits.slice(0, 3)
   const nextEvent = orgNews.find((o) => o.kind === 'event')
+  const procedure = orgNews.find((o) => o.kind === 'procedure')
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <div className="space-y-5">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div>
-          <h1 className="text-[28px] font-bold leading-tight text-ink-navy md:text-[38px] md:leading-[1.21]">
-            {greetingHe()}, {currentUser.name.split(' ')[0]}
-          </h1>
-          <p className="mt-2 max-w-2xl text-[16px] text-slate-gray">
-            יש לך {overdueCount} משימות חורגות ו־{updatesCount} עדכונים חדשים
-            שדורשים תשומת לב.
+          <div className="flex items-center gap-2">
+            <Briefcase className="h-5 w-5 text-signal-blue" aria-hidden />
+            <h1 className="text-[26px] font-bold leading-tight text-ink-navy md:text-[28px]">
+              {greetingHe()}, {currentUser.name.split(' ')[0]}
+            </h1>
+          </div>
+          <p className="mt-1.5 text-[14px] text-slate-gray">
+            {attentionCount} משימות דחופות מתוך {openCount} משימות פתוחות ביחידות
+            באחריותך.
           </p>
         </div>
-        <Button onClick={() => navigate('/tasks/new')}>פעולה חדשה</Button>
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" size="sm" onClick={() => navigate('/tasks')}>
+            <CalendarDays className="h-4 w-4" />
+            יומן משימות יומי
+          </Button>
+          <Button size="sm" onClick={() => navigate('/tasks/new')}>
+            <ClipboardPlus className="h-4 w-4" />
+            פתיחת משימה חדשה
+          </Button>
+        </div>
       </div>
 
       <AssumptionBanner>
@@ -136,12 +153,30 @@ export function MatamHome() {
         האחראי הניהולי הוא משתמש אחר.
       </AssumptionBanner>
 
-      <div className="grid grid-cols-3 gap-2 sm:gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         {(
           [
-            { id: 'open' as const, label: 'פתוחות', value: openCount },
-            { id: 'overdue' as const, label: 'חורגות', value: overdueCount },
-            { id: 'updates' as const, label: 'עדכונים חדשים', value: updatesCount },
+            {
+              id: 'open' as const,
+              label: 'משימות פתוחות',
+              value: openCount,
+              hint: `מתוך ${myTasks.length} משימות בחודש`,
+              accent: 'text-signal-blue bg-badge-bg',
+            },
+            {
+              id: 'overdue' as const,
+              label: 'חריגות SLA',
+              value: overdueCount,
+              hint: 'עיכובים בטיפול',
+              accent: 'text-danger bg-danger-bg',
+            },
+            {
+              id: 'updates' as const,
+              label: 'עדכונים חדשים',
+              value: updatesCount,
+              hint: 'ממולקולות וגורמי מדינה',
+              accent: 'text-deep-cobalt bg-badge-bg',
+            },
           ] as const
         ).map((m) => (
           <button
@@ -149,215 +184,213 @@ export function MatamHome() {
             type="button"
             onClick={() => setMetric((prev) => (prev === m.id ? null : m.id))}
             className={cn(
-              'rounded-lg border border-hairline bg-paper px-3 py-3 text-start transition-colors hover:border-signal-blue/40 sm:px-4 sm:py-4',
-              metric === m.id && 'border-signal-blue bg-badge-bg',
+              'rounded-lg border border-hairline/70 bg-paper px-4 py-3.5 text-start shadow-soft transition-colors hover:border-signal-blue/30',
+              metric === m.id && 'border-signal-blue ring-1 ring-signal-blue/30',
             )}
           >
-            <div className="text-[22px] font-bold tabular-nums text-ink-navy sm:text-[28px]">
-              {m.value}
-            </div>
-            <div className="text-[12px] font-medium text-slate-gray sm:text-[14px]">
-              {m.label}
+            <div className="flex items-start justify-between gap-2">
+              <div>
+                <div className="text-[28px] font-bold tabular-nums leading-none text-ink-navy">
+                  {m.value}
+                </div>
+                <div className="mt-1.5 text-[13px] font-semibold text-ink-navy">
+                  {m.label}
+                </div>
+                <div className="mt-0.5 text-[12px] text-mist-gray">{m.hint}</div>
+              </div>
+              <span
+                className={cn(
+                  'flex h-9 w-9 items-center justify-center rounded-lg text-[14px] font-bold',
+                  m.accent,
+                )}
+              >
+                {m.value}
+              </span>
             </div>
           </button>
         ))}
       </div>
 
-      <Panel className="!p-0 overflow-hidden">
-        <div className="flex flex-col gap-3 border-b border-hairline px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <h2 className="text-[20px] font-semibold text-ink-navy">המשימות שלי</h2>
-          <Link
-            to="/tasks"
-            className="inline-flex items-center gap-1 text-[14px] font-semibold text-signal-blue hover:underline"
-          >
-            למרכז המשימות
-            <ChevronLeft className="h-4 w-4" />
-          </Link>
-        </div>
-
-        {!metric && (
-          <div
-            className="flex gap-1 overflow-x-auto border-b border-hairline px-2 py-2 sm:px-4"
-            role="tablist"
-            aria-label="סינון משימות"
-          >
-            {tabs.map((t) => (
-              <button
-                key={t.id}
-                type="button"
-                role="tab"
-                aria-selected={tab === t.id}
-                onClick={() => setTab(t.id)}
-                className={cn(
-                  'shrink-0 rounded-md px-3 py-2 text-[13px] font-medium whitespace-nowrap',
-                  tab === t.id
-                    ? 'bg-badge-bg text-signal-blue'
-                    : 'text-slate-gray hover:bg-pebble',
-                )}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {metric && (
-          <div className="flex items-center justify-between border-b border-hairline px-4 py-2">
-            <span className="text-[13px] text-slate-gray">
-              מסונן לפי מדד אישי
-            </span>
-            <button
-              type="button"
-              className="text-[13px] font-semibold text-signal-blue"
-              onClick={() => setMetric(null)}
-            >
-              נקה סינון
-            </button>
-          </div>
-        )}
-
-        <TaskList tasks={filtered} compact />
-      </Panel>
-
-      <div className="grid gap-6 lg:grid-cols-5">
-        <Panel className="lg:col-span-3 !p-0 overflow-hidden">
-          <div className="flex items-center justify-between border-b border-hairline px-4 py-4 sm:px-6">
-            <h2 className="text-[20px] font-semibold">יחידות טיפול</h2>
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_280px]">
+        <Panel className="!p-0 overflow-hidden">
+          <div className="flex flex-col gap-3 border-b border-hairline px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+            <h2 className="text-[17px] font-semibold text-ink-navy">
+              המשימות ביחידות שלי
+            </h2>
             <Link
-              to="/units"
-              className="text-[14px] font-semibold text-signal-blue hover:underline"
+              to="/tasks"
+              className="inline-flex items-center gap-1 text-[13px] font-semibold text-signal-blue hover:underline"
             >
-              הכל
+              למרכז המשימות
+              <ChevronLeft className="h-4 w-4" />
             </Link>
           </div>
-          <ul className="divide-y divide-hairline">
-            {myUnits.slice(0, 5).map((u) => (
-              <li key={u.id}>
+
+          {!metric && (
+            <div
+              className="flex gap-1 overflow-x-auto border-b border-hairline px-2 py-2 sm:px-4"
+              role="tablist"
+              aria-label="סינון משימות"
+            >
+              {tabs.map((t) => (
+                <button
+                  key={t.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={tab === t.id}
+                  onClick={() => setTab(t.id)}
+                  className={cn(
+                    'shrink-0 rounded-md px-3 py-1.5 text-[12px] font-medium whitespace-nowrap',
+                    tab === t.id
+                      ? 'bg-ink-navy text-paper'
+                      : 'text-slate-gray hover:bg-pebble',
+                  )}
+                >
+                  {t.label}
+                  {typeof t.count === 'number' ? ` (${t.count})` : ''}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {metric && (
+            <div className="flex items-center justify-between border-b border-hairline px-4 py-2">
+              <span className="text-[13px] text-slate-gray">מסונן לפי מדד אישי</span>
+              <button
+                type="button"
+                className="text-[13px] font-semibold text-signal-blue"
+                onClick={() => setMetric(null)}
+              >
+                נקה סינון
+              </button>
+            </div>
+          )}
+
+          <TaskList tasks={filtered} compact showOpenAction />
+        </Panel>
+
+        <div className="space-y-3">
+          <Panel className="!p-4">
+            <h3 className="mb-3 text-[14px] font-semibold text-ink-navy">
+              קיצורי דרך תפעוליים
+            </h3>
+            <ul className="space-y-1.5">
+              {(
+                [
+                  {
+                    label: 'תיעוד מפגש / שיחה',
+                    icon: Phone,
+                    to: '/units?intent=visit',
+                  },
+                  {
+                    label: 'פתיחת משימה ליחידה',
+                    icon: ClipboardPlus,
+                    to: '/tasks/new',
+                  },
+                  {
+                    label: 'שליחת עדכון למולקולה',
+                    icon: MessageSquare,
+                    to: '/tasks',
+                  },
+                ] as const
+              ).map((a) => (
+                <li key={a.label}>
+                  <Link
+                    to={a.to}
+                    className="flex items-center justify-between gap-2 rounded-md px-2 py-2 text-[13px] font-medium hover:bg-pebble"
+                  >
+                    <span className="inline-flex items-center gap-2">
+                      <a.icon className="h-4 w-4 text-signal-blue" />
+                      {a.label}
+                    </span>
+                    <ChevronLeft className="h-3.5 w-3.5 text-mist-gray" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Panel>
+
+          <Panel className="!p-4">
+            <h3 className="mb-3 text-[14px] font-semibold">משפחות שביקרתי לאחרונה</h3>
+            <ul className="space-y-2">
+              {recentFamilies.map((u) => (
+                <li key={u.id}>
+                  <Link
+                    to={`/units/${u.id}`}
+                    className="block rounded-md px-2 py-1.5 hover:bg-pebble"
+                  >
+                    <div className="text-[13px] font-semibold">משפחת {u.familyName}</div>
+                    <div className="text-[11px] text-mist-gray">
+                      {u.region} · {formatRelativeHe(u.lastActivityAt)}
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Panel>
+
+          <Panel className="!p-4">
+            <h3 className="mb-3 text-[14px] font-semibold">עדכונים ונהלים</h3>
+            <div className="space-y-3">
+              {nextEvent && (
+                <div className="rounded-md bg-pebble/80 px-3 py-2">
+                  <div className="flex items-center gap-1.5 text-[11px] font-medium text-signal-blue">
+                    <CalendarDays className="h-3.5 w-3.5" />
+                    {nextEvent.date}
+                  </div>
+                  <p className="mt-1 text-[13px] font-semibold">{nextEvent.title}</p>
+                </div>
+              )}
+              {procedure && (
+                <div className="flex items-start gap-2 px-1">
+                  <FileText className="mt-0.5 h-4 w-4 text-danger" />
+                  <div>
+                    <p className="text-[13px] font-semibold">{procedure.title}</p>
+                    <p className="text-[11px] text-mist-gray">PDF · להורדה</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </Panel>
+        </div>
+      </div>
+
+      {waitingUnits.length > 0 && (
+        <Panel className="border-danger/25 bg-[#fff8f7] !p-4">
+          <div className="mb-3 flex items-center gap-2">
+            <AlertTriangle className="h-4 w-4 text-danger" />
+            <h2 className="text-[15px] font-semibold text-ink-navy">
+              יחידות טיפול הממתינות לך
+            </h2>
+          </div>
+          <ul className="space-y-2">
+            {waitingUnits.map((u) => (
+              <li
+                key={u.id}
+                className="flex flex-col gap-2 rounded-md border border-danger/15 bg-paper px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between"
+              >
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-[14px] font-semibold">
+                      משפחת {u.familyName}
+                    </span>
+                    <Badge tone="danger">דורשת התייחסות</Badge>
+                  </div>
+                  <p className="mt-0.5 text-[12px] text-slate-gray">
+                    {u.summary} · {u.overdueTasks} משימות חורגות
+                  </p>
+                </div>
                 <Link
                   to={`/units/${u.id}`}
-                  className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-pebble/70 sm:px-6"
+                  className="shrink-0 text-[13px] font-semibold text-signal-blue hover:underline"
                 >
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold">משפחת {u.familyName}</span>
-                      {u.needsAttention && (
-                        <Badge tone="danger">דורשת התייחסות</Badge>
-                      )}
-                    </div>
-                    <p className="mt-0.5 text-[12px] text-mist-gray">
-                      פעילות אחרונה · {formatRelativeHe(u.lastActivityAt)}
-                    </p>
-                  </div>
-                  <div className="shrink-0 text-end text-[12px] text-slate-gray">
-                    <div>{u.openTasks} פתוחות</div>
-                    <div className={u.overdueTasks ? 'text-danger font-medium' : ''}>
-                      {u.overdueTasks} חורגות
-                    </div>
-                  </div>
+                  מעבר לתיק היחידה ›
                 </Link>
               </li>
             ))}
           </ul>
         </Panel>
-
-        <Panel className="lg:col-span-2">
-          <h2 className="mb-4 text-[20px] font-semibold">פעולות מהירות</h2>
-          <div className="grid grid-cols-2 gap-2">
-            {(
-              [
-                {
-                  label: 'פתיחת משימה',
-                  icon: ClipboardPlus,
-                  to: '/tasks/new',
-                },
-                {
-                  label: 'תיעוד ביקור',
-                  icon: Home,
-                  to: '/units?intent=visit',
-                },
-                {
-                  label: 'עדכון שיקום',
-                  icon: CalendarDays,
-                  to: '/units?intent=rehab',
-                },
-                {
-                  label: 'איתור משפחה',
-                  icon: UserRoundSearch,
-                  to: '/units',
-                },
-              ] as const
-            ).map((a) => (
-              <Link
-                key={a.label}
-                to={a.to}
-                className="flex flex-col items-start gap-2 rounded-lg border border-hairline bg-cloud px-3 py-3 hover:border-signal-blue/40 hover:bg-badge-bg/40"
-              >
-                <a.icon className="h-5 w-5 text-signal-blue" aria-hidden />
-                <span className="text-[13px] font-semibold leading-snug">
-                  {a.label}
-                </span>
-              </Link>
-            ))}
-          </div>
-          <Link
-            to="/units"
-            className="mt-3 inline-flex items-center gap-1 text-[13px] font-medium text-slate-gray hover:text-ink-navy"
-          >
-            <FolderSearch className="h-3.5 w-3.5" />
-            חיפוש מתקדם ביחידות
-          </Link>
-        </Panel>
-      </div>
-
-      <Panel>
-        <button
-          type="button"
-          className="flex w-full items-center justify-between text-start"
-          onClick={() => setOrgOpen((v) => !v)}
-          aria-expanded={orgOpen}
-        >
-          <h2 className="text-[20px] font-semibold">מה חדש במנהלת?</h2>
-          <span className="text-[13px] text-slate-gray">
-            {orgOpen ? 'סגור' : 'הרחב'}
-          </span>
-        </button>
-        {orgOpen && (
-          <div className="mt-4 space-y-3">
-            {pinned && (
-              <div className="rounded-lg border border-hairline bg-pebble/60 p-4">
-                <Badge tone="info">הודעת הנהלה</Badge>
-                <h3 className="mt-2 text-[16px] font-semibold">{pinned.title}</h3>
-                <p className="mt-1 text-[14px] text-slate-gray">{pinned.summary}</p>
-              </div>
-            )}
-            <div className="grid gap-3 sm:grid-cols-2">
-              {updates.map((u) => (
-                <div key={u.id} className="rounded-lg border border-hairline p-3">
-                  <p className="text-[12px] text-mist-gray">{u.date}</p>
-                  <h3 className="mt-1 text-[14px] font-semibold">{u.title}</h3>
-                </div>
-              ))}
-            </div>
-            {nextEvent && (
-              <div className="flex items-center justify-between rounded-lg bg-badge-bg/50 px-3 py-2">
-                <div>
-                  <p className="text-[12px] font-medium text-deep-cobalt">
-                    אירוע קרוב
-                  </p>
-                  <p className="text-[14px] font-semibold">{nextEvent.title}</p>
-                </div>
-                <span className="text-[13px] text-slate-gray">{nextEvent.date}</span>
-              </div>
-            )}
-            <Link
-              to="/org"
-              className="inline-flex text-[14px] font-semibold text-signal-blue hover:underline"
-            >
-              לבית המנהלת
-            </Link>
-          </div>
-        )}
-      </Panel>
+      )}
     </div>
   )
 }

@@ -6,11 +6,15 @@ export function TaskList({
   selectedId,
   empty = 'אין משימות להצגה',
   compact,
+  showOpenAction,
+  onSelect,
 }: {
   tasks: Task[]
   selectedId?: string
   empty?: string
   compact?: boolean
+  showOpenAction?: boolean
+  onSelect?: (task: Task) => void
 }) {
   if (tasks.length === 0) {
     return (
@@ -21,13 +25,15 @@ export function TaskList({
   }
 
   return (
-    <div className="divide-y-0 overflow-hidden rounded-lg border border-hairline bg-paper">
+    <div className="overflow-hidden bg-paper">
       {tasks.map((t) => (
         <TaskRow
           key={t.id}
           task={t}
           selected={t.id === selectedId}
           compact={compact}
+          showOpenAction={showOpenAction}
+          onSelect={onSelect}
         />
       ))}
     </div>
