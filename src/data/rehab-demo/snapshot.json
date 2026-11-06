@@ -1,0 +1,1652 @@
+{
+  "generatedAt": "2026-11-05T20:04:27.231Z",
+  "ids": {
+    "personYossi": "a0000000-0000-4000-8000-000000000001",
+    "personMichal": "a0000000-0000-4000-8000-000000000002",
+    "personNoa": "a0000000-0000-4000-8000-000000000003",
+    "personDani": "a0000000-0000-4000-8000-000000000004",
+    "personBen": "a0000000-0000-4000-8000-000000000020",
+    "hhCohen": "a0000000-0000-4000-8000-100000000001",
+    "actorMatam": "a0000000-0000-4000-8000-200000000001",
+    "actorCompanion": "a0000000-0000-4000-8000-200000000002",
+    "actorPatientYossi": "a0000000-0000-4000-8000-200000000004",
+    "actorGuardianMichal": "a0000000-0000-4000-8000-200000000005",
+    "actorGov": "a0000000-0000-4000-8000-200000000006",
+    "actorBen": "a0000000-0000-4000-8000-200000000009",
+    "actorNoa": "a0000000-0000-4000-8000-200000000010",
+    "templateReentry": "a0000000-0000-4000-8000-300000000001",
+    "versionV1": "a0000000-0000-4000-8000-310000000001",
+    "versionV2Draft": "a0000000-0000-4000-8000-310000000002",
+    "versionGroup": "a0000000-0000-4000-8000-310000000003",
+    "phaseGroupOpen": "a0000000-0000-4000-8000-320000000004",
+    "programCohen": "a0000000-0000-4000-8000-400000000001",
+    "programGroup": "a0000000-0000-4000-8000-400000000002",
+    "programHousing": "a0000000-0000-4000-8000-400000000003",
+    "ppYossi": "a0000000-0000-4000-8000-410000000001",
+    "ppDaniGroup": "a0000000-0000-4000-8000-410000000002",
+    "ppDaniHousing": "a0000000-0000-4000-8000-410000000005",
+    "periodCohen": "a0000000-0000-4000-8000-420000000001",
+    "goalWork": "a0000000-0000-4000-8000-500000000002"
+  },
+  "layers": [
+    {
+      "id": 1,
+      "name_he": "אנשים ומשקי בית",
+      "tables": [
+        "persons",
+        "households",
+        "household_members"
+      ]
+    },
+    {
+      "id": 2,
+      "name_he": "תבניות וגרסאות",
+      "tables": [
+        "program_templates",
+        "template_versions",
+        "template_phases",
+        "template_goals"
+      ]
+    },
+    {
+      "id": 3,
+      "name_he": "תוכניות, משתתפים, מחזורים ושלבים",
+      "tables": [
+        "programs",
+        "program_patients",
+        "program_periods",
+        "program_phases"
+      ]
+    },
+    {
+      "id": 4,
+      "name_he": "יעדים ועדכונים",
+      "tables": [
+        "goals",
+        "goal_updates",
+        "progress_snapshots"
+      ]
+    },
+    {
+      "id": 5,
+      "name_he": "מפגשים, משימות ותיקים",
+      "tables": [
+        "sessions",
+        "session_attendance",
+        "tasks",
+        "cases"
+      ]
+    },
+    {
+      "id": 6,
+      "name_he": "מלווים, צוות, הרשאות וביקורת",
+      "tables": [
+        "actors",
+        "companions",
+        "program_team_members",
+        "access_grants",
+        "person_actor_links",
+        "audit_log"
+      ]
+    }
+  ],
+  "tables": {
+    "persons": [
+      {
+        "id": "a0000000-0000-4000-8000-000000000006",
+        "demo_national_id": "DEMO-10000006",
+        "full_name_he": "אבי מזרחי",
+        "birth_date": "1978-09-30",
+        "email_demo": "avi.mizrahi@demo.example"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-000000000012",
+        "demo_national_id": "DEMO-10000012",
+        "full_name_he": "אורי דהן",
+        "birth_date": "1983-10-19",
+        "email_demo": "ori.dahan@demo.example"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-000000000016",
+        "demo_national_id": "DEMO-10000016",
+        "full_name_he": "אלון שמש",
+        "birth_date": "1999-09-09",
+        "email_demo": "alon.shemesh@demo.example"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-000000000020",
+        "demo_national_id": "DEMO-10000020",
+        "full_name_he": "בן חיצוני",
+        "birth_date": "1993-01-01",
+        "email_demo": "ben.external@demo.example"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-000000000018",
+        "demo_national_id": "DEMO-10000018",
+        "full_name_he": "גיל רוזן",
+        "birth_date": "1986-04-04",
+        "email_demo": "gil.rozen@demo.example"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-000000000004",
+        "demo_national_id": "DEMO-10000004",
+        "full_name_he": "דני לוי",
+        "birth_date": "1990-11-02",
+        "email_demo": "dani.levi@demo.example"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-000000000011",
+        "demo_national_id": "DEMO-10000011",
+        "full_name_he": "הילה פרץ",
+        "birth_date": "1991-05-03",
+        "email_demo": "hila.peretz@demo.example"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-000000000010",
+        "demo_national_id": "DEMO-10000010",
+        "full_name_he": "יונתן פרץ",
+        "birth_date": "1988-02-11",
+        "email_demo": "yonatan.peretz@demo.example"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-000000000001",
+        "demo_national_id": "DEMO-10000001",
+        "full_name_he": "יוסי כהן",
+        "birth_date": "1985-03-12",
+        "email_demo": "yossi.cohen@demo.example"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-000000000013",
+        "demo_national_id": "DEMO-10000013",
+        "full_name_he": "ליאת דהן",
+        "birth_date": "1984-01-27",
+        "email_demo": "liat.dahan@demo.example"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-000000000002",
+        "demo_national_id": "DEMO-10000002",
+        "full_name_he": "מיכל כהן",
+        "birth_date": "1987-07-22",
+        "email_demo": "michal.cohen@demo.example"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-000000000015",
+        "demo_national_id": "DEMO-10000015",
+        "full_name_he": "מרים ביטון",
+        "birth_date": "1977-03-15",
+        "email_demo": "miriam.biton@demo.example"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-000000000017",
+        "demo_national_id": "DEMO-10000017",
+        "full_name_he": "נויה שמש",
+        "birth_date": "2001-12-01",
+        "email_demo": "noya.shemesh@demo.example"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-000000000003",
+        "demo_national_id": "DEMO-10000003",
+        "full_name_he": "נועה כהן",
+        "birth_date": "2012-01-05",
+        "email_demo": null
+      },
+      {
+        "id": "a0000000-0000-4000-8000-000000000014",
+        "demo_national_id": "DEMO-10000014",
+        "full_name_he": "סמי ביטון",
+        "birth_date": "1975-07-07",
+        "email_demo": "sami.biton@demo.example"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-000000000019",
+        "demo_national_id": "DEMO-10000019",
+        "full_name_he": "עדי רוזן",
+        "birth_date": "1989-08-16",
+        "email_demo": "adi.rozen@demo.example"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-000000000008",
+        "demo_national_id": "DEMO-10000008",
+        "full_name_he": "עמית אברהם",
+        "birth_date": "1995-06-08",
+        "email_demo": "amit.avraham@demo.example"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-000000000005",
+        "demo_national_id": "DEMO-10000005",
+        "full_name_he": "רותם לוי",
+        "birth_date": "1992-04-18",
+        "email_demo": "rotem.levi@demo.example"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-000000000007",
+        "demo_national_id": "DEMO-10000007",
+        "full_name_he": "שירה מזרחי",
+        "birth_date": "1980-12-14",
+        "email_demo": "shira.mizrahi@demo.example"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-000000000009",
+        "demo_national_id": "DEMO-10000009",
+        "full_name_he": "תמר אברהם",
+        "birth_date": "1996-08-21",
+        "email_demo": "tamar.avraham@demo.example"
+      }
+    ],
+    "households": [
+      {
+        "id": "a0000000-0000-4000-8000-100000000004",
+        "household_code": "HH-AVRAHAM",
+        "display_name_he": "משפחת אברהם",
+        "locality_he": "באר שבע",
+        "status": "active",
+        "scenario_tag": "S04"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-100000000007",
+        "household_code": "HH-BITON",
+        "display_name_he": "משפחת ביטון",
+        "locality_he": "רעים",
+        "status": "active",
+        "scenario_tag": "S08"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-100000000001",
+        "household_code": "HH-COHEN",
+        "display_name_he": "משפחת כהן",
+        "locality_he": "ניר עוז",
+        "status": "active",
+        "scenario_tag": "S01"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-100000000006",
+        "household_code": "HH-DAHAN",
+        "display_name_he": "משפחת דהן",
+        "locality_he": "נתיבות",
+        "status": "active",
+        "scenario_tag": "S06"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-100000000002",
+        "household_code": "HH-LEVI",
+        "display_name_he": "משפחת לוי",
+        "locality_he": "שדרות",
+        "status": "active",
+        "scenario_tag": "S07"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-100000000003",
+        "household_code": "HH-MIZRAHI",
+        "display_name_he": "משפחת מזרחי",
+        "locality_he": "אופקים",
+        "status": "active",
+        "scenario_tag": "S03"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-100000000005",
+        "household_code": "HH-PERETZ",
+        "display_name_he": "משפחת פרץ",
+        "locality_he": "אשקלון",
+        "status": "active",
+        "scenario_tag": "S05"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-100000000008",
+        "household_code": "HH-SHEMESH",
+        "display_name_he": "משפחת שמש",
+        "locality_he": "תל אביב",
+        "status": "active",
+        "scenario_tag": "S09"
+      }
+    ],
+    "household_members": [
+      {
+        "id": "a0000000-0000-4000-8000-110000000001",
+        "household_id": "a0000000-0000-4000-8000-100000000001",
+        "person_id": "a0000000-0000-4000-8000-000000000001",
+        "member_role": "returnee",
+        "is_primary": true,
+        "joined_at": "2026-11-05"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-110000000002",
+        "household_id": "a0000000-0000-4000-8000-100000000001",
+        "person_id": "a0000000-0000-4000-8000-000000000002",
+        "member_role": "guardian",
+        "is_primary": false,
+        "joined_at": "2026-11-05"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-110000000003",
+        "household_id": "a0000000-0000-4000-8000-100000000001",
+        "person_id": "a0000000-0000-4000-8000-000000000003",
+        "member_role": "household_member",
+        "is_primary": false,
+        "joined_at": "2026-11-05"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-110000000004",
+        "household_id": "a0000000-0000-4000-8000-100000000002",
+        "person_id": "a0000000-0000-4000-8000-000000000004",
+        "member_role": "returnee",
+        "is_primary": true,
+        "joined_at": "2026-11-05"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-110000000005",
+        "household_id": "a0000000-0000-4000-8000-100000000002",
+        "person_id": "a0000000-0000-4000-8000-000000000005",
+        "member_role": "guardian",
+        "is_primary": false,
+        "joined_at": "2026-11-05"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-110000000006",
+        "household_id": "a0000000-0000-4000-8000-100000000003",
+        "person_id": "a0000000-0000-4000-8000-000000000006",
+        "member_role": "returnee",
+        "is_primary": true,
+        "joined_at": "2026-11-05"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-110000000007",
+        "household_id": "a0000000-0000-4000-8000-100000000003",
+        "person_id": "a0000000-0000-4000-8000-000000000007",
+        "member_role": "guardian",
+        "is_primary": false,
+        "joined_at": "2026-11-05"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-110000000008",
+        "household_id": "a0000000-0000-4000-8000-100000000004",
+        "person_id": "a0000000-0000-4000-8000-000000000008",
+        "member_role": "returnee",
+        "is_primary": true,
+        "joined_at": "2026-11-05"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-110000000009",
+        "household_id": "a0000000-0000-4000-8000-100000000004",
+        "person_id": "a0000000-0000-4000-8000-000000000009",
+        "member_role": "guardian",
+        "is_primary": false,
+        "joined_at": "2026-11-05"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-110000000010",
+        "household_id": "a0000000-0000-4000-8000-100000000005",
+        "person_id": "a0000000-0000-4000-8000-000000000010",
+        "member_role": "returnee",
+        "is_primary": true,
+        "joined_at": "2026-11-05"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-110000000011",
+        "household_id": "a0000000-0000-4000-8000-100000000005",
+        "person_id": "a0000000-0000-4000-8000-000000000011",
+        "member_role": "guardian",
+        "is_primary": false,
+        "joined_at": "2026-11-05"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-110000000012",
+        "household_id": "a0000000-0000-4000-8000-100000000006",
+        "person_id": "a0000000-0000-4000-8000-000000000012",
+        "member_role": "returnee",
+        "is_primary": true,
+        "joined_at": "2026-11-05"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-110000000013",
+        "household_id": "a0000000-0000-4000-8000-100000000006",
+        "person_id": "a0000000-0000-4000-8000-000000000013",
+        "member_role": "guardian",
+        "is_primary": false,
+        "joined_at": "2026-11-05"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-110000000014",
+        "household_id": "a0000000-0000-4000-8000-100000000007",
+        "person_id": "a0000000-0000-4000-8000-000000000014",
+        "member_role": "returnee",
+        "is_primary": true,
+        "joined_at": "2026-11-05"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-110000000015",
+        "household_id": "a0000000-0000-4000-8000-100000000007",
+        "person_id": "a0000000-0000-4000-8000-000000000015",
+        "member_role": "guardian",
+        "is_primary": false,
+        "joined_at": "2026-11-05"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-110000000016",
+        "household_id": "a0000000-0000-4000-8000-100000000008",
+        "person_id": "a0000000-0000-4000-8000-000000000016",
+        "member_role": "returnee",
+        "is_primary": true,
+        "joined_at": "2026-11-05"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-110000000017",
+        "household_id": "a0000000-0000-4000-8000-100000000008",
+        "person_id": "a0000000-0000-4000-8000-000000000017",
+        "member_role": "guardian",
+        "is_primary": false,
+        "joined_at": "2026-11-05"
+      }
+    ],
+    "program_templates": [
+      {
+        "id": "a0000000-0000-4000-8000-300000000002",
+        "code": "TMP-GROUP-SUP",
+        "name_he": "קבוצת תמיכה",
+        "description_he": "מסלול קבוצתי",
+        "default_kind": "group"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-300000000003",
+        "code": "TMP-HOUSING",
+        "name_he": "ליווי דיור",
+        "description_he": "מסלול דיור נתמך",
+        "default_kind": "personal"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-300000000001",
+        "code": "TMP-REENTRY",
+        "name_he": "שיקום חזרה לקהילה",
+        "description_he": "מסלול אישי לשבים",
+        "default_kind": "personal"
+      }
+    ],
+    "template_versions": [
+      {
+        "id": "a0000000-0000-4000-8000-310000000001",
+        "template_id": "a0000000-0000-4000-8000-300000000001",
+        "version_number": 1,
+        "status": "published",
+        "changelog_he": "גרסה ראשונה",
+        "published_at": "2025-01-15T10:00:00.000Z"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-310000000002",
+        "template_id": "a0000000-0000-4000-8000-300000000001",
+        "version_number": 2,
+        "status": "draft",
+        "changelog_he": "טיוטת שיפורים",
+        "published_at": null
+      },
+      {
+        "id": "a0000000-0000-4000-8000-310000000003",
+        "template_id": "a0000000-0000-4000-8000-300000000002",
+        "version_number": 1,
+        "status": "published",
+        "changelog_he": "גרסה ראשונה",
+        "published_at": "2025-02-01T10:00:00.000Z"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-310000000004",
+        "template_id": "a0000000-0000-4000-8000-300000000003",
+        "version_number": 1,
+        "status": "published",
+        "changelog_he": "גרסה ראשונה",
+        "published_at": "2025-03-01T10:00:00.000Z"
+      }
+    ],
+    "template_phases": [
+      {
+        "id": "a0000000-0000-4000-8000-320000000001",
+        "template_version_id": "a0000000-0000-4000-8000-310000000001",
+        "seq": 1,
+        "code": "INTRO",
+        "name_he": "היכרות וייצוב",
+        "typical_days": 30
+      },
+      {
+        "id": "a0000000-0000-4000-8000-320000000002",
+        "template_version_id": "a0000000-0000-4000-8000-310000000001",
+        "seq": 2,
+        "code": "BUILD",
+        "name_he": "בניית שגרה",
+        "typical_days": 60
+      },
+      {
+        "id": "a0000000-0000-4000-8000-320000000003",
+        "template_version_id": "a0000000-0000-4000-8000-310000000001",
+        "seq": 3,
+        "code": "INTEG",
+        "name_he": "שילוב קהילתי",
+        "typical_days": 90
+      },
+      {
+        "id": "a0000000-0000-4000-8000-320000000008",
+        "template_version_id": "a0000000-0000-4000-8000-310000000002",
+        "seq": 1,
+        "code": "INTRO2",
+        "name_he": "היכרות מורחבת",
+        "typical_days": 21
+      },
+      {
+        "id": "a0000000-0000-4000-8000-320000000004",
+        "template_version_id": "a0000000-0000-4000-8000-310000000003",
+        "seq": 1,
+        "code": "G-OPEN",
+        "name_he": "פתיחת קבוצה",
+        "typical_days": 14
+      },
+      {
+        "id": "a0000000-0000-4000-8000-320000000005",
+        "template_version_id": "a0000000-0000-4000-8000-310000000003",
+        "seq": 2,
+        "code": "G-WORK",
+        "name_he": "עבודה קבוצתית",
+        "typical_days": 60
+      },
+      {
+        "id": "a0000000-0000-4000-8000-320000000006",
+        "template_version_id": "a0000000-0000-4000-8000-310000000004",
+        "seq": 1,
+        "code": "H-ASSESS",
+        "name_he": "הערכת דיור",
+        "typical_days": 21
+      },
+      {
+        "id": "a0000000-0000-4000-8000-320000000007",
+        "template_version_id": "a0000000-0000-4000-8000-310000000004",
+        "seq": 2,
+        "code": "H-SETTLE",
+        "name_he": "התיישבות",
+        "typical_days": 90
+      }
+    ],
+    "template_goals": [
+      {
+        "id": "a0000000-0000-4000-8000-330000000005",
+        "template_version_id": "a0000000-0000-4000-8000-310000000004",
+        "template_phase_id": "a0000000-0000-4000-8000-320000000006",
+        "code": "G-HOME",
+        "title_he": "מציאת דיור יציב",
+        "default_weight": 2
+      },
+      {
+        "id": "a0000000-0000-4000-8000-330000000004",
+        "template_version_id": "a0000000-0000-4000-8000-310000000003",
+        "template_phase_id": "a0000000-0000-4000-8000-320000000005",
+        "code": "G-SHARE",
+        "title_he": "שיתוף בקבוצה",
+        "default_weight": 1
+      },
+      {
+        "id": "a0000000-0000-4000-8000-330000000001",
+        "template_version_id": "a0000000-0000-4000-8000-310000000001",
+        "template_phase_id": "a0000000-0000-4000-8000-320000000001",
+        "code": "G-SLEEP",
+        "title_he": "ייצוב שגרת שינה",
+        "default_weight": 1
+      },
+      {
+        "id": "a0000000-0000-4000-8000-330000000003",
+        "template_version_id": "a0000000-0000-4000-8000-310000000001",
+        "template_phase_id": "a0000000-0000-4000-8000-320000000003",
+        "code": "G-SOCIAL",
+        "title_he": "חידוש קשרים חברתיים",
+        "default_weight": 1
+      },
+      {
+        "id": "a0000000-0000-4000-8000-330000000002",
+        "template_version_id": "a0000000-0000-4000-8000-310000000001",
+        "template_phase_id": "a0000000-0000-4000-8000-320000000002",
+        "code": "G-WORK",
+        "title_he": "חיפוש מסגרת תעסוקה",
+        "default_weight": 1.5
+      }
+    ],
+    "programs": [
+      {
+        "id": "a0000000-0000-4000-8000-400000000005",
+        "program_code": "PRG-CLOSED",
+        "name_he": "תוכנית סגורה לדוגמה",
+        "kind": "personal",
+        "status": "closed",
+        "template_id": "a0000000-0000-4000-8000-300000000001",
+        "pinned_version_id": "a0000000-0000-4000-8000-310000000001",
+        "household_id": "a0000000-0000-4000-8000-100000000005",
+        "opened_at": "2024-01-01T09:00:00.000Z",
+        "closed_at": "2024-12-01T09:00:00.000Z",
+        "scenario_tag": "S15"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-400000000001",
+        "program_code": "PRG-COHEN-REENTRY",
+        "name_he": "שיקום יוסי כהן",
+        "kind": "personal",
+        "status": "open",
+        "template_id": "a0000000-0000-4000-8000-300000000001",
+        "pinned_version_id": "a0000000-0000-4000-8000-310000000001",
+        "household_id": "a0000000-0000-4000-8000-100000000001",
+        "opened_at": "2025-06-01T09:00:00.000Z",
+        "closed_at": null,
+        "scenario_tag": "S03-S06"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-400000000004",
+        "program_code": "PRG-DRAFT",
+        "name_he": "טיוטת תוכנית",
+        "kind": "personal",
+        "status": "draft",
+        "template_id": "a0000000-0000-4000-8000-300000000001",
+        "pinned_version_id": null,
+        "household_id": null,
+        "opened_at": null,
+        "closed_at": null,
+        "scenario_tag": "S16"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-400000000002",
+        "program_code": "PRG-GROUP-SOUTH",
+        "name_he": "קבוצת תמיכה דרום",
+        "kind": "group",
+        "status": "open",
+        "template_id": "a0000000-0000-4000-8000-300000000002",
+        "pinned_version_id": "a0000000-0000-4000-8000-310000000003",
+        "household_id": null,
+        "opened_at": "2025-07-01T09:00:00.000Z",
+        "closed_at": null,
+        "scenario_tag": "S07-S08"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-400000000003",
+        "program_code": "PRG-LEVI-HOUSING",
+        "name_he": "ליווי דיור דני לוי",
+        "kind": "personal",
+        "status": "open",
+        "template_id": "a0000000-0000-4000-8000-300000000003",
+        "pinned_version_id": "a0000000-0000-4000-8000-310000000004",
+        "household_id": "a0000000-0000-4000-8000-100000000002",
+        "opened_at": "2025-08-01T09:00:00.000Z",
+        "closed_at": null,
+        "scenario_tag": "S04"
+      }
+    ],
+    "program_patients": [
+      {
+        "id": "a0000000-0000-4000-8000-410000000006",
+        "program_id": "a0000000-0000-4000-8000-400000000005",
+        "person_id": "a0000000-0000-4000-8000-000000000010",
+        "status": "completed",
+        "enrolled_at": "2024-01-01T09:00:00.000Z",
+        "completed_at": "2024-11-01T09:00:00.000Z",
+        "personal_pct": 100
+      },
+      {
+        "id": "a0000000-0000-4000-8000-410000000001",
+        "program_id": "a0000000-0000-4000-8000-400000000001",
+        "person_id": "a0000000-0000-4000-8000-000000000001",
+        "status": "active",
+        "enrolled_at": "2025-06-01T09:00:00.000Z",
+        "completed_at": null,
+        "personal_pct": 45.71
+      },
+      {
+        "id": "a0000000-0000-4000-8000-410000000002",
+        "program_id": "a0000000-0000-4000-8000-400000000002",
+        "person_id": "a0000000-0000-4000-8000-000000000004",
+        "status": "active",
+        "enrolled_at": "2025-07-01T09:00:00.000Z",
+        "completed_at": null,
+        "personal_pct": 60
+      },
+      {
+        "id": "a0000000-0000-4000-8000-410000000003",
+        "program_id": "a0000000-0000-4000-8000-400000000002",
+        "person_id": "a0000000-0000-4000-8000-000000000008",
+        "status": "active",
+        "enrolled_at": "2025-07-01T09:00:00.000Z",
+        "completed_at": null,
+        "personal_pct": 30
+      },
+      {
+        "id": "a0000000-0000-4000-8000-410000000004",
+        "program_id": "a0000000-0000-4000-8000-400000000002",
+        "person_id": "a0000000-0000-4000-8000-000000000010",
+        "status": "active",
+        "enrolled_at": "2025-07-05T09:00:00.000Z",
+        "completed_at": null,
+        "personal_pct": 50
+      },
+      {
+        "id": "a0000000-0000-4000-8000-410000000005",
+        "program_id": "a0000000-0000-4000-8000-400000000003",
+        "person_id": "a0000000-0000-4000-8000-000000000004",
+        "status": "active",
+        "enrolled_at": "2025-08-01T09:00:00.000Z",
+        "completed_at": null,
+        "personal_pct": 25
+      }
+    ],
+    "program_periods": [
+      {
+        "id": "a0000000-0000-4000-8000-420000000001",
+        "program_id": "a0000000-0000-4000-8000-400000000001",
+        "seq": 1,
+        "name_he": "מחזור א׳",
+        "status": "active",
+        "starts_on": "2025-06-01",
+        "ends_on": "2025-12-31",
+        "group_pct": 0
+      },
+      {
+        "id": "a0000000-0000-4000-8000-420000000002",
+        "program_id": "a0000000-0000-4000-8000-400000000002",
+        "seq": 1,
+        "name_he": "מחזור קיץ",
+        "status": "active",
+        "starts_on": "2025-07-01",
+        "ends_on": "2025-12-31",
+        "group_pct": 46.67
+      },
+      {
+        "id": "a0000000-0000-4000-8000-420000000003",
+        "program_id": "a0000000-0000-4000-8000-400000000003",
+        "seq": 1,
+        "name_he": "מחזור דיור",
+        "status": "active",
+        "starts_on": "2025-08-01",
+        "ends_on": "2026-02-01",
+        "group_pct": 0
+      }
+    ],
+    "program_phases": [
+      {
+        "id": "a0000000-0000-4000-8000-430000000001",
+        "program_period_id": "a0000000-0000-4000-8000-420000000001",
+        "template_phase_id": "a0000000-0000-4000-8000-320000000001",
+        "seq": 1,
+        "status": "completed",
+        "starts_on": "2025-06-01",
+        "ends_on": "2025-06-30"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-430000000002",
+        "program_period_id": "a0000000-0000-4000-8000-420000000001",
+        "template_phase_id": "a0000000-0000-4000-8000-320000000002",
+        "seq": 2,
+        "status": "active",
+        "starts_on": "2025-07-01",
+        "ends_on": "2025-08-31"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-430000000003",
+        "program_period_id": "a0000000-0000-4000-8000-420000000002",
+        "template_phase_id": "a0000000-0000-4000-8000-320000000004",
+        "seq": 1,
+        "status": "completed",
+        "starts_on": "2025-07-01",
+        "ends_on": "2025-07-14"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-430000000004",
+        "program_period_id": "a0000000-0000-4000-8000-420000000002",
+        "template_phase_id": "a0000000-0000-4000-8000-320000000005",
+        "seq": 2,
+        "status": "active",
+        "starts_on": "2025-07-15",
+        "ends_on": "2025-10-15"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-430000000005",
+        "program_period_id": "a0000000-0000-4000-8000-420000000003",
+        "template_phase_id": "a0000000-0000-4000-8000-320000000006",
+        "seq": 1,
+        "status": "active",
+        "starts_on": "2025-08-01",
+        "ends_on": "2025-08-21"
+      }
+    ],
+    "goals": [
+      {
+        "id": "a0000000-0000-4000-8000-500000000003",
+        "program_patient_id": "a0000000-0000-4000-8000-410000000001",
+        "template_goal_id": "a0000000-0000-4000-8000-330000000003",
+        "program_phase_id": null,
+        "title_he": "חידוש קשרים חברתיים",
+        "status": "not_started",
+        "progress_pct": 0,
+        "weight": 1
+      },
+      {
+        "id": "a0000000-0000-4000-8000-500000000002",
+        "program_patient_id": "a0000000-0000-4000-8000-410000000001",
+        "template_goal_id": "a0000000-0000-4000-8000-330000000002",
+        "program_phase_id": "a0000000-0000-4000-8000-430000000002",
+        "title_he": "חיפוש מסגרת תעסוקה",
+        "status": "in_progress",
+        "progress_pct": 40,
+        "weight": 1.5
+      },
+      {
+        "id": "a0000000-0000-4000-8000-500000000001",
+        "program_patient_id": "a0000000-0000-4000-8000-410000000001",
+        "template_goal_id": "a0000000-0000-4000-8000-330000000001",
+        "program_phase_id": "a0000000-0000-4000-8000-430000000001",
+        "title_he": "ייצוב שגרת שינה",
+        "status": "achieved",
+        "progress_pct": 100,
+        "weight": 1
+      },
+      {
+        "id": "a0000000-0000-4000-8000-500000000007",
+        "program_patient_id": "a0000000-0000-4000-8000-410000000005",
+        "template_goal_id": "a0000000-0000-4000-8000-330000000005",
+        "program_phase_id": "a0000000-0000-4000-8000-430000000005",
+        "title_he": "מציאת דיור יציב",
+        "status": "in_progress",
+        "progress_pct": 25,
+        "weight": 2
+      },
+      {
+        "id": "a0000000-0000-4000-8000-500000000006",
+        "program_patient_id": "a0000000-0000-4000-8000-410000000004",
+        "template_goal_id": "a0000000-0000-4000-8000-330000000004",
+        "program_phase_id": "a0000000-0000-4000-8000-430000000004",
+        "title_he": "שיתוף בקבוצה",
+        "status": "in_progress",
+        "progress_pct": 50,
+        "weight": 1
+      },
+      {
+        "id": "a0000000-0000-4000-8000-500000000005",
+        "program_patient_id": "a0000000-0000-4000-8000-410000000003",
+        "template_goal_id": "a0000000-0000-4000-8000-330000000004",
+        "program_phase_id": "a0000000-0000-4000-8000-430000000004",
+        "title_he": "שיתוף בקבוצה",
+        "status": "in_progress",
+        "progress_pct": 30,
+        "weight": 1
+      },
+      {
+        "id": "a0000000-0000-4000-8000-500000000004",
+        "program_patient_id": "a0000000-0000-4000-8000-410000000002",
+        "template_goal_id": "a0000000-0000-4000-8000-330000000004",
+        "program_phase_id": "a0000000-0000-4000-8000-430000000004",
+        "title_he": "שיתוף בקבוצה",
+        "status": "in_progress",
+        "progress_pct": 60,
+        "weight": 1
+      }
+    ],
+    "goal_updates": [
+      {
+        "id": "a0000000-0000-4000-8000-510000000001",
+        "goal_id": "a0000000-0000-4000-8000-500000000002",
+        "author_actor_id": "a0000000-0000-4000-8000-200000000002",
+        "progress_pct": 40,
+        "status": "in_progress",
+        "note_he": "נרשם לסדנת הכנה לעבודה",
+        "recorded_at": "2025-09-01T10:00:00.000Z"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-510000000002",
+        "goal_id": "a0000000-0000-4000-8000-500000000004",
+        "author_actor_id": "a0000000-0000-4000-8000-200000000003",
+        "progress_pct": 60,
+        "status": "in_progress",
+        "note_he": "שיתף בסיפור אישי במפגש",
+        "recorded_at": "2025-09-10T10:00:00.000Z"
+      }
+    ],
+    "progress_snapshots": [
+      {
+        "id": "a0000000-0000-4000-8000-520000000001",
+        "program_id": "a0000000-0000-4000-8000-400000000001",
+        "program_patient_id": "a0000000-0000-4000-8000-410000000001",
+        "scope": "personal",
+        "progress_pct": 45.71,
+        "note_he": "התקדמות אישית משוקללת",
+        "captured_at": "2026-11-05T20:04:27.187Z"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-520000000002",
+        "program_id": "a0000000-0000-4000-8000-400000000002",
+        "program_patient_id": null,
+        "scope": "group",
+        "progress_pct": 46.67,
+        "note_he": "ממוצע קבוצתי — אינו זהה לאישי",
+        "captured_at": "2026-11-05T20:04:27.187Z"
+      }
+    ],
+    "sessions": [
+      {
+        "id": "a0000000-0000-4000-8000-600000000001",
+        "program_id": "a0000000-0000-4000-8000-400000000001",
+        "program_period_id": "a0000000-0000-4000-8000-420000000001",
+        "title_he": "פגישת ליווי אישית",
+        "status": "completed",
+        "scheduled_at": "2025-09-05T09:00:00.000Z",
+        "is_group": false
+      },
+      {
+        "id": "a0000000-0000-4000-8000-600000000002",
+        "program_id": "a0000000-0000-4000-8000-400000000002",
+        "program_period_id": "a0000000-0000-4000-8000-420000000002",
+        "title_he": "מפגש קבוצתי #4",
+        "status": "completed",
+        "scheduled_at": "2025-09-10T17:00:00.000Z",
+        "is_group": true
+      },
+      {
+        "id": "a0000000-0000-4000-8000-600000000003",
+        "program_id": "a0000000-0000-4000-8000-400000000003",
+        "program_period_id": "a0000000-0000-4000-8000-420000000003",
+        "title_he": "סיור דירות",
+        "status": "scheduled",
+        "scheduled_at": "2025-10-01T11:00:00.000Z",
+        "is_group": false
+      }
+    ],
+    "session_attendance": [
+      {
+        "id": "a0000000-0000-4000-8000-610000000001",
+        "session_id": "a0000000-0000-4000-8000-600000000001",
+        "program_patient_id": "a0000000-0000-4000-8000-410000000001",
+        "attended": true
+      },
+      {
+        "id": "a0000000-0000-4000-8000-610000000002",
+        "session_id": "a0000000-0000-4000-8000-600000000002",
+        "program_patient_id": "a0000000-0000-4000-8000-410000000002",
+        "attended": true
+      },
+      {
+        "id": "a0000000-0000-4000-8000-610000000003",
+        "session_id": "a0000000-0000-4000-8000-600000000002",
+        "program_patient_id": "a0000000-0000-4000-8000-410000000003",
+        "attended": true
+      },
+      {
+        "id": "a0000000-0000-4000-8000-610000000004",
+        "session_id": "a0000000-0000-4000-8000-600000000002",
+        "program_patient_id": "a0000000-0000-4000-8000-410000000004",
+        "attended": false
+      }
+    ],
+    "tasks": [
+      {
+        "id": "a0000000-0000-4000-8000-620000000001",
+        "program_id": "a0000000-0000-4000-8000-400000000001",
+        "program_patient_id": "a0000000-0000-4000-8000-410000000001",
+        "goal_id": "a0000000-0000-4000-8000-500000000002",
+        "title_he": "תיאום ראיון עבודה",
+        "status": "open",
+        "due_on": "2025-10-15",
+        "assignee_actor_id": "a0000000-0000-4000-8000-200000000002"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-620000000002",
+        "program_id": "a0000000-0000-4000-8000-400000000003",
+        "program_patient_id": "a0000000-0000-4000-8000-410000000005",
+        "goal_id": "a0000000-0000-4000-8000-500000000007",
+        "title_he": "הגשת בקשה לסיוע שכ״ד",
+        "status": "in_progress",
+        "due_on": "2025-10-20",
+        "assignee_actor_id": "a0000000-0000-4000-8000-200000000001"
+      }
+    ],
+    "cases": [
+      {
+        "id": "a0000000-0000-4000-8000-630000000001",
+        "case_code": "CASE-COHEN-1",
+        "program_patient_id": "a0000000-0000-4000-8000-410000000001",
+        "title_he": "מעקב שיקום אישי",
+        "status": "open",
+        "summary_he": "תיק מרכזי ליוסי"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-630000000002",
+        "case_code": "CASE-LEVI-H",
+        "program_patient_id": "a0000000-0000-4000-8000-410000000005",
+        "title_he": "מעקב דיור",
+        "status": "monitoring",
+        "summary_he": "ליווי דיור לדני"
+      }
+    ],
+    "actors": [
+      {
+        "id": "a0000000-0000-4000-8000-200000000002",
+        "actor_code": "ACT-COMP-1",
+        "display_name_he": "יואב מלווה",
+        "email_demo": "yoav.companion@demo.example",
+        "access_role": "companion",
+        "agency_he": "המנהלת"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-200000000003",
+        "actor_code": "ACT-COMP-2",
+        "display_name_he": "דנה מלווה",
+        "email_demo": "dana.companion@demo.example",
+        "access_role": "companion",
+        "agency_he": "המנהלת"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-200000000007",
+        "actor_code": "ACT-COORD-1",
+        "display_name_he": "עדי רכזת",
+        "email_demo": "adi.coord@demo.example",
+        "access_role": "coordinator",
+        "agency_he": "המנהלת"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-200000000009",
+        "actor_code": "ACT-EXT-BEN",
+        "display_name_he": "בן חיצוני",
+        "email_demo": "ben.external@demo.example",
+        "access_role": "guardian",
+        "agency_he": null
+      },
+      {
+        "id": "a0000000-0000-4000-8000-200000000006",
+        "actor_code": "ACT-GOV-BTL",
+        "display_name_he": "נציג ביטוח לאומי",
+        "email_demo": "gov.btl@demo.example",
+        "access_role": "gov",
+        "agency_he": "ביטוח לאומי"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-200000000005",
+        "actor_code": "ACT-GUARD-MICHAL",
+        "display_name_he": "מיכל כהן (אפוט׳)",
+        "email_demo": "michal.cohen@demo.example",
+        "access_role": "guardian",
+        "agency_he": null
+      },
+      {
+        "id": "a0000000-0000-4000-8000-200000000010",
+        "actor_code": "ACT-HH-NOGA",
+        "display_name_he": "נועה כהן (בן בית)",
+        "email_demo": "noga.cohen@demo.example",
+        "access_role": "patient",
+        "agency_he": null
+      },
+      {
+        "id": "a0000000-0000-4000-8000-200000000001",
+        "actor_code": "ACT-MATAM-1",
+        "display_name_he": "רותי מת״ם",
+        "email_demo": "mati.matam@demo.example",
+        "access_role": "matam",
+        "agency_he": "המנהלת"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-200000000008",
+        "actor_code": "ACT-PAT-DANI",
+        "display_name_he": "דני לוי (מטופל)",
+        "email_demo": "dani.levi@demo.example",
+        "access_role": "patient",
+        "agency_he": null
+      },
+      {
+        "id": "a0000000-0000-4000-8000-200000000004",
+        "actor_code": "ACT-PAT-YOSSI",
+        "display_name_he": "יוסי כהן (מטופל)",
+        "email_demo": "yossi.cohen@demo.example",
+        "access_role": "patient",
+        "agency_he": null
+      }
+    ],
+    "companions": [
+      {
+        "id": "a0000000-0000-4000-8000-210000000001",
+        "actor_id": "a0000000-0000-4000-8000-200000000002",
+        "specialty_he": "ליווי שיקום תעסוקתי",
+        "active": true
+      },
+      {
+        "id": "a0000000-0000-4000-8000-210000000002",
+        "actor_id": "a0000000-0000-4000-8000-200000000003",
+        "specialty_he": "ליווי רגשי-קהילתי",
+        "active": true
+      }
+    ],
+    "program_team_members": [
+      {
+        "id": "a0000000-0000-4000-8000-700000000001",
+        "program_id": "a0000000-0000-4000-8000-400000000001",
+        "actor_id": "a0000000-0000-4000-8000-200000000001",
+        "team_role": "matam"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-700000000002",
+        "program_id": "a0000000-0000-4000-8000-400000000001",
+        "actor_id": "a0000000-0000-4000-8000-200000000002",
+        "team_role": "companion"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-700000000003",
+        "program_id": "a0000000-0000-4000-8000-400000000002",
+        "actor_id": "a0000000-0000-4000-8000-200000000003",
+        "team_role": "companion"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-700000000004",
+        "program_id": "a0000000-0000-4000-8000-400000000002",
+        "actor_id": "a0000000-0000-4000-8000-200000000007",
+        "team_role": "coordinator"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-700000000005",
+        "program_id": "a0000000-0000-4000-8000-400000000003",
+        "actor_id": "a0000000-0000-4000-8000-200000000001",
+        "team_role": "matam"
+      }
+    ],
+    "access_grants": [
+      {
+        "id": "a0000000-0000-4000-8000-710000000001",
+        "actor_id": "a0000000-0000-4000-8000-200000000002",
+        "scope": "program_patient",
+        "program_id": null,
+        "program_patient_id": "a0000000-0000-4000-8000-410000000001",
+        "household_id": null,
+        "person_id": null,
+        "access_role": "companion",
+        "can_read": true,
+        "can_write": true,
+        "grant_reason_he": "מלווה משויך",
+        "revoked_at": null
+      },
+      {
+        "id": "a0000000-0000-4000-8000-710000000002",
+        "actor_id": "a0000000-0000-4000-8000-200000000005",
+        "scope": "program_patient",
+        "program_id": null,
+        "program_patient_id": "a0000000-0000-4000-8000-410000000001",
+        "household_id": null,
+        "person_id": null,
+        "access_role": "guardian",
+        "can_read": true,
+        "can_write": false,
+        "grant_reason_he": "אפוטרופוס מורשה",
+        "revoked_at": null
+      },
+      {
+        "id": "a0000000-0000-4000-8000-710000000003",
+        "actor_id": "a0000000-0000-4000-8000-200000000006",
+        "scope": "program",
+        "program_id": "a0000000-0000-4000-8000-400000000003",
+        "program_patient_id": null,
+        "household_id": null,
+        "person_id": null,
+        "access_role": "gov",
+        "can_read": true,
+        "can_write": false,
+        "grant_reason_he": "נציג ממשלתי לדיור",
+        "revoked_at": null
+      },
+      {
+        "id": "a0000000-0000-4000-8000-710000000004",
+        "actor_id": "a0000000-0000-4000-8000-200000000009",
+        "scope": "program_patient",
+        "program_id": null,
+        "program_patient_id": "a0000000-0000-4000-8000-410000000001",
+        "household_id": null,
+        "person_id": null,
+        "access_role": "guardian",
+        "can_read": true,
+        "can_write": false,
+        "grant_reason_he": "איש קשר מורשה ללא חברות במשק בית",
+        "revoked_at": null
+      },
+      {
+        "id": "a0000000-0000-4000-8000-710000000005",
+        "actor_id": "a0000000-0000-4000-8000-200000000003",
+        "scope": "program",
+        "program_id": "a0000000-0000-4000-8000-400000000002",
+        "program_patient_id": null,
+        "household_id": null,
+        "person_id": null,
+        "access_role": "companion",
+        "can_read": true,
+        "can_write": true,
+        "grant_reason_he": "מנחת קבוצה",
+        "revoked_at": null
+      }
+    ],
+    "person_actor_links": [
+      {
+        "id": "a0000000-0000-4000-8000-220000000001",
+        "person_id": "a0000000-0000-4000-8000-000000000001",
+        "actor_id": "a0000000-0000-4000-8000-200000000004",
+        "link_kind": "self"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-220000000002",
+        "person_id": "a0000000-0000-4000-8000-000000000002",
+        "actor_id": "a0000000-0000-4000-8000-200000000005",
+        "link_kind": "guardian"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-220000000003",
+        "person_id": "a0000000-0000-4000-8000-000000000004",
+        "actor_id": "a0000000-0000-4000-8000-200000000008",
+        "link_kind": "self"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-220000000004",
+        "person_id": "a0000000-0000-4000-8000-000000000020",
+        "actor_id": "a0000000-0000-4000-8000-200000000009",
+        "link_kind": "external"
+      },
+      {
+        "id": "a0000000-0000-4000-8000-220000000005",
+        "person_id": "a0000000-0000-4000-8000-000000000003",
+        "actor_id": "a0000000-0000-4000-8000-200000000010",
+        "link_kind": "self"
+      }
+    ],
+    "audit_log": [
+      {
+        "id": "3087e9fd-78a1-46af-8c74-12051121aea9",
+        "occurred_at": "2026-11-05T20:04:27.187Z",
+        "actor_id": "a0000000-0000-4000-8000-200000000002",
+        "action": "goal_update",
+        "entity_table": "goals",
+        "entity_id": "a0000000-0000-4000-8000-500000000002",
+        "details_he": "נרשם לסדנת הכנה לעבודה"
+      },
+      {
+        "id": "ab53e07c-1ceb-45f6-ab9b-5036ec899618",
+        "occurred_at": "2026-11-05T20:04:27.187Z",
+        "actor_id": "a0000000-0000-4000-8000-200000000003",
+        "action": "goal_update",
+        "entity_table": "goals",
+        "entity_id": "a0000000-0000-4000-8000-500000000004",
+        "details_he": "שיתף בסיפור אישי במפגש"
+      }
+    ],
+    "scenarios": [
+      {
+        "id": 1,
+        "code": "S01",
+        "title_he": "יצירת משק בית וחברים",
+        "description_he": "משפחת כהן עם 3 חברים",
+        "expected_he": "3 חברי משק בית פעילים",
+        "layer": 1,
+        "kind": "positive"
+      },
+      {
+        "id": 2,
+        "code": "S02",
+        "title_he": "פרסום גרסת תבנית",
+        "description_he": "תבנית REENTRY v1 published",
+        "expected_he": "status=published עם published_at",
+        "layer": 2,
+        "kind": "positive"
+      },
+      {
+        "id": 3,
+        "code": "S03",
+        "title_he": "פתיחת תוכנית נועלת גרסה",
+        "description_he": "PRG-COHEN-REENTRY פתוחה",
+        "expected_he": "pinned_version_id = v1",
+        "layer": 3,
+        "kind": "positive"
+      },
+      {
+        "id": 4,
+        "code": "S04",
+        "title_he": "רישום Program_Patient",
+        "description_he": "יוסי רשום לתוכנית",
+        "expected_he": "שורת program_patients פעילה",
+        "layer": 3,
+        "kind": "positive"
+      },
+      {
+        "id": 5,
+        "code": "S05",
+        "title_he": "יעדים רק על Program_Patient",
+        "description_he": "כל היעדים עם FK ל-PP",
+        "expected_he": "אין יעד ללא program_patient_id",
+        "layer": 4,
+        "kind": "positive"
+      },
+      {
+        "id": 6,
+        "code": "S06",
+        "title_he": "עדכון התקדמות אישית",
+        "description_he": "עדכון יעד תעסוקה ל-40%",
+        "expected_he": "goals.progress_pct=40 + audit",
+        "layer": 4,
+        "kind": "positive"
+      },
+      {
+        "id": 7,
+        "code": "S07",
+        "title_he": "תוכנית קבוצתית עם מספר משתתפים",
+        "description_he": "קבוצת דרום",
+        "expected_he": "3 program_patients פעילים",
+        "layer": 3,
+        "kind": "positive"
+      },
+      {
+        "id": 8,
+        "code": "S08",
+        "title_he": "התקדמות קבוצתית ≠ אישית",
+        "description_he": "snapshots personal vs group",
+        "expected_he": "scopes נפרדים; ערכים יכולים להיבדל",
+        "layer": 4,
+        "kind": "positive"
+      },
+      {
+        "id": 9,
+        "code": "S09",
+        "title_he": "הענקת גישה למלווה",
+        "description_he": "יואב עם can_write על PP",
+        "expected_he": "has_active_access = true",
+        "layer": 6,
+        "kind": "permission"
+      },
+      {
+        "id": 10,
+        "code": "S10",
+        "title_he": "בן משק בית ללא מענק — אין גישה קלינית",
+        "description_he": "נועה חברה במשק בית ללא grant",
+        "expected_he": "can_read_program_patient = false",
+        "layer": 6,
+        "kind": "permission"
+      },
+      {
+        "id": 11,
+        "code": "S11",
+        "title_he": "מת״ם רואה הכל",
+        "description_he": "רותי matam",
+        "expected_he": "can_read על כל PP",
+        "layer": 6,
+        "kind": "permission"
+      },
+      {
+        "id": 12,
+        "code": "S12",
+        "title_he": "מטופל רואה רק את עצמו",
+        "description_he": "יוסי patient",
+        "expected_he": "רואה PP של עצמו בלבד",
+        "layer": 6,
+        "kind": "permission"
+      },
+      {
+        "id": 13,
+        "code": "S13",
+        "title_he": "אפוטרופוס עם מענק",
+        "description_he": "מיכל guardian+grant",
+        "expected_he": "can_read=true, can_write=false",
+        "layer": 6,
+        "kind": "permission"
+      },
+      {
+        "id": 14,
+        "code": "S14",
+        "title_he": "נציג ממשלתי בהיקף תוכנית",
+        "description_he": "ביטוח לאומי על דיור",
+        "expected_he": "קריאה לתוכנית דיור בלבד",
+        "layer": 6,
+        "kind": "permission"
+      },
+      {
+        "id": 15,
+        "code": "S15",
+        "title_he": "תוכנית סגורה עם PP הושלם",
+        "description_he": "PRG-CLOSED",
+        "expected_he": "status=closed, PP completed",
+        "layer": 3,
+        "kind": "positive"
+      },
+      {
+        "id": 16,
+        "code": "S16",
+        "title_he": "אין שינוי pinned_version בזמן open",
+        "description_he": "ניסיון להחליף ל-v2",
+        "expected_he": "נדחה ב-trigger",
+        "layer": 2,
+        "kind": "negative"
+      },
+      {
+        "id": 17,
+        "code": "S17",
+        "title_he": "שלב חייב להתאים לגרסה הנעולה",
+        "description_he": "phase מתבנית אחרת",
+        "expected_he": "נדחה ב-trigger",
+        "layer": 3,
+        "kind": "negative"
+      },
+      {
+        "id": 18,
+        "code": "S18",
+        "title_he": "אין כפל רישום פעיל לאותה תבנית",
+        "description_he": "ניסיון רישום כפול ל-REENTRY",
+        "expected_he": "unique_violation / trigger",
+        "layer": 3,
+        "kind": "negative"
+      },
+      {
+        "id": 19,
+        "code": "S19",
+        "title_he": "גישה ≠ חברות במשק בית",
+        "description_he": "בן חיצוני עם grant; נועה בלי",
+        "expected_he": "grant קובע גישה, לא membership",
+        "layer": 6,
+        "kind": "permission"
+      },
+      {
+        "id": 20,
+        "code": "S20",
+        "title_he": "יומן ביקורת לעדכוני יעד",
+        "description_he": "goal_updates → audit_log",
+        "expected_he": "רשומת audit קיימת",
+        "layer": 6,
+        "kind": "positive"
+      }
+    ]
+  },
+  "erdMermaid": "erDiagram\n  HOUSEHOLDS ||--o{ HOUSEHOLD_MEMBERS : has\n  PERSONS ||--o{ HOUSEHOLD_MEMBERS : member\n  PROGRAM_TEMPLATES ||--o{ TEMPLATE_VERSIONS : versions\n  TEMPLATE_VERSIONS ||--o{ TEMPLATE_PHASES : phases\n  TEMPLATE_VERSIONS ||--o{ TEMPLATE_GOALS : goals\n  PROGRAM_TEMPLATES ||--o{ PROGRAMS : instantiates\n  TEMPLATE_VERSIONS ||--o| PROGRAMS : pinned_on_open\n  HOUSEHOLDS ||--o{ PROGRAMS : optional\n  PROGRAMS ||--o{ PROGRAM_PATIENTS : enrolls\n  PERSONS ||--o{ PROGRAM_PATIENTS : participant\n  PROGRAMS ||--o{ PROGRAM_PERIODS : periods\n  PROGRAM_PERIODS ||--o{ PROGRAM_PHASES : phases\n  TEMPLATE_PHASES ||--o{ PROGRAM_PHASES : from\n  PROGRAM_PATIENTS ||--o{ GOALS : owns\n  GOALS ||--o{ GOAL_UPDATES : history\n  PROGRAMS ||--o{ PROGRESS_SNAPSHOTS : tracks\n  PROGRAMS ||--o{ SESSIONS : schedules\n  SESSIONS ||--o{ SESSION_ATTENDANCE : attendance\n  PROGRAM_PATIENTS ||--o{ SESSION_ATTENDANCE : attends\n  PROGRAMS ||--o{ TASKS : tasks\n  PROGRAM_PATIENTS ||--o{ CASES : cases\n  ACTORS ||--o| COMPANIONS : may_be\n  PROGRAMS ||--o{ PROGRAM_TEAM_MEMBERS : team\n  ACTORS ||--o{ ACCESS_GRANTS : granted\n  ACTORS ||--o{ AUDIT_LOG : acts",
+  "scenarioResults": [
+    {
+      "id": 1,
+      "code": "S01",
+      "title_he": "יצירת משק בית וחברים",
+      "expected_he": "3 חברי משק בית פעילים",
+      "actual_he": "3 חברים פעילים",
+      "passed": true,
+      "kind": "positive",
+      "layer": 1
+    },
+    {
+      "id": 2,
+      "code": "S02",
+      "title_he": "פרסום גרסת תבנית",
+      "expected_he": "status=published עם published_at",
+      "actual_he": "status=published",
+      "passed": true,
+      "kind": "positive",
+      "layer": 2
+    },
+    {
+      "id": 3,
+      "code": "S03",
+      "title_he": "פתיחת תוכנית נועלת גרסה",
+      "expected_he": "pinned_version_id = v1",
+      "actual_he": "pinned=310000000001",
+      "passed": true,
+      "kind": "positive",
+      "layer": 3
+    },
+    {
+      "id": 4,
+      "code": "S04",
+      "title_he": "רישום Program_Patient",
+      "expected_he": "שורת program_patients פעילה",
+      "actual_he": "PP status=active",
+      "passed": true,
+      "kind": "positive",
+      "layer": 3
+    },
+    {
+      "id": 5,
+      "code": "S05",
+      "title_he": "יעדים רק על Program_Patient",
+      "expected_he": "אין יעד ללא program_patient_id",
+      "actual_he": "יעדים ללא PP: 0",
+      "passed": true,
+      "kind": "positive",
+      "layer": 4
+    },
+    {
+      "id": 6,
+      "code": "S06",
+      "title_he": "עדכון התקדמות אישית",
+      "expected_he": "goals.progress_pct=40 + audit",
+      "actual_he": "progress=40.00, audit=1",
+      "passed": true,
+      "kind": "positive",
+      "layer": 4
+    },
+    {
+      "id": 7,
+      "code": "S07",
+      "title_he": "תוכנית קבוצתית עם מספר משתתפים",
+      "expected_he": "3 program_patients פעילים",
+      "actual_he": "3 משתתפים פעילים",
+      "passed": true,
+      "kind": "positive",
+      "layer": 3
+    },
+    {
+      "id": 8,
+      "code": "S08",
+      "title_he": "התקדמות קבוצתית ≠ אישית",
+      "expected_he": "scopes נפרדים; ערכים יכולים להיבדל",
+      "actual_he": "2 scopes",
+      "passed": true,
+      "kind": "positive",
+      "layer": 4
+    },
+    {
+      "id": 9,
+      "code": "S09",
+      "title_he": "הענקת גישה למלווה",
+      "expected_he": "has_active_access = true",
+      "actual_he": "can_write=true",
+      "passed": true,
+      "kind": "permission",
+      "layer": 6
+    },
+    {
+      "id": 10,
+      "code": "S10",
+      "title_he": "בן משק בית ללא מענק — אין גישה קלינית",
+      "expected_he": "can_read_program_patient = false",
+      "actual_he": "can_read=false (צפוי false)",
+      "passed": true,
+      "kind": "permission",
+      "layer": 6
+    },
+    {
+      "id": 11,
+      "code": "S11",
+      "title_he": "מת״ם רואה הכל",
+      "expected_he": "can_read על כל PP",
+      "actual_he": "matam can_read=true",
+      "passed": true,
+      "kind": "permission",
+      "layer": 6
+    },
+    {
+      "id": 12,
+      "code": "S12",
+      "title_he": "מטופל רואה רק את עצמו",
+      "expected_he": "רואה PP של עצמו בלבד",
+      "actual_he": "own=true, other=false",
+      "passed": true,
+      "kind": "permission",
+      "layer": 6
+    },
+    {
+      "id": 13,
+      "code": "S13",
+      "title_he": "אפוטרופוס עם מענק",
+      "expected_he": "can_read=true, can_write=false",
+      "actual_he": "read=true, write=false",
+      "passed": true,
+      "kind": "permission",
+      "layer": 6
+    },
+    {
+      "id": 14,
+      "code": "S14",
+      "title_he": "נציג ממשלתי בהיקף תוכנית",
+      "expected_he": "קריאה לתוכנית דיור בלבד",
+      "actual_he": "housing=true, cohen=false",
+      "passed": true,
+      "kind": "permission",
+      "layer": 6
+    },
+    {
+      "id": 15,
+      "code": "S15",
+      "title_he": "תוכנית סגורה עם PP הושלם",
+      "expected_he": "status=closed, PP completed",
+      "actual_he": "program=closed, pp=completed",
+      "passed": true,
+      "kind": "positive",
+      "layer": 3
+    },
+    {
+      "id": 16,
+      "code": "S16",
+      "title_he": "אין שינוי pinned_version בזמן open",
+      "expected_he": "נדחה ב-trigger",
+      "actual_he": "נדחה כצפוי (trigger)",
+      "passed": true,
+      "kind": "negative",
+      "layer": 2
+    },
+    {
+      "id": 17,
+      "code": "S17",
+      "title_he": "שלב חייב להתאים לגרסה הנעולה",
+      "expected_he": "נדחה ב-trigger",
+      "actual_he": "נדחה כצפוי (יישור גרסה)",
+      "passed": true,
+      "kind": "negative",
+      "layer": 3
+    },
+    {
+      "id": 18,
+      "code": "S18",
+      "title_he": "אין כפל רישום פעיל לאותה תבנית",
+      "expected_he": "unique_violation / trigger",
+      "actual_he": "נדחה כצפוי (רישום כפול לתבנית)",
+      "passed": true,
+      "kind": "negative",
+      "layer": 3
+    },
+    {
+      "id": 19,
+      "code": "S19",
+      "title_he": "גישה ≠ חברות במשק בית",
+      "expected_he": "grant קובע גישה, לא membership",
+      "actual_he": "ben_member=false, ben_read=true, noa_read=false",
+      "passed": true,
+      "kind": "permission",
+      "layer": 6
+    },
+    {
+      "id": 20,
+      "code": "S20",
+      "title_he": "יומן ביקורת לעדכוני יעד",
+      "expected_he": "רשומת audit קיימת",
+      "actual_he": "2 רשומות audit",
+      "passed": true,
+      "kind": "positive",
+      "layer": 6
+    }
+  ]
+}
