@@ -46,7 +46,9 @@ export function RehabHouseholds() {
                 onClick={() => setSelected(h.id)}
                 className={cn(
                   'w-full cursor-pointer rounded-md px-3 py-2 text-right transition-colors',
-                  selected === h.id ? 'bg-ink-navy text-white' : 'hover:bg-pebble',
+                  selected === h.id
+                    ? 'bg-dusk-blue text-ink-navy'
+                    : 'hover:bg-soft-cyan',
                 )}
               >
                 <p className="text-[14px] font-semibold">{h.display_name_he}</p>

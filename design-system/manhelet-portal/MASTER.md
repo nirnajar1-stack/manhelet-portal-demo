@@ -4,11 +4,15 @@
 > If that file exists, its rules **override** this Master file.
 > If not, strictly follow the rules below.
 
-> **Product override (Manhelet):** Visual tokens, Hebrew RTL branding, and Stitch
-> mockup layout live in repo-root [`DESIGN.md`](../../DESIGN.md) and
+> **Product override (Manhelet):** Visual tokens, Hebrew RTL branding, and
+> Navy/Gold SaaS language live in repo-root [`DESIGN.md`](../../DESIGN.md) and
 > `src/index.css`. Prefer those over the generated palette/fonts below. Keep
 > this file for ui-ux-pro-max pattern, density, motion, checklist, and
 > anti-pattern guidance.
+>
+> **Canonical palette (2026-11-07):** Midnight Navy `#0D1A33`, Dusk Blue `#8FB4E3`,
+> Soft Golden Yellow `#F5C542`, page `#F6F9FD`, soft cyan `#EDF4FC`, cards `#FFFFFF`,
+> borders `#D8E3F0`, secondary text `#64748B`. Font: Rubik / Heebo.
 
 ---
 

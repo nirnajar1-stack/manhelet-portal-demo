@@ -52,8 +52,8 @@ export function RehabDemoLayout() {
                 cn(
                   'inline-flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-[14px] font-medium transition-colors duration-200',
                   isActive
-                    ? 'bg-ink-navy text-white'
-                    : 'bg-pebble text-ink-navy hover:bg-badge-bg',
+                    ? 'bg-dusk-blue text-ink-navy'
+                    : 'bg-soft-cyan text-ink-navy hover:bg-dusk-blue/25',
                 )
               }
             >

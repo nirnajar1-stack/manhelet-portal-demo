@@ -2,12 +2,14 @@ import type { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
 const tones = {
-  info: 'bg-badge-bg text-deep-cobalt',
+  info: 'bg-badge-bg text-signal-blue',
   muted: 'bg-pebble text-slate-gray',
   success: 'bg-success-bg text-success',
-  warning: 'bg-warning-bg text-[#9a6700]',
+  warning: 'bg-warning-bg text-warning-text',
   danger: 'bg-danger-bg text-danger',
   blue: 'bg-badge-bg text-signal-blue',
+  gold: 'bg-gold-wash text-ink-navy',
+  accent: 'bg-dusk-blue/25 text-ink-navy',
 } as const
 
 export function Badge({

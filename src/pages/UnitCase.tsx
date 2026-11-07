@@ -131,7 +131,7 @@ export function UnitCase() {
             className={cn(
               'shrink-0 border-b-2 px-3 py-2.5 text-[13px] font-medium whitespace-nowrap',
               tab === t.id
-                ? 'border-signal-blue text-signal-blue'
+                ? 'border-gold text-ink-navy'
                 : 'border-transparent text-slate-gray hover:text-ink-navy',
             )}
           >

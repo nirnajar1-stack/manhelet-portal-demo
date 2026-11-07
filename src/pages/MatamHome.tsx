@@ -161,21 +161,24 @@ export function MatamHome() {
               label: 'משימות פתוחות',
               value: openCount,
               hint: `מתוך ${myTasks.length} משימות בחודש`,
-              accent: 'text-signal-blue bg-badge-bg',
+              accent: 'text-ink-navy bg-dusk-blue/30',
+              highlight: false,
             },
             {
               id: 'overdue' as const,
               label: 'חריגות SLA',
               value: overdueCount,
               hint: 'עיכובים בטיפול',
-              accent: 'text-danger bg-danger-bg',
+              accent: 'text-ink-navy bg-gold',
+              highlight: true,
             },
             {
               id: 'updates' as const,
               label: 'עדכונים חדשים',
               value: updatesCount,
               hint: 'ממולקולות וגורמי מדינה',
-              accent: 'text-deep-cobalt bg-badge-bg',
+              accent: 'text-ink-navy bg-badge-bg',
+              highlight: false,
             },
           ] as const
         ).map((m) => (
@@ -185,8 +188,9 @@ export function MatamHome() {
             aria-pressed={metric === m.id}
             onClick={() => setMetric((prev) => (prev === m.id ? null : m.id))}
             className={cn(
-              'cursor-pointer rounded-lg border border-hairline/70 bg-paper px-4 py-3.5 text-start shadow-soft transition-colors duration-200 hover:border-signal-blue/30',
-              metric === m.id && 'border-signal-blue ring-1 ring-signal-blue/30',
+              'cursor-pointer rounded-lg border border-hairline bg-paper px-4 py-3.5 text-start shadow-soft transition-colors duration-200 hover:border-dusk-blue/50',
+              metric === m.id && 'border-dusk-blue ring-1 ring-dusk-blue/40',
+              m.highlight && metric !== m.id && 'border-gold/50',
             )}
           >
             <div className="flex items-start justify-between gap-2">
@@ -243,8 +247,8 @@ export function MatamHome() {
                   className={cn(
                     'min-h-9 shrink-0 cursor-pointer rounded-md px-3 py-1.5 text-[12px] font-medium whitespace-nowrap transition-colors duration-200',
                     tab === t.id
-                      ? 'bg-ink-navy text-paper'
-                      : 'text-slate-gray hover:bg-pebble',
+                      ? 'bg-dusk-blue text-ink-navy'
+                      : 'text-slate-gray hover:bg-soft-cyan',
                   )}
                 >
                   {t.label}
@@ -298,7 +302,7 @@ export function MatamHome() {
                 <li key={a.label}>
                   <Link
                     to={a.to}
-                    className="flex items-center justify-between gap-2 rounded-md px-2 py-2 text-[13px] font-medium hover:bg-pebble"
+                    className="flex items-center justify-between gap-2 rounded-md px-2 py-2 text-[13px] font-medium hover:bg-soft-cyan"
                   >
                     <span className="inline-flex items-center gap-2">
                       <a.icon className="h-4 w-4 text-signal-blue" />
@@ -318,7 +322,7 @@ export function MatamHome() {
                 <li key={u.id}>
                   <Link
                     to={`/units/${u.id}`}
-                    className="block rounded-md px-2 py-1.5 hover:bg-pebble"
+                    className="block rounded-md px-2 py-1.5 hover:bg-soft-cyan"
                   >
                     <div className="text-[13px] font-semibold">משפחת {u.familyName}</div>
                     <div className="text-[11px] text-mist-gray">
@@ -357,7 +361,7 @@ export function MatamHome() {
       </div>
 
       {waitingUnits.length > 0 && (
-        <Panel className="border-danger/25 bg-[#fff8f7] !p-4">
+        <Panel className="border-danger/25 bg-danger-soft !p-4">
           <div className="mb-3 flex items-center gap-2">
             <AlertTriangle className="h-4 w-4 text-danger" />
             <h2 className="text-[15px] font-semibold text-ink-navy">

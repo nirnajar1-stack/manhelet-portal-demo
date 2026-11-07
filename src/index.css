@@ -1,33 +1,42 @@
 @import "tailwindcss";
 
 /*
-  Design tokens — Stitch mockup pass (see DESIGN.md).
-  Source: media/stitch-mockups/01–04, 06.
+  Design tokens — Navy / Gold SaaS language (see DESIGN.md).
+  Palette: Midnight Navy, Dusk Blue, Soft Golden Yellow.
+  No scattered hex in components — use these tokens.
 */
 
 @theme {
-  --color-ink-navy: #1a2b4b;
-  --color-deep-navy: #0b3558;
-  --color-signal-blue: #1565c0;
-  --color-slate-gray: #476788;
-  /* Mist raised for AA contrast on white/cloud (~4.9:1); still reads muted */
-  --color-mist-gray: #5a738c;
-  --color-cloud: #f5f7fa;
+  /* Brand primitives */
+  --color-ink-navy: #0d1a33;
+  --color-deep-navy: #152844;
+  --color-dusk-blue: #8fb4e3;
+  --color-gold: #f5c542;
+  --color-gold-hover: #e8b52f;
+  /* Readable dusk-derived blue for links / focus (WCAG AA on white) */
+  --color-signal-blue: #3d6fa5;
+  --color-slate-gray: #64748b;
+  --color-mist-gray: #64748b;
+  --color-cloud: #f6f9fd;
   --color-paper: #ffffff;
-  --color-pebble: #eef2f7;
-  --color-hairline: #dce3ec;
+  --color-soft-cyan: #edf4fc;
+  --color-pebble: #edf4fc;
+  --color-hairline: #d8e3f0;
   --color-carbon: #0a0a0a;
-  --color-deep-cobalt: #1565c0;
-  --color-badge-bg: #e8f0fe;
+  --color-deep-cobalt: #3d6fa5;
+  --color-badge-bg: #edf4fc;
+
+  /* Semantic status — preserved */
   --color-success: #2e7d32;
   --color-success-bg: #e8f5e9;
-  --color-warning: #f9a825;
-  --color-warning-text: #9a6700;
+  --color-warning: #f5c542;
+  --color-warning-text: #7a5a00;
   --color-warning-bg: #fff8e1;
   --color-danger: #c62828;
   --color-danger-bg: #ffebee;
+  --color-danger-soft: #fff8f7;
 
-  --font-sans: "Heebo", "Assistant", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Rubik", "Heebo", "Assistant", ui-sans-serif, system-ui, sans-serif;
 
   --text-caption: 12px;
   --text-body-sm: 13px;
@@ -51,9 +60,9 @@
   --radius-xl: 16px;
   --radius-full: 9999px;
 
-  --shadow-elevated: 0 8px 24px rgba(26, 43, 75, 0.1);
-  --shadow-soft: 0 4px 12px rgba(26, 43, 75, 0.06);
-  --shadow-button: 0 2px 6px rgba(26, 43, 75, 0.12);
+  --shadow-elevated: 0 8px 24px rgba(13, 26, 51, 0.1);
+  --shadow-soft: 0 4px 12px rgba(13, 26, 51, 0.06);
+  --shadow-button: 0 2px 6px rgba(13, 26, 51, 0.1);
 
   --ease-portal: cubic-bezier(0.2, 0.8, 0.2, 1);
   --duration-fast: 150ms;
@@ -128,7 +137,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-signal-blue);
+    outline: 2px solid var(--color-dusk-blue);
     outline-offset: 2px;
   }
 
@@ -182,6 +191,17 @@
   }
   .motion-fade-in {
     animation: portal-fade-in var(--duration-base) var(--ease-portal) both;
+  }
+  /* Table row hover — soft cyan */
+  .table-row-hover:hover {
+    background: var(--color-soft-cyan);
+  }
+  /* Selection / info wash */
+  .bg-info-wash {
+    background: color-mix(in srgb, var(--color-dusk-blue) 18%, var(--color-paper));
+  }
+  .bg-gold-wash {
+    background: color-mix(in srgb, var(--color-gold) 22%, var(--color-paper));
   }
 }
 

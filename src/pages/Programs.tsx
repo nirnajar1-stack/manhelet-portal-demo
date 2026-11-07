@@ -92,8 +92,8 @@ export function Programs() {
             className={cn(
               'min-h-9 shrink-0 cursor-pointer rounded-md px-3 py-1.5 text-[12px] font-medium whitespace-nowrap transition-colors duration-200',
               tab === t.id
-                ? 'bg-ink-navy text-paper'
-                : 'bg-paper text-slate-gray shadow-soft hover:bg-pebble',
+                ? 'bg-dusk-blue text-ink-navy'
+                : 'bg-paper text-slate-gray shadow-soft hover:bg-soft-cyan',
             )}
           >
             {t.label} ({counts[t.id]})
@@ -169,7 +169,7 @@ export function Programs() {
                 </span>
               </li>
               <li className="flex gap-2 rounded-md bg-warning-bg px-2.5 py-2 text-[12px]">
-                <CalendarDays className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#9a6700]" />
+                <CalendarDays className="mt-0.5 h-3.5 w-3.5 shrink-0 text-warning-text" />
                 <span>
                   <strong>מחר:</strong> שליחת הצעה לסדנת צילום
                 </span>
