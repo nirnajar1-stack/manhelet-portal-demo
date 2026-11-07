@@ -8,7 +8,7 @@ export const Input = React.forwardRef<
   <input
     ref={ref}
     className={cn(
-      'flex h-10 w-full rounded-md border border-hairline bg-pebble px-3 text-[14px] text-ink-navy transition-colors duration-200 placeholder:text-mist-gray focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal-blue',
+      'flex h-10 w-full rounded-md border border-hairline bg-soft-cyan px-3 text-[14px] text-ink-navy transition-colors duration-200 placeholder:text-mist-gray focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dusk-blue',
       className,
     )}
     {...props}
@@ -23,7 +23,7 @@ export const Textarea = React.forwardRef<
   <textarea
     ref={ref}
     className={cn(
-      'flex min-h-24 w-full rounded-md border border-hairline bg-pebble px-3 py-2 text-[14px] text-ink-navy placeholder:text-mist-gray focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal-blue',
+      'flex min-h-24 w-full rounded-md border border-hairline bg-soft-cyan px-3 py-2 text-[14px] text-ink-navy placeholder:text-mist-gray focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dusk-blue',
       className,
     )}
     {...props}

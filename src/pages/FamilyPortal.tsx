@@ -79,7 +79,7 @@ export function FamilyPortal() {
             onClick={() => setSection(s.id)}
             className={`shrink-0 rounded-md px-4 py-2 text-[14px] font-semibold ${
               section === s.id
-                ? 'bg-signal-blue text-paper'
+                ? 'bg-dusk-blue text-ink-navy'
                 : 'bg-paper text-ink-navy border border-hairline'
             }`}
           >

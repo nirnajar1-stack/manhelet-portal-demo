@@ -4,19 +4,24 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md text-[14px] font-semibold transition-colors duration-200 ease-[cubic-bezier(0.2,0.8,0.2,1)] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal-blue focus-visible:ring-offset-2',
+  'inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md text-[14px] font-semibold transition-colors duration-200 ease-[cubic-bezier(0.2,0.8,0.2,1)] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dusk-blue focus-visible:ring-offset-2',
   {
     variants: {
       variant: {
+        /* Primary CTA — Soft Golden Yellow + Midnight Navy text */
         primary:
-          'bg-ink-navy text-paper shadow-button hover:bg-deep-navy',
-        dark: 'bg-deep-navy text-paper shadow-button hover:bg-ink-navy',
+          'bg-gold text-ink-navy shadow-button hover:bg-gold-hover',
+        /* Secondary — Dusk Blue + Midnight Navy text */
+        secondary:
+          'bg-dusk-blue text-ink-navy shadow-button hover:bg-dusk-blue/85',
+        dark: 'bg-ink-navy text-paper shadow-button hover:bg-deep-navy',
+        /* Tertiary — outline */
         outline:
-          'border border-hairline bg-paper text-ink-navy hover:bg-pebble',
-        ghost: 'text-ink-navy hover:bg-pebble',
-        soft: 'bg-badge-bg text-signal-blue hover:bg-[#d9e7fc]',
-        success: 'bg-success text-paper hover:bg-[#1b5e20]',
-        danger: 'bg-danger text-paper hover:bg-[#b71c1c]',
+          'border border-hairline bg-paper text-ink-navy hover:bg-soft-cyan',
+        ghost: 'text-ink-navy hover:bg-soft-cyan',
+        soft: 'bg-badge-bg text-signal-blue hover:bg-dusk-blue/25',
+        success: 'bg-success text-paper hover:bg-success/90',
+        danger: 'bg-danger text-paper hover:bg-danger/90',
       },
       size: {
         sm: 'h-9 min-h-9 px-3 text-[13px] sm:h-8',

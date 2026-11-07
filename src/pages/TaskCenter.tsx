@@ -320,8 +320,8 @@ export function TaskCenter() {
             className={cn(
               'min-h-9 shrink-0 cursor-pointer rounded-md px-3 py-1.5 text-[12px] font-medium whitespace-nowrap transition-colors duration-200',
               view === t.id
-                ? 'bg-ink-navy text-paper'
-                : 'bg-paper text-slate-gray shadow-soft hover:bg-pebble',
+                ? 'bg-dusk-blue text-ink-navy'
+                : 'bg-paper text-slate-gray shadow-soft hover:bg-soft-cyan',
             )}
           >
             {t.label} ({t.count})
@@ -330,8 +330,8 @@ export function TaskCenter() {
       </div>
 
       <div className="hidden gap-4 xl:grid xl:grid-cols-[minmax(0,1fr)_340px]">
-        <div className="overflow-hidden rounded-lg border border-hairline/70 bg-paper shadow-soft">
-          <div className="grid grid-cols-[auto_1fr_140px_120px_100px] gap-2 border-b border-hairline bg-pebble/50 px-4 py-2 text-[11px] font-semibold text-slate-gray">
+          <div className="overflow-hidden rounded-lg border border-hairline bg-paper shadow-soft">
+          <div className="grid grid-cols-[auto_1fr_140px_120px_100px] gap-2 border-b border-hairline bg-soft-cyan px-4 py-2 text-[11px] font-semibold text-ink-navy">
             <span />
             <span>משימה</span>
             <span>משפחה</span>
@@ -379,15 +379,16 @@ function KpiCard({
   tone: 'blue' | 'danger' | 'warning' | 'success'
 }) {
   const styles = {
-    blue: 'border-signal-blue/20 bg-[#f3f8ff]',
-    danger: 'border-danger/20 bg-danger-bg',
+    blue: 'border-dusk-blue/35 bg-info-wash',
+    danger: 'border-gold/50 bg-gold-wash',
     warning: 'border-warning/30 bg-warning-bg',
     success: 'border-success/20 bg-success-bg',
   }
+  /* KPI numbers: navy by default; gold wash for business-exception urgent */
   const valueColor = {
-    blue: 'text-signal-blue',
-    danger: 'text-danger',
-    warning: 'text-[#9a6700]',
+    blue: 'text-ink-navy',
+    danger: 'text-ink-navy',
+    warning: 'text-warning-text',
     success: 'text-success',
   }
   return (
@@ -461,8 +462,8 @@ function TaskTable({
               onClick={() => onSelect(task)}
               aria-pressed={selectedId === task.id}
               className={cn(
-                'grid w-full cursor-pointer grid-cols-[auto_1fr_140px_120px_100px] items-center gap-2 border-b border-hairline px-4 py-3 text-start transition-colors duration-200 hover:bg-pebble/60',
-                selectedId === task.id && 'bg-badge-bg/40',
+                'grid w-full cursor-pointer grid-cols-[auto_1fr_140px_120px_100px] items-center gap-2 border-b border-hairline px-4 py-3 text-start transition-colors duration-200 hover:bg-soft-cyan',
+                selectedId === task.id && 'bg-info-wash ring-1 ring-inset ring-dusk-blue/35',
               )}
             >
               <input
@@ -589,8 +590,8 @@ function TaskDrawer({
                   'rounded-md px-2.5 py-1 text-[11px] font-medium',
                   task.status === id ||
                     (id === 'done' && task.status === 'closed')
-                    ? 'bg-ink-navy text-paper'
-                    : 'bg-pebble text-slate-gray',
+                    ? 'bg-dusk-blue text-ink-navy'
+                    : 'bg-soft-cyan text-slate-gray',
                 )}
               >
                 {label}

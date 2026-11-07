@@ -42,7 +42,9 @@ export function RehabScenarios() {
                 onClick={() => setFilter(id)}
                 className={cn(
                   'cursor-pointer rounded-md px-3 py-1.5 text-[13px] font-medium transition-colors',
-                  filter === id ? 'bg-ink-navy text-white' : 'bg-pebble text-ink-navy',
+                  filter === id
+                    ? 'bg-dusk-blue text-ink-navy'
+                    : 'bg-soft-cyan text-ink-navy',
                 )}
               >
                 {label}

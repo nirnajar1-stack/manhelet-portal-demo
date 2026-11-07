@@ -12,7 +12,7 @@ export function Card({
   return (
     <div
       className={cn(
-        'rounded-lg border border-hairline/80 bg-paper p-5 shadow-soft',
+        'rounded-lg border border-hairline bg-paper p-5 shadow-soft',
         elevated && 'shadow-elevated border-transparent',
         className,
       )}
@@ -34,7 +34,7 @@ export function Panel({
   return (
     <section
       className={cn(
-        'rounded-lg border border-hairline/60 bg-paper p-5 shadow-soft',
+        'rounded-lg border border-hairline bg-paper p-5 shadow-soft',
         elevated && 'shadow-elevated border-transparent',
         className,
       )}

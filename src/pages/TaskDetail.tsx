@@ -375,8 +375,8 @@ export function TaskDetail() {
                     className={cn(
                       'rounded-md px-2.5 py-1 text-[12px] font-medium',
                       chatterFilter === f.id
-                        ? 'bg-ink-navy text-paper'
-                        : 'text-slate-gray hover:bg-pebble',
+                        ? 'bg-dusk-blue text-ink-navy'
+                        : 'text-slate-gray hover:bg-soft-cyan',
                     )}
                   >
                     {f.label}
@@ -418,7 +418,7 @@ export function TaskDetail() {
                     className={cn(
                       'rounded-md px-2 py-1 text-[12px] font-medium',
                       visibility === 'internal'
-                        ? 'bg-warning-bg text-[#9a6700]'
+                        ? 'bg-warning-bg text-warning-text'
                         : 'text-slate-gray',
                     )}
                   >

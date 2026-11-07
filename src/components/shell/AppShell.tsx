@@ -132,7 +132,7 @@ export function AppShell() {
         <div className="flex h-[64px] items-center gap-3 px-4 lg:px-5">
           <button
             type="button"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-md transition-colors duration-200 hover:bg-pebble lg:hidden"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-md transition-colors duration-200 hover:bg-soft-cyan lg:hidden"
             aria-label="תפריט"
             aria-expanded={mobileOpen}
             aria-controls="mobile-nav"
@@ -188,7 +188,7 @@ export function AppShell() {
 
             <button
               type="button"
-              className="hidden h-11 w-11 items-center justify-center rounded-md text-slate-gray transition-colors duration-200 hover:bg-pebble md:inline-flex sm:h-9 sm:w-9"
+              className="hidden h-11 w-11 items-center justify-center rounded-md text-slate-gray transition-colors duration-200 hover:bg-soft-cyan md:inline-flex sm:h-9 sm:w-9"
               aria-label="עזרה"
             >
               <CircleHelp className="h-5 w-5" aria-hidden />
@@ -324,7 +324,7 @@ export function AppShell() {
       </header>
 
       <div className="mx-auto flex max-w-[1480px]">
-        <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-[232px] shrink-0 flex-col border-s border-hairline bg-paper lg:flex">
+        <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-[232px] shrink-0 flex-col bg-ink-navy lg:flex">
           <nav className="flex flex-1 flex-col gap-0.5 p-3" aria-label="ניווט ראשי">
             {nav.map((item) => (
               <NavLink
@@ -333,8 +333,8 @@ export function AppShell() {
                 end={item.to === '/' || item.to === '/molecule'}
                 className={({ isActive }) =>
                   cn(
-                    'flex min-h-11 items-center gap-2.5 rounded-md px-3 py-2.5 text-[13px] font-medium text-ink-navy transition-colors duration-200 hover:bg-pebble',
-                    isActive && 'bg-ink-navy text-paper hover:bg-ink-navy',
+                    'flex min-h-11 items-center gap-2.5 rounded-md px-3 py-2.5 text-[13px] font-medium text-paper/80 transition-colors duration-200 hover:bg-paper/10 hover:text-paper',
+                    isActive && 'bg-dusk-blue text-ink-navy hover:bg-dusk-blue hover:text-ink-navy',
                   )
                 }
               >
@@ -343,7 +343,7 @@ export function AppShell() {
                     <item.icon
                       className={cn(
                         'h-4 w-4 shrink-0',
-                        isActive ? 'text-paper' : 'text-slate-gray',
+                        isActive ? 'text-ink-navy' : 'text-paper/70',
                       )}
                       aria-hidden
                     />
@@ -355,8 +355,8 @@ export function AppShell() {
                           className={cn(
                             'rounded-full px-1.5 text-[11px] font-bold whitespace-nowrap',
                             isActive
-                              ? 'bg-paper/20 text-paper'
-                              : 'bg-danger text-paper',
+                              ? 'bg-ink-navy/15 text-ink-navy'
+                              : 'bg-gold text-ink-navy',
                           )}
                           title={`${attentionCount} משימות דורשות טיפול`}
                         >
@@ -370,18 +370,19 @@ export function AppShell() {
             ))}
           </nav>
 
-          <div className="border-t border-hairline p-3">
-            <p className="mb-2 px-1 text-[11px] font-semibold tracking-wide text-slate-gray">
+          <div className="border-t border-paper/15 p-3">
+            <p className="mb-2 px-1 text-[11px] font-semibold tracking-wide text-paper/55">
               החלפת סביבה
             </p>
             <div
-              className="space-y-1 rounded-lg bg-pebble/70 p-2"
+              className="space-y-1 rounded-lg bg-paper/8 p-2"
               role="radiogroup"
               aria-label="החלפת סביבה"
             >
               <EnvOption
                 active={currentUser.role === 'matam'}
                 label="מת״מים ומנהלי תיק"
+                onDark
                 onClick={() => {
                   setRole('matam')
                   navigate('/')
@@ -390,6 +391,7 @@ export function AppShell() {
               <EnvOption
                 active={currentUser.role === 'molecule'}
                 label="מרחב מולקולות"
+                onDark
                 onClick={() => {
                   switchUser('u-dana')
                   navigate('/molecule')
@@ -398,13 +400,14 @@ export function AppShell() {
               <EnvOption
                 active={false}
                 label="תצוגת שירות למשפחות"
+                onDark
                 onClick={() => {
                   setRole('family')
                   navigate('/family')
                 }}
               />
             </div>
-            <p className="mt-3 px-1 text-[11px] leading-relaxed text-slate-gray">
+            <p className="mt-3 px-1 text-[11px] leading-relaxed text-paper/45">
               אבטיפוס · נתוני דמה · אין Salesforce
             </p>
           </div>
@@ -445,8 +448,8 @@ export function AppShell() {
                       cn(
                         'flex min-h-11 items-center gap-2 rounded-md px-3 py-3 text-[14px] font-medium transition-colors duration-200',
                         isActive
-                          ? 'bg-ink-navy text-paper'
-                          : 'hover:bg-pebble',
+                          ? 'bg-dusk-blue text-ink-navy'
+                          : 'text-ink-navy hover:bg-soft-cyan',
                       )
                     }
                   >
@@ -470,7 +473,7 @@ export function AppShell() {
 
       <button
         type="button"
-        className="fixed bottom-5 start-5 z-30 flex h-12 w-12 items-center justify-center rounded-md bg-ink-navy text-paper shadow-button transition-colors duration-200 hover:bg-deep-navy sm:hidden"
+        className="fixed bottom-5 start-5 z-30 flex h-12 w-12 items-center justify-center rounded-md bg-gold text-ink-navy shadow-button transition-colors duration-200 hover:bg-gold-hover sm:hidden"
         aria-label="פעולה חדשה"
         onClick={() => navigate('/tasks/new')}
       >
@@ -486,10 +489,12 @@ function EnvOption({
   active,
   label,
   onClick,
+  onDark = false,
 }: {
   active: boolean
   label: string
   onClick: () => void
+  onDark?: boolean
 }) {
   return (
     <button
@@ -499,21 +504,36 @@ function EnvOption({
       onClick={onClick}
       className={cn(
         'flex min-h-10 w-full cursor-pointer items-center gap-2 rounded-md px-2 py-2 text-start text-[12px] font-medium transition-colors duration-200',
-        active
-          ? 'bg-paper text-ink-navy shadow-soft'
-          : 'text-slate-gray hover:bg-paper/70',
+        onDark
+          ? active
+            ? 'bg-dusk-blue text-ink-navy shadow-soft'
+            : 'text-paper/70 hover:bg-paper/10 hover:text-paper'
+          : active
+            ? 'bg-paper text-ink-navy shadow-soft'
+            : 'text-slate-gray hover:bg-paper/70',
       )}
     >
       <span
         className={cn(
           'flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full border',
           active
-            ? 'border-signal-blue bg-signal-blue'
-            : 'border-mist-gray bg-transparent',
+            ? onDark
+              ? 'border-ink-navy bg-gold'
+              : 'border-dusk-blue bg-dusk-blue'
+            : onDark
+              ? 'border-paper/40 bg-transparent'
+              : 'border-mist-gray bg-transparent',
         )}
         aria-hidden
       >
-        {active && <span className="h-1.5 w-1.5 rounded-full bg-paper" />}
+        {active && (
+          <span
+            className={cn(
+              'h-1.5 w-1.5 rounded-full',
+              onDark ? 'bg-ink-navy' : 'bg-paper',
+            )}
+          />
+        )}
       </span>
       {label}
     </button>

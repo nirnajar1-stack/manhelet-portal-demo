@@ -79,8 +79,8 @@ export function OrgHome() {
             onClick={() => setFilter(f)}
             className={`shrink-0 rounded-full px-3 py-1.5 text-[13px] font-medium ${
               filter === f
-                ? 'bg-badge-bg text-signal-blue'
-                : 'text-slate-gray hover:bg-pebble'
+                ? 'bg-dusk-blue text-ink-navy'
+                : 'text-slate-gray hover:bg-soft-cyan'
             }`}
           >
             {f === 'all' ? 'הכל' : kindLabel[f]}

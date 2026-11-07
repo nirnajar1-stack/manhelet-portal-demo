@@ -67,14 +67,14 @@ export function RehabOverview() {
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
             to="/rehab-demo/programs"
-            className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-ink-navy px-4 py-2 text-[14px] font-medium text-white transition-opacity hover:opacity-90"
+            className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-gold px-4 py-2 text-[14px] font-medium text-ink-navy shadow-button transition-colors hover:bg-gold-hover"
           >
             מעבר לתוכניות
             <ArrowLeft className="size-4" aria-hidden />
           </Link>
           <Link
             to="/rehab-demo/scenarios"
-            className="inline-flex cursor-pointer items-center gap-2 rounded-md border border-hairline bg-paper px-4 py-2 text-[14px] font-medium text-ink-navy transition-colors hover:bg-pebble"
+            className="inline-flex cursor-pointer items-center gap-2 rounded-md border border-hairline bg-paper px-4 py-2 text-[14px] font-medium text-ink-navy transition-colors hover:bg-soft-cyan"
           >
             דפדוף תרחישים
           </Link>

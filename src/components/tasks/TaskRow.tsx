@@ -64,7 +64,7 @@ export function TaskRow({
               <span
                 className={cn(
                   'text-[11px] font-semibold',
-                  task.priority === 'urgent' ? 'text-danger' : 'text-[#9a6700]',
+                  task.priority === 'urgent' ? 'text-danger' : 'text-warning-text',
                 )}
               >
                 {priorityLabel[task.priority]}
@@ -123,8 +123,8 @@ export function TaskRow({
         type="button"
         onClick={() => onSelect(task)}
         className={cn(
-          'flex w-full cursor-pointer items-start justify-between gap-3 border-b border-hairline px-4 py-3 text-start transition-colors duration-200 hover:bg-pebble/70 focus-visible:bg-pebble',
-          selected && 'bg-badge-bg/50',
+          'flex w-full cursor-pointer items-start justify-between gap-3 border-b border-hairline px-4 py-3 text-start transition-colors duration-200 hover:bg-soft-cyan focus-visible:bg-soft-cyan',
+          selected && 'bg-info-wash ring-1 ring-inset ring-dusk-blue/40',
           compact && 'px-3 py-2.5',
         )}
       >
@@ -137,8 +137,8 @@ export function TaskRow({
     <Link
       to={`/tasks/${task.id}`}
       className={cn(
-        'flex cursor-pointer items-start justify-between gap-3 border-b border-hairline px-4 py-3 transition-colors duration-200 hover:bg-pebble/70 focus-visible:bg-pebble',
-        selected && 'bg-badge-bg/50',
+        'flex cursor-pointer items-start justify-between gap-3 border-b border-hairline px-4 py-3 transition-colors duration-200 hover:bg-soft-cyan focus-visible:bg-soft-cyan',
+        selected && 'bg-info-wash ring-1 ring-inset ring-dusk-blue/40',
         compact && 'px-3 py-2.5',
       )}
     >

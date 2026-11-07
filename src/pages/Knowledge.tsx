@@ -139,9 +139,9 @@ export function Knowledge() {
                   aria-pressed={query === tag}
                   onClick={() => setQuery(tag)}
                   className={cn(
-                    'min-h-9 cursor-pointer rounded-full border border-hairline bg-pebble px-2.5 py-1 text-[12px] font-medium whitespace-nowrap text-slate-gray transition-colors duration-200 hover:border-signal-blue/40 hover:text-ink-navy',
+                    'min-h-9 cursor-pointer rounded-full border border-hairline bg-soft-cyan px-2.5 py-1 text-[12px] font-medium whitespace-nowrap text-slate-gray transition-colors duration-200 hover:border-dusk-blue/50 hover:text-ink-navy',
                     query === tag &&
-                      'border-signal-blue bg-badge-bg text-ink-navy',
+                      'border-gold bg-gold-wash text-ink-navy',
                   )}
                 >
                   {tag}

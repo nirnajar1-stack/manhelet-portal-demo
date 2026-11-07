@@ -60,7 +60,7 @@ export function RehabPrograms() {
                 | { template_id: string }
                 | undefined
               return (
-                <tr key={p.id} className="border-b border-hairline/70 hover:bg-cloud/70">
+                <tr key={p.id} className="border-b border-hairline/70 hover:bg-soft-cyan">
                   <td className="px-2 py-3 font-mono text-[12px] text-mist-gray">
                     {p.program_code}
                   </td>

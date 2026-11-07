@@ -26,8 +26,8 @@ export function RehabErd() {
                 className={cn(
                   'flex w-full cursor-pointer items-center justify-between rounded-md px-3 py-2 text-right text-[13px] transition-colors duration-150',
                   table === name
-                    ? 'bg-ink-navy text-white'
-                    : 'text-slate-gray hover:bg-pebble',
+                    ? 'bg-dusk-blue text-ink-navy'
+                    : 'text-slate-gray hover:bg-soft-cyan',
                 )}
               >
                 <span className="font-medium">{name}</span>
@@ -73,7 +73,7 @@ export function RehabErd() {
               </thead>
               <tbody>
                 {rows.map((row, i) => (
-                  <tr key={i} className="border-b border-hairline/70 hover:bg-cloud/80">
+                  <tr key={i} className="border-b border-hairline/70 hover:bg-soft-cyan">
                     {columns.map((c) => (
                       <td key={c} className="max-w-[240px] truncate px-3 py-2 text-slate-gray" title={String(row[c] ?? '')}>
                         {formatCell(row[c])}

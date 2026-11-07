@@ -82,8 +82,8 @@ export function MoleculeHome() {
             className={cn(
               'rounded-sm px-4 py-2 text-[14px] font-semibold',
               mode === m.id
-                ? 'bg-signal-blue text-paper'
-                : 'text-slate-gray hover:bg-pebble',
+                ? 'bg-dusk-blue text-ink-navy'
+                : 'text-slate-gray hover:bg-soft-cyan',
             )}
           >
             {m.label}
@@ -181,8 +181,8 @@ export function MoleculeHome() {
 
 function Metric({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-lg border border-hairline bg-paper px-3 py-3 sm:px-4 sm:py-4">
-      <div className="text-[22px] font-bold tabular-nums sm:text-[28px]">
+    <div className="rounded-lg border border-hairline bg-paper px-3 py-3 shadow-soft sm:px-4 sm:py-4">
+      <div className="text-[22px] font-bold tabular-nums text-ink-navy sm:text-[28px]">
         {value}
       </div>
       <div className="text-[12px] font-medium text-slate-gray sm:text-[14px]">

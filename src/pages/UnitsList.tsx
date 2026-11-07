@@ -107,7 +107,7 @@ export function UnitsList() {
               <li key={u.id}>
                 <Link
                   to={href}
-                  className="flex flex-col gap-2 px-4 py-4 hover:bg-pebble/70 sm:flex-row sm:items-center sm:justify-between sm:px-6"
+                  className="flex flex-col gap-2 px-4 py-4 hover:bg-soft-cyan sm:flex-row sm:items-center sm:justify-between sm:px-6"
                 >
                   <div>
                     <div className="flex flex-wrap items-center gap-2">
