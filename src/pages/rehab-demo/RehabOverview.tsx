@@ -25,7 +25,7 @@ export function RehabOverview() {
         ].map((k) => (
           <div
             key={k.label}
-            className="rounded-xl border border-hairline bg-paper p-4 shadow-soft transition-shadow duration-200 hover:shadow-elevated"
+            className="rounded-xl border border-hairline bg-paper p-4"
           >
             <p className="text-[13px] text-mist-gray">{k.label}</p>
             <p className="mt-1 text-[28px] font-bold text-ink-navy">{k.value}</p>
@@ -33,7 +33,7 @@ export function RehabOverview() {
         ))}
       </section>
 
-      <section className="rounded-xl border border-hairline bg-paper p-5 shadow-soft">
+      <section className="rounded-xl border border-hairline bg-paper p-5">
         <div className="mb-4 flex items-center gap-2 text-ink-navy">
           <Layers className="size-5" aria-hidden />
           <h2 className="text-[20px] font-bold">שש שכבות המודל</h2>
@@ -42,7 +42,7 @@ export function RehabOverview() {
           {data.layers.map((layer) => (
             <li
               key={layer.id}
-              className="rounded-lg border border-hairline bg-cloud/60 p-4 transition-transform duration-200 hover:-translate-y-0.5"
+              className="rounded-lg border border-hairline bg-cloud/60 p-4"
             >
               <p className="text-[12px] font-semibold text-signal-blue">שכבה {layer.id}</p>
               <p className="mt-1 text-[16px] font-bold text-ink-navy">{layer.name_he}</p>
@@ -54,7 +54,7 @@ export function RehabOverview() {
         </ol>
       </section>
 
-      <section className="rounded-xl border border-hairline bg-paper p-5 shadow-soft">
+      <section className="rounded-xl border border-hairline bg-paper p-5">
         <h2 className="text-[20px] font-bold text-ink-navy">עקרונות ליבה</h2>
         <ul className="mt-3 space-y-2">
           {decisions.map((d) => (

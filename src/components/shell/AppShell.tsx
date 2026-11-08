@@ -131,7 +131,7 @@ export function AppShell() {
         דלג לתוכן הראשי
       </a>
       <header className="sticky top-0 z-40 border-b border-hairline bg-paper">
-        <div className="flex h-[64px] items-center gap-3 px-4 lg:px-5">
+        <div className="flex h-[60px] items-center gap-3 px-4 lg:px-5">
           <button
             type="button"
             className="inline-flex h-11 w-11 items-center justify-center rounded-md transition-colors duration-200 hover:bg-soft-cyan lg:hidden"
@@ -326,8 +326,8 @@ export function AppShell() {
       </header>
 
       <div className="mx-auto flex max-w-[1480px]">
-        <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-[232px] shrink-0 flex-col bg-ink-navy lg:flex">
-          <nav className="flex flex-1 flex-col gap-0.5 p-3" aria-label="ניווט ראשי">
+        <aside className="sticky top-[60px] hidden h-[calc(100vh-60px)] w-[232px] shrink-0 flex-col bg-ink-navy lg:flex">
+          <nav className="flex flex-1 flex-col gap-0.5 p-2.5" aria-label="ניווט ראשי">
             {nav.map((item) => (
               <NavLink
                 key={item.to}
@@ -335,7 +335,7 @@ export function AppShell() {
                 end={item.to === '/' || item.to === '/molecule'}
                 className={({ isActive }) =>
                   cn(
-                    'flex min-h-11 items-center gap-2.5 rounded-md px-3 py-2.5 text-[13px] font-medium text-paper/80 transition-colors duration-200 hover:bg-paper/10 hover:text-paper',
+                    'flex min-h-10 items-center gap-2.5 rounded-md px-2.5 py-2 text-[13px] font-medium text-paper/80 transition-colors duration-150 hover:bg-paper/10 hover:text-paper',
                     isActive && 'bg-dusk-blue text-ink-navy hover:bg-dusk-blue hover:text-ink-navy',
                   )
                 }
@@ -468,7 +468,7 @@ export function AppShell() {
           </div>
         )}
 
-        <main id="main-content" className="min-w-0 flex-1 px-4 py-5 lg:px-6">
+        <main id="main-content" className="min-w-0 flex-1 px-4 py-4 lg:px-6">
           <Outlet />
         </main>
       </div>
@@ -508,10 +508,10 @@ function EnvOption({
         'flex min-h-10 w-full cursor-pointer items-center gap-2 rounded-md px-2 py-2 text-start text-[12px] font-medium transition-colors duration-200',
         onDark
           ? active
-            ? 'bg-dusk-blue text-ink-navy shadow-soft'
+            ? 'bg-dusk-blue text-ink-navy'
             : 'text-paper/70 hover:bg-paper/10 hover:text-paper'
           : active
-            ? 'bg-paper text-ink-navy shadow-soft'
+            ? 'bg-paper text-ink-navy'
             : 'text-slate-gray hover:bg-paper/70',
       )}
     >

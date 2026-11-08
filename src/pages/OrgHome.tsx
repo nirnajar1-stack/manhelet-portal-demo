@@ -3,6 +3,7 @@ import { AssumptionBanner } from '@/components/ui/assumption'
 import { Badge } from '@/components/ui/badge'
 import { Panel } from '@/components/ui/card'
 import { fetchOrgNews } from '@/api/stubs'
+import { cn } from '@/lib/utils'
 import type { OrgNewsItem } from '@/types'
 
 const kindLabel: Record<OrgNewsItem['kind'], string> = {
@@ -42,12 +43,10 @@ export function OrgHome() {
   const pinned = items.find((i) => i.pinned)
 
   return (
-    <div className="space-y-6">
+    <div className="page-stack">
       <div>
-        <h1 className="text-[28px] font-bold md:text-[38px] md:leading-[1.21]">
-          בית המנהלת
-        </h1>
-        <p className="mt-2 text-[16px] text-slate-gray">
+        <h1 className="page-title">בית המנהלת</h1>
+        <p className="page-lede">
           חדשות, הודעות, אירועים, יוזמות, נהלים וכלים — הבית הארגוני.
         </p>
       </div>
@@ -57,51 +56,51 @@ export function OrgHome() {
       </AssumptionBanner>
 
       {pinned && (
-        <Panel elevated className="relative overflow-hidden">
-          <div
-            className="pointer-events-none absolute -end-8 top-0 h-32 w-32 rounded-full bg-sky-cyan/15 blur-2xl"
-            aria-hidden
-          />
+        <Panel className="border-s-4 border-s-gold">
           <Badge tone="info">{kindLabel[pinned.kind]}</Badge>
-          <h2 className="mt-3 text-[22px] font-bold">{pinned.title}</h2>
-          <p className="mt-2 max-w-2xl text-[15px] text-slate-gray">
+          <h2 className="mt-2 text-[17px] font-semibold">{pinned.title}</h2>
+          <p className="mt-1.5 max-w-2xl text-[13px] text-slate-gray">
             {pinned.summary}
           </p>
-          <p className="mt-3 text-[12px] text-mist-gray">{pinned.date}</p>
+          <p className="mt-2 text-[11px] text-mist-gray">{pinned.date}</p>
         </Panel>
       )}
 
-      <div className="flex gap-1 overflow-x-auto">
+      <div
+        className="flex gap-0.5 overflow-x-auto border-b border-hairline"
+        role="tablist"
+        aria-label="סינון תוכן ארגוני"
+      >
         {filters.map((f) => (
           <button
             key={f}
             type="button"
+            role="tab"
+            aria-selected={filter === f}
             onClick={() => setFilter(f)}
-            className={`shrink-0 rounded-full px-3 py-1.5 text-[13px] font-medium ${
+            className={cn(
+              'filter-chip cursor-pointer border-b-2 rounded-none',
               filter === f
-                ? 'bg-dusk-blue text-ink-navy'
-                : 'text-slate-gray hover:bg-soft-cyan'
-            }`}
+                ? 'border-gold text-ink-navy'
+                : 'border-transparent text-slate-gray hover:text-ink-navy',
+            )}
           >
             {f === 'all' ? 'הכל' : kindLabel[f]}
           </button>
         ))}
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="divide-y divide-hairline rounded-[10px] border border-hairline bg-paper">
         {list.map((item) => (
-          <article
-            key={item.id}
-            className="rounded-xl border border-hairline bg-paper p-5 shadow-soft"
-          >
+          <article key={item.id} className="px-4 py-3.5">
             <div className="flex items-center justify-between gap-2">
               <Badge tone="muted">{kindLabel[item.kind]}</Badge>
-              <time className="text-[12px] text-mist-gray">{item.date}</time>
+              <time className="text-[11px] text-mist-gray">{item.date}</time>
             </div>
-            <h3 className="mt-3 text-[16px] font-semibold leading-snug">
+            <h3 className="mt-1.5 text-[14px] font-semibold leading-snug">
               {item.title}
             </h3>
-            <p className="mt-2 text-[14px] text-slate-gray">{item.summary}</p>
+            <p className="mt-1 text-[13px] text-slate-gray">{item.summary}</p>
           </article>
         ))}
       </div>

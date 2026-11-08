@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
-import { MessageCircle, Sparkles } from 'lucide-react'
+import { MessageCircle } from 'lucide-react'
 import { AssumptionBanner } from '@/components/ui/assumption'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Panel } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/input'
 import { fetchFamilyRequests, fetchOrgNews } from '@/api/stubs'
-import { formatRelativeHe } from '@/lib/utils'
+import { cn, formatRelativeHe } from '@/lib/utils'
 import { useApp } from '@/state/AppContext'
 import type { FamilyRequest, OrgNewsItem } from '@/types'
 
@@ -41,31 +41,25 @@ export function FamilyPortal() {
   } as const
 
   return (
-    <div className="space-y-6">
-      <div className="relative overflow-hidden rounded-[24px] border border-hairline bg-paper p-6 shadow-soft sm:p-8">
-        <div
-          className="pointer-events-none absolute -start-10 -top-10 h-40 w-40 rounded-full bg-sky-cyan/20 blur-2xl"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute -bottom-12 -end-8 h-44 w-44 rounded-full bg-coral-magenta/15 blur-2xl"
-          aria-hidden
-        />
-        <p className="text-[13px] font-semibold text-deep-cobalt">הבית שלי</p>
-        <h1 className="mt-2 text-[28px] font-bold leading-tight text-ink-navy sm:text-[38px] sm:leading-[1.21]">
-          שלום, {currentUser.name}
-        </h1>
-        <p className="mt-3 max-w-xl text-[16px] text-slate-gray">
+    <div className="page-stack">
+      <header className="border-b border-hairline pb-4">
+        <p className="section-label">הבית שלי</p>
+        <h1 className="page-title mt-1">שלום, {currentUser.name}</h1>
+        <p className="page-lede max-w-xl">
           כאן תמצאו עדכונים, בקשות ושירותים, ודרכים ליצור קשר עם המנהלת — בשפה
           ברורה ופשוטה.
         </p>
-      </div>
+      </header>
 
       <AssumptionBanner>
         פורטל משפחות מוצג בנפרד לחלוטין מממשק העובדים. תוכן דמה בלבד.
       </AssumptionBanner>
 
-      <div className="flex gap-2 overflow-x-auto">
+      <div
+        className="flex gap-0.5 overflow-x-auto border-b border-hairline"
+        role="tablist"
+        aria-label="מקטעי פורטל משפחות"
+      >
         {(
           [
             { id: 'home', label: 'הבית שלי' },
@@ -76,12 +70,15 @@ export function FamilyPortal() {
           <button
             key={s.id}
             type="button"
+            role="tab"
+            aria-selected={section === s.id}
             onClick={() => setSection(s.id)}
-            className={`shrink-0 rounded-md px-4 py-2 text-[14px] font-semibold ${
+            className={cn(
+              'shrink-0 border-b-2 px-3 py-2.5 text-[13px] font-medium whitespace-nowrap transition-colors duration-150',
               section === s.id
-                ? 'bg-dusk-blue text-ink-navy'
-                : 'bg-paper text-ink-navy border border-hairline'
-            }`}
+                ? 'border-gold text-ink-navy'
+                : 'border-transparent text-slate-gray hover:text-ink-navy',
+            )}
           >
             {s.label}
           </button>
@@ -91,29 +88,26 @@ export function FamilyPortal() {
       {section === 'home' && (
         <div className="grid gap-4 lg:grid-cols-2">
           <Panel>
-            <div className="mb-3 flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-signal-blue" />
-              <h2 className="text-[18px] font-semibold">עדכונים רלוונטיים</h2>
-            </div>
-            <ul className="space-y-3">
+            <h2 className="mb-3 text-[15px] font-semibold">עדכונים רלוונטיים</h2>
+            <ul className="divide-y divide-hairline">
               {events.map((e) => (
-                <li key={e.id} className="rounded-lg bg-pebble/70 p-3">
-                  <div className="text-[12px] text-mist-gray">{e.date}</div>
-                  <div className="font-semibold">{e.title}</div>
-                  <p className="mt-1 text-[13px] text-slate-gray">{e.summary}</p>
+                <li key={e.id} className="py-2.5 first:pt-0 last:pb-0">
+                  <div className="text-[11px] text-mist-gray">{e.date}</div>
+                  <div className="text-[14px] font-medium">{e.title}</div>
+                  <p className="mt-0.5 text-[13px] text-slate-gray">{e.summary}</p>
                 </li>
               ))}
             </ul>
           </Panel>
           <Panel>
-            <h2 className="mb-3 text-[18px] font-semibold">סטטוס בקשות אחרונות</h2>
-            <ul className="space-y-2">
+            <h2 className="mb-3 text-[15px] font-semibold">סטטוס בקשות אחרונות</h2>
+            <ul className="divide-y divide-hairline">
               {requests.slice(0, 3).map((r) => (
                 <li
                   key={r.id}
-                  className="flex items-center justify-between gap-2 rounded-lg border border-hairline px-3 py-2"
+                  className="flex items-center justify-between gap-2 py-2.5 first:pt-0 last:pb-0"
                 >
-                  <span className="text-[14px] font-medium">{r.title}</span>
+                  <span className="text-[13px] font-medium">{r.title}</span>
                   <Badge
                     tone={
                       r.status === 'done'
@@ -129,7 +123,7 @@ export function FamilyPortal() {
               ))}
             </ul>
             <Button
-              className="mt-4"
+              className="mt-3"
               variant="outline"
               size="sm"
               onClick={() => setSection('requests')}
@@ -142,21 +136,21 @@ export function FamilyPortal() {
 
       {section === 'requests' && (
         <Panel className="!p-0 overflow-hidden">
-          <div className="border-b border-hairline px-4 py-4 sm:px-6">
-            <h2 className="text-[18px] font-semibold">בקשות ושירותים</h2>
-            <p className="mt-1 text-[13px] text-slate-gray">
+          <div className="border-b border-hairline px-4 py-3">
+            <h2 className="text-[15px] font-semibold">בקשות ושירותים</h2>
+            <p className="mt-0.5 text-[12px] text-slate-gray">
               מעקב אחר בקשותיכם ומידע על שירותים זמינים.
             </p>
           </div>
           <ul className="divide-y divide-hairline">
             {requests.map((r) => (
-              <li key={r.id} className="px-4 py-4 sm:px-6">
+              <li key={r.id} className="px-4 py-3">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-semibold">{r.title}</span>
+                  <span className="font-medium">{r.title}</span>
                   <Badge>{statusLabel[r.status]}</Badge>
                 </div>
-                <p className="mt-1 text-[14px] text-slate-gray">{r.summary}</p>
-                <p className="mt-1 text-[12px] text-mist-gray">
+                <p className="mt-1 text-[13px] text-slate-gray">{r.summary}</p>
+                <p className="mt-1 text-[11px] text-mist-gray">
                   עודכן {formatRelativeHe(r.updatedAt)}
                 </p>
               </li>
@@ -167,11 +161,11 @@ export function FamilyPortal() {
 
       {section === 'contact' && (
         <Panel>
-          <div className="mb-3 flex items-center gap-2">
-            <MessageCircle className="h-4 w-4 text-signal-blue" />
-            <h2 className="text-[18px] font-semibold">יצירת קשר עם המנהלת</h2>
+          <div className="mb-2 flex items-center gap-2">
+            <MessageCircle className="h-4 w-4 text-slate-gray" aria-hidden />
+            <h2 className="text-[15px] font-semibold">יצירת קשר עם המנהלת</h2>
           </div>
-          <p className="mb-3 text-[14px] text-slate-gray">
+          <p className="mb-3 text-[13px] text-slate-gray">
             שלחו הודעה לצוות הליווי. נחזור אליכם בהקדם האפשרי.
           </p>
           <Textarea

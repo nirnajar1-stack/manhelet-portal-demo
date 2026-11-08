@@ -1,8 +1,8 @@
 # Design System — פורטל המנהלת (אבטיפוס)
 
 > **Source of truth for visual language:** this file + tokens in `src/index.css`
-> (`@theme` block). Navy / Soft Gold SaaS pass (2026-11-07). Layout patterns from
-> earlier Stitch / ui-ux-pro-max passes remain; palette and chrome are updated here.
+> (`@theme` block). Portal SaaS design pass (2026-11-08) on Navy / Soft Gold —
+> hierarchy, density, hairline elevation; no business-logic changes.
 
 ## Provenance
 
@@ -66,32 +66,40 @@
 | Role | Size |
 |------|------|
 | Caption | 12px |
-| Body sm | 13–14px |
-| Body | 15–16px |
-| Button | 14–15px |
-| Section title | 18–20px |
-| Page title | 24–28px |
+| Body sm | 13px |
+| Body | 14px |
+| Button | 14px |
+| Section title | 15–17px |
+| Page title | 22px |
 
-Font stack: `"Rubik", "Heebo", "Assistant", ui-sans-serif, system-ui, sans-serif`
+Font stack: `"Heebo", "Rubik", "Assistant", ui-sans-serif, system-ui, sans-serif`
+
+Weight discipline: default 400; labels/CTAs 500; titles 600. Avoid bold everywhere.
 
 ## Radii & elevation
 
-- Buttons / fields / pills: **8px** (`--radius-md`)
-- Cards / panels: **12px** (`--radius-lg`) — soft shadow
-- Soft card shadow: `0 4px 12px rgba(13, 26, 51, 0.06)`
-- Spacing: 8 / 12 / 16 / 24
+- Buttons / fields: **8px** (`--radius-md`)
+- Cards / panels: **10px** (`--radius-lg`) — **hairline border, no default shadow**
+- Badges: **6px** (not pills)
+- Overlay shadow only (menus/toasts): `0 8px 20px rgba(13, 26, 51, 0.1)`
+- Spacing: 4 / 8 / 12 / 16 / 24
+- Top bar: **60px**; sidebar: **232px**; data rows: **~46px**
 
 ## Layout patterns (portal)
 
 - Persistent **right sidebar** (RTL) — Midnight Navy chrome, environment switcher at bottom
 - Top bar: logo, global search, **+ פעולה חדשה** (gold CTA), notifications, profile
-- Content: page wash `#F6F9FD` + white cards; optional left widget column
-- Task center: KPI strip + table + left detail drawer
-- Family portal: minimal shell without ops nav
+- Content: page wash `#F6F9FD` + white surfaces; KPI as single strip with hairline dividers
+- Task center: dense table + filters in chrome + detail drawer (no nested card shadows)
+- Home: attention first, task list primary, quiet rail for shortcuts
+- Family portal: minimal shell; no decorative blurs / AI blobs
 
 ## Anti-patterns to avoid
 
-- Decorative orange leftover accents (replaced by Soft Gold)
+- Identical large KPI cards with decorative duplicate numbers
+- Soft shadow on every panel
+- Decorative icons / Sparkles / blur orbs
+- Giant empty space and oversized page titles
 - White text on Soft Golden Yellow buttons
 - Large yellow page backgrounds
 - Purple-on-white / indigo glow themes
@@ -107,7 +115,8 @@ Font stack: `"Rubik", "Heebo", "Assistant", ui-sans-serif, system-ui, sans-serif
 - [x] Central tokens in `src/index.css`
 - [x] Primary gold + navy text; secondary dusk + navy; tertiary outline
 - [x] Navy sidebar with dusk active state
-- [x] RTL + Hebrew body font (Rubik / Heebo)
+- [x] RTL + Hebrew body font (Heebo primary)
+- [x] Hairline elevation; KPI strips not card grids
 - [x] Semantic success / warning / danger preserved
 - [x] rehab-demo explorer inherits tokens
-- [x] No leftover decorative orange
+- [x] No leftover decorative orange / blur orbs

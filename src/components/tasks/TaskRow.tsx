@@ -80,7 +80,7 @@ export function TaskRow({
             </span>
           )}
         </div>
-        <h3 className="truncate text-[15px] font-semibold text-ink-navy text-balance">
+        <h3 className="truncate text-[13px] font-medium text-ink-navy text-balance">
           {task.title}
         </h3>
         <p className="mt-1 truncate text-[13px] text-slate-gray">
@@ -123,9 +123,9 @@ export function TaskRow({
         type="button"
         onClick={() => onSelect(task)}
         className={cn(
-          'flex w-full cursor-pointer items-start justify-between gap-3 border-b border-hairline px-4 py-3 text-start transition-colors duration-200 hover:bg-soft-cyan focus-visible:bg-soft-cyan',
-          selected && 'bg-info-wash ring-1 ring-inset ring-dusk-blue/40',
-          compact && 'px-3 py-2.5',
+          'data-row flex w-full cursor-pointer items-start justify-between gap-3 border-b border-hairline px-4 py-2.5 text-start transition-colors duration-150 hover:bg-soft-cyan focus-visible:bg-soft-cyan',
+          selected && 'bg-info-wash',
+          compact && 'px-3 py-2',
         )}
       >
         {content}
@@ -137,9 +137,9 @@ export function TaskRow({
     <Link
       to={`/tasks/${task.id}`}
       className={cn(
-        'flex cursor-pointer items-start justify-between gap-3 border-b border-hairline px-4 py-3 transition-colors duration-200 hover:bg-soft-cyan focus-visible:bg-soft-cyan',
-        selected && 'bg-info-wash ring-1 ring-inset ring-dusk-blue/40',
-        compact && 'px-3 py-2.5',
+        'data-row flex cursor-pointer items-start justify-between gap-3 border-b border-hairline px-4 py-2.5 transition-colors duration-150 hover:bg-soft-cyan focus-visible:bg-soft-cyan',
+        selected && 'bg-info-wash',
+        compact && 'px-3 py-2',
       )}
     >
       {content}

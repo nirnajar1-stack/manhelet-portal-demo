@@ -628,7 +628,7 @@ export function TaskDetail() {
 
           <button
             type="button"
-            className="flex w-full items-center justify-between rounded-lg border border-hairline bg-paper px-3 py-2 text-[12px] font-medium shadow-soft"
+            className="flex w-full items-center justify-between rounded-lg border border-hairline bg-paper px-3 py-2 text-[12px] font-medium"
             onClick={() => setTechOpen((v) => !v)}
           >
             מידע טכני
@@ -639,7 +639,7 @@ export function TaskDetail() {
             )}
           </button>
           {techOpen && (
-            <dl className="grid gap-2 rounded-lg border border-hairline bg-paper p-3 text-[12px] text-slate-gray shadow-soft">
+            <dl className="grid gap-2 rounded-lg border border-hairline bg-paper p-3 text-[12px] text-slate-gray">
               <div>
                 <dt>מזהה פנימי</dt>
                 <dd className="font-mono text-ink-navy">{task.id}</dd>

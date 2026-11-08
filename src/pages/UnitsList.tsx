@@ -50,10 +50,10 @@ export function UnitsList() {
         : null
 
   return (
-    <div className="space-y-4">
+    <div className="page-stack">
       <div>
-        <h1 className="text-[28px] font-bold">יחידות טיפול</h1>
-        <p className="mt-1 text-[14px] text-slate-gray">
+        <h1 className="page-title">יחידות טיפול</h1>
+        <p className="page-lede">
           מוצגות רק יחידות לפי שיוך המשתמש · {accessible.length} זמינות
         </p>
         {intentHint && (
@@ -107,11 +107,11 @@ export function UnitsList() {
               <li key={u.id}>
                 <Link
                   to={href}
-                  className="flex flex-col gap-2 px-4 py-4 hover:bg-soft-cyan sm:flex-row sm:items-center sm:justify-between sm:px-6"
+                  className="data-row flex flex-col gap-2 px-4 py-3 transition-colors duration-150 hover:bg-soft-cyan sm:flex-row sm:items-center sm:justify-between sm:px-5"
                 >
                   <div>
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-[16px] font-semibold">
+                      <span className="text-[14px] font-semibold">
                         משפחת {u.familyName}
                       </span>
                       <Badge tone="muted">{u.region}</Badge>

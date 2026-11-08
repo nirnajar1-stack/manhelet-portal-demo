@@ -22,7 +22,7 @@ const tabs = [
 export function RehabDemoLayout() {
   return (
     <div className="space-y-6 animate-in fade-in duration-300">
-      <header className="rounded-xl border border-hairline bg-paper p-5 shadow-soft">
+      <header className="rounded-xl border border-hairline bg-paper p-5">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p className="text-[13px] font-medium text-signal-blue">Rehab Demo · schema rehab_demo</p>

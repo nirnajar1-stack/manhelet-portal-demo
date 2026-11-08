@@ -36,7 +36,7 @@ export function RehabHouseholds() {
 
   return (
     <div className="grid gap-4 lg:grid-cols-[320px_1fr]">
-      <aside className="rounded-xl border border-hairline bg-paper p-4 shadow-soft">
+      <aside className="rounded-xl border border-hairline bg-paper p-4">
         <h2 className="text-[16px] font-bold text-ink-navy">משקי בית ({households.length})</h2>
         <ul className="mt-3 space-y-1">
           {households.map((h) => (
@@ -61,7 +61,7 @@ export function RehabHouseholds() {
         </ul>
       </aside>
 
-      <section className="rounded-xl border border-hairline bg-paper p-5 shadow-soft">
+      <section className="rounded-xl border border-hairline bg-paper p-5">
         {hh && (
           <>
             <h2 className="text-[22px] font-bold text-ink-navy">{hh.display_name_he}</h2>

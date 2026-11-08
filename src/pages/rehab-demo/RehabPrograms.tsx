@@ -35,7 +35,7 @@ export function RehabPrograms() {
   )
 
   return (
-    <section className="rounded-xl border border-hairline bg-paper p-5 shadow-soft">
+    <section className="rounded-xl border border-hairline bg-paper p-5">
       <h2 className="text-[20px] font-bold text-ink-navy">תוכניות שיקום</h2>
       <p className="mt-1 text-[14px] text-slate-gray">
         תוכנית פתוחה נועלת גרסת תבנית. לחצו לפרטי היררכיה סביב Program_Patient.

@@ -15,7 +15,7 @@ export function RehabErd() {
 
   return (
     <div className="grid gap-4 xl:grid-cols-[280px_1fr]">
-      <aside className="rounded-xl border border-hairline bg-paper p-4 shadow-soft">
+      <aside className="rounded-xl border border-hairline bg-paper p-4">
         <h2 className="text-[16px] font-bold text-ink-navy">טבלאות</h2>
         <ul className="mt-3 max-h-[70vh] space-y-1 overflow-auto">
           {tableNames.map((name) => (
@@ -39,7 +39,7 @@ export function RehabErd() {
       </aside>
 
       <div className="space-y-4">
-        <section className="rounded-xl border border-hairline bg-paper p-4 shadow-soft">
+        <section className="rounded-xl border border-hairline bg-paper p-4">
           <h2 className="text-[18px] font-bold text-ink-navy">ERD (Mermaid)</h2>
           <pre
             className="mt-3 overflow-auto rounded-lg bg-cloud p-4 text-[12px] leading-relaxed text-ink-navy"
@@ -53,7 +53,7 @@ export function RehabErd() {
           </p>
         </section>
 
-        <section className="rounded-xl border border-hairline bg-paper p-4 shadow-soft">
+        <section className="rounded-xl border border-hairline bg-paper p-4">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <h2 className="text-[18px] font-bold text-ink-navy">
               <span className="font-mono text-signal-blue">{table}</span>

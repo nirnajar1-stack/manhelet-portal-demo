@@ -6,9 +6,6 @@ import {
   Camera,
   Download,
   Gift,
-  Heart,
-  MapPin,
-  Users,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -59,17 +56,15 @@ export function Programs() {
   }
 
   return (
-    <div className="space-y-5 motion-fade-in">
+    <div className="page-stack motion-fade-in">
       <div className="text-[12px] text-slate-gray">
         תיקי מת״ם › מרחב דרום › תוכניות, אירועים והטבות
       </div>
 
       <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <h1 className="text-[26px] font-bold text-ink-navy text-balance">
-            תוכניות, אירועים והטבות
-          </h1>
-          <p className="mt-1 max-w-2xl text-[13px] text-slate-gray">
+          <h1 className="page-title">תוכניות, אירועים והטבות</h1>
+          <p className="page-lede max-w-2xl">
             ניהול ונגישות להפוגות, פעילויות קהילתיות והטבות שיקום ליחידות במרחב
             — רישום יזום ומעקב מימוש זכויות.
           </p>
@@ -78,7 +73,7 @@ export function Programs() {
       </div>
 
       <div
-        className="flex gap-1 overflow-x-auto"
+        className="flex gap-0.5 overflow-x-auto border-b border-hairline"
         role="tablist"
         aria-label="סוגי תוכניות"
       >
@@ -90,10 +85,10 @@ export function Programs() {
             aria-selected={tab === t.id}
             onClick={() => setTab(t.id)}
             className={cn(
-              'min-h-9 shrink-0 cursor-pointer rounded-md px-3 py-1.5 text-[12px] font-medium whitespace-nowrap transition-colors duration-200',
+              'filter-chip cursor-pointer rounded-none border-b-2',
               tab === t.id
-                ? 'bg-dusk-blue text-ink-navy'
-                : 'bg-paper text-slate-gray shadow-soft hover:bg-soft-cyan',
+                ? 'border-gold text-ink-navy'
+                : 'border-transparent text-slate-gray hover:text-ink-navy',
             )}
           >
             {t.label} ({counts[t.id]})
@@ -142,23 +137,23 @@ export function Programs() {
           )}
         </div>
 
-        <div className="space-y-3">
-          <Panel className="!p-4">
-            <h3 className="mb-3 text-[14px] font-semibold">מדד מימוש זכויות</h3>
-            <div className="mx-auto flex h-28 w-28 items-center justify-center rounded-full border-[10px] border-signal-blue border-e-pebble border-b-pebble">
-              <div className="text-center">
-                <div className="text-[22px] font-bold text-ink-navy">82%</div>
-                <div className="text-[10px] text-mist-gray">מימוש</div>
-              </div>
+        <aside className="space-y-0 divide-y divide-hairline rounded-[10px] border border-hairline bg-paper self-start">
+          <div className="p-3.5">
+            <h3 className="section-label mb-2">מדד מימוש זכויות</h3>
+            <div className="flex items-baseline gap-2">
+              <span className="text-[28px] font-semibold tabular-nums text-ink-navy">
+                82%
+              </span>
+              <span className="text-[12px] text-slate-gray">מימוש</span>
             </div>
-            <p className="mt-3 text-center text-[12px] text-slate-gray">
+            <p className="mt-1 text-[12px] text-slate-gray">
               {Math.min(units.length, 10)}/{Math.max(units.length, 12)} יחידות
               פעילות עם מימוש הטבה
             </p>
-          </Panel>
+          </div>
 
-          <Panel className="!p-4">
-            <h3 className="mb-3 text-[14px] font-semibold">
+          <div className="p-3.5">
+            <h3 className="section-label mb-2">
               משימות טיפול מהיר (3)
             </h3>
             <ul className="space-y-2">
@@ -179,28 +174,19 @@ export function Programs() {
                 <span>פתיחת בקשת מענק ציוד ליחידה</span>
               </li>
             </ul>
-          </Panel>
+          </div>
 
-          <Panel className="!p-4">
-            <h3 className="mb-3 text-[14px] font-semibold">התאמות מיוחדות</h3>
-            <ul className="space-y-2 text-[12px] text-slate-gray">
-              <li className="flex items-center gap-2">
-                <Heart className="h-3.5 w-3.5 text-danger" />
-                רגישויות מזון
-              </li>
-              <li className="flex items-center gap-2">
-                <MapPin className="h-3.5 w-3.5 text-signal-blue" />
-                הסעה נגישה
-              </li>
-              <li className="flex items-center gap-2">
-                <Users className="h-3.5 w-3.5 text-success" />
-                ליווי טיפולי צמוד
-              </li>
+          <div className="p-3.5">
+            <h3 className="section-label mb-2">התאמות מיוחדות</h3>
+            <ul className="space-y-1.5 text-[12px] text-slate-gray">
+              <li>רגישויות מזון</li>
+              <li>הסעה נגישה</li>
+              <li>ליווי טיפולי צמוד</li>
             </ul>
-          </Panel>
+          </div>
 
-          <Panel className="!p-4">
-            <h3 className="mb-2 text-[14px] font-semibold">נהלים רלוונטיים</h3>
+          <div className="p-3.5">
+            <h3 className="section-label mb-2">נהלים רלוונטיים</h3>
             <ul className="space-y-1.5 text-[12px]">
               <li>
                 <Link to="/knowledge" className="font-medium text-signal-blue hover:underline">
@@ -215,12 +201,12 @@ export function Programs() {
             </ul>
             <Link
               to="/knowledge"
-              className="mt-3 inline-flex text-[12px] font-semibold text-ink-navy hover:underline"
+              className="mt-2 inline-flex text-[12px] font-medium text-ink-navy hover:underline"
             >
               לכלל מרכז הידע ›
             </Link>
-          </Panel>
-        </div>
+          </div>
+        </aside>
       </div>
     </div>
   )
@@ -249,23 +235,19 @@ function ProgramCard({ program }: { program: ProgramItem }) {
         : 'זכאות פעילה'
 
   return (
-    <Panel className="!p-5">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div className="flex items-start gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-badge-bg text-signal-blue">
-            <Icon className="h-5 w-5" />
-          </span>
-          <div>
-            <div className="flex flex-wrap items-center gap-2">
-              <h2 className="text-[17px] font-bold text-ink-navy">{program.title}</h2>
-              <Badge tone={statusTone}>{statusLabel}</Badge>
-              {program.kindLabel && <Badge tone="muted">{program.kindLabel}</Badge>}
-            </div>
-            <p className="mt-1 text-[13px] text-slate-gray">{program.summary}</p>
+    <Panel className="!p-4">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <Icon className="h-4 w-4 shrink-0 text-slate-gray" aria-hidden />
+            <h2 className="text-[15px] font-semibold text-ink-navy">{program.title}</h2>
+            <Badge tone={statusTone}>{statusLabel}</Badge>
+            {program.kindLabel && <Badge tone="muted">{program.kindLabel}</Badge>}
           </div>
+          <p className="mt-1 text-[13px] text-slate-gray">{program.summary}</p>
         </div>
         {program.dateLabel && (
-          <span className="shrink-0 rounded-md bg-pebble px-2.5 py-1 text-[12px] font-medium text-slate-gray">
+          <span className="shrink-0 text-[12px] font-medium tabular-nums text-slate-gray">
             {program.dateLabel}
           </span>
         )}
