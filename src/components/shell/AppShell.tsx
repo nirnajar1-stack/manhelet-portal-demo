@@ -8,6 +8,7 @@ import {
   CheckSquare,
   CircleHelp,
   Database,
+  HeartHandshake,
   Home,
   Menu,
   Plus,
@@ -31,6 +32,7 @@ const matamNav = [
   { to: '/programs', label: 'תוכניות, אירועים והטבות', icon: CalendarDays },
   { to: '/knowledge', label: 'מרכז ידע ונהלים', icon: BookOpen },
   { to: '/org', label: 'בית המנהלת', icon: Building2 },
+  { to: '/rehab/bank', label: 'בנק מטרות שיקום', icon: HeartHandshake },
   { to: '/rehab-demo', label: 'סייר מודל שיקום', icon: Database },
 ]
 

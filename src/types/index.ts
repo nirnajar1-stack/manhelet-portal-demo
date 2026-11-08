@@ -43,6 +43,8 @@ export interface TreatmentUnit {
   summary: string
 }
 
+export type ActivityAffiliation = 'routine' | 'rehab'
+
 export interface Task {
   id: string
   number: string
@@ -65,6 +67,10 @@ export interface Task {
   createdAt: string
   hasNewReply: boolean
   lastActivity: string
+  /** Default routine — rehab requires personal stage links. */
+  activityAffiliation?: ActivityAffiliation
+  rehabPrimaryStageId?: string
+  rehabSecondaryStageIds?: string[]
 }
 
 export interface ChatterMessage {
@@ -82,6 +88,13 @@ export interface Visit {
   date: string
   summary: string
   visitedBy: string
+  memberId?: string
+  activityAffiliation?: ActivityAffiliation
+  rehabPrimaryStageId?: string
+  rehabSecondaryStageIds?: string[]
+  participantMemberIds?: string[]
+  visitTypeHe?: string
+  status?: 'planned' | 'completed' | 'cancelled' | 'no_show'
 }
 
 export interface RehabNote {

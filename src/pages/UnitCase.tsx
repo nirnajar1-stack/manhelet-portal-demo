@@ -1,17 +1,21 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { ActivityAffiliationControl } from '@/components/rehab/ActivityAffiliationControl'
+import { MemberRehabPanel } from '@/components/rehab/MemberRehabPanel'
+import { RehabStageSelector } from '@/components/rehab/RehabStageSelector'
+import { getGoal, getStage } from '@/lib/rehab-workflow/store'
 import { AssumptionBanner } from '@/components/ui/assumption'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Panel } from '@/components/ui/card'
-import { Input, Textarea } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/input'
 import { TaskList } from '@/components/tasks/TaskList'
-import { addRehabNote, fetchUnitExtras } from '@/api/stubs'
-import { getMember, getUnit } from '@/data/mock'
+import { createVisit, fetchUnitExtras } from '@/api/stubs'
+import { getUnit } from '@/data/mock'
 import { canViewUnit, visibleTasks } from '@/lib/access'
 import { formatRelativeHe, cn } from '@/lib/utils'
 import { useApp } from '@/state/AppContext'
-import type { DocumentItem, RehabNote, Visit } from '@/types'
+import type { ActivityAffiliation, DocumentItem, Visit } from '@/types'
 
 type Tab = 'overview' | 'members' | 'tasks' | 'visits' | 'rehab' | 'docs'
 
@@ -20,7 +24,7 @@ const tabs: { id: Tab; label: string }[] = [
   { id: 'members', label: 'בני משפחה' },
   { id: 'tasks', label: 'משימות' },
   { id: 'visits', label: 'ביקורים' },
-  { id: 'rehab', label: 'שיקום' },
+  { id: 'rehab', label: 'תהליך השיקום' },
   { id: 'docs', label: 'מסמכים' },
 ]
 
@@ -34,12 +38,21 @@ export function UnitCase() {
   const navigate = useNavigate()
 
   const [visits, setVisits] = useState<Visit[]>([])
-  const [rehab, setRehab] = useState<RehabNote[]>([])
   const [docs, setDocs] = useState<DocumentItem[]>([])
   const [visitNote, setVisitNote] = useState('')
-  const [rehabTitle, setRehabTitle] = useState('')
-  const [rehabNote, setRehabNote] = useState('')
-  const [rehabMemberId, setRehabMemberId] = useState('')
+  const [visitMemberId, setVisitMemberId] = useState(params.get('memberId') ?? '')
+  const [visitAffiliation, setVisitAffiliation] = useState<ActivityAffiliation>(
+    (params.get('affiliation') as ActivityAffiliation) || 'routine',
+  )
+  const [visitPrimaryStageId, setVisitPrimaryStageId] = useState<
+    string | undefined
+  >(params.get('rehabStageId') || undefined)
+  const [visitSecondaryStageIds, setVisitSecondaryStageIds] = useState<
+    string[]
+  >([])
+  const [visitIncludeInactive, setVisitIncludeInactive] = useState(
+    Boolean(params.get('rehabStageId')),
+  )
 
   const allowed = unitId ? canViewUnit(currentUser, unitId) : false
 
@@ -51,7 +64,6 @@ export function UnitCase() {
     if (!unitId || !allowed) return
     void fetchUnitExtras(unitId).then((x) => {
       setVisits(x.visits)
-      setRehab(x.rehab)
       setDocs(x.documents)
     })
   }, [unitId, allowed])
@@ -180,7 +192,7 @@ export function UnitCase() {
                   className="text-signal-blue hover:underline"
                   onClick={() => setTab('rehab')}
                 >
-                  שיקום (מבני)
+                  תהליך השיקום
                 </button>
               </li>
             </ul>
@@ -209,12 +221,92 @@ export function UnitCase() {
       {tab === 'visits' && (
         <div className="space-y-4">
           <AssumptionBanner>
-            ביקורים — אבטיפוס מבני בלבד, לא אפיון קליני. אין נתונים רפואיים.
+            ביקורים — כולל שיוך שיקום אופציונלי לשלב אישי של בן המשפחה הראשי.
+            אין קישור אוטומטי לכל משתתפי הביקור.
           </AssumptionBanner>
-          <Panel>
-            <h2 className="mb-2 text-[16px] font-semibold">
-              תיעוד ביקור (דמה){action === 'visit' ? ' · פעולה מהירה' : ''}
+          <Panel className="space-y-3">
+            <h2 className="text-[16px] font-semibold">
+              תיעוד ביקור{action === 'visit' ? ' · פעולה מהירה' : ''}
             </h2>
+            <label className="block space-y-1.5">
+              <span className="text-[13px] font-semibold">בן/בת משפחה ראשי</span>
+              <select
+                className="h-10 w-full rounded-md border border-hairline bg-pebble px-3 text-[14px]"
+                value={visitMemberId}
+                onChange={(e) => {
+                  const next = e.target.value
+                  if (
+                    visitMemberId &&
+                    next !== visitMemberId &&
+                    visitAffiliation === 'rehab' &&
+                    (visitPrimaryStageId || visitSecondaryStageIds.length)
+                  ) {
+                    if (
+                      !window.confirm(
+                        'שינוי בן המשפחה מחייב בחירה מחדש של שלבי השיקום.',
+                      )
+                    ) {
+                      return
+                    }
+                  }
+                  setVisitMemberId(next)
+                  setVisitPrimaryStageId(undefined)
+                  setVisitSecondaryStageIds([])
+                }}
+              >
+                <option value="">בחרו…</option>
+                {unit.members.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <div className="space-y-1.5">
+              <span className="text-[13px] font-semibold">שיוך הפעילות</span>
+              <ActivityAffiliationControl
+                value={visitAffiliation}
+                onChange={(next) => {
+                  if (
+                    visitAffiliation === 'rehab' &&
+                    next === 'routine' &&
+                    (visitPrimaryStageId || visitSecondaryStageIds.length)
+                  ) {
+                    if (
+                      !window.confirm(
+                        'להסיר את קישורי השיקום מהביקור? שאר הפרטים יישמרו.',
+                      )
+                    ) {
+                      return
+                    }
+                    setVisitPrimaryStageId(undefined)
+                    setVisitSecondaryStageIds([])
+                  }
+                  setVisitAffiliation(next)
+                }}
+                routineLabel="ביקור שוטף"
+                rehabLabel="ביקור שיקומי"
+              />
+            </div>
+            {visitAffiliation === 'rehab' && (
+              <div className="space-y-2 rounded-md border border-hairline p-3">
+                <h3 className="text-[14px] font-semibold">קישור למטרת שיקום</h3>
+                <p className="text-[12px] text-slate-gray">
+                  הקישור מתייחס לבן המשפחה הראשי שנבחר. משתתפים נוספים אינם
+                  מקושרים אוטומטית.
+                </p>
+                <RehabStageSelector
+                  memberId={visitMemberId}
+                  primaryStageId={visitPrimaryStageId}
+                  secondaryStageIds={visitSecondaryStageIds}
+                  includeInactive={visitIncludeInactive}
+                  onIncludeInactiveChange={setVisitIncludeInactive}
+                  onPrimaryChange={setVisitPrimaryStageId}
+                  onSecondaryChange={setVisitSecondaryStageIds}
+                  emptyHref={`/units/${unit.id}?tab=rehab`}
+                />
+              </div>
+            )}
             <Textarea
               value={visitNote}
               onChange={(e) => setVisitNote(e.target.value)}
@@ -225,18 +317,22 @@ export function UnitCase() {
               size="sm"
               onClick={() => {
                 if (!visitNote.trim()) return
-                setVisits((prev) => [
-                  {
-                    id: `v-${Date.now()}`,
-                    unitId: unit.id,
-                    date: new Date().toISOString().slice(0, 10),
-                    summary: visitNote.trim(),
-                    visitedBy: currentUser.name,
-                  },
-                  ...prev,
-                ])
-                setVisitNote('')
-                showToast('ביקור תועד (דמה מקומי)')
+                void createVisit({
+                  unitId: unit.id,
+                  summary: visitNote.trim(),
+                  visitedBy: currentUser.name,
+                  memberId: visitMemberId || undefined,
+                  activityAffiliation: visitAffiliation,
+                  rehabPrimaryStageId: visitPrimaryStageId,
+                  rehabSecondaryStageIds: visitSecondaryStageIds,
+                  actorUserId: currentUser.id,
+                })
+                  .then((created) => {
+                    setVisits((prev) => [created, ...prev])
+                    setVisitNote('')
+                    showToast('ביקור נשמר')
+                  })
+                  .catch((err: Error) => showToast(err.message))
               }}
             >
               שמירת ביקור
@@ -244,14 +340,41 @@ export function UnitCase() {
           </Panel>
           <Panel className="!p-0 overflow-hidden">
             <ul className="divide-y divide-hairline">
-              {visits.map((v) => (
-                <li key={v.id} className="px-4 py-3 sm:px-6">
-                  <div className="text-[12px] text-mist-gray">
-                    {v.date} · {v.visitedBy}
-                  </div>
-                  <p className="mt-1 text-[14px]">{v.summary}</p>
-                </li>
-              ))}
+              {visits.map((v) => {
+                const member = unit.members.find((m) => m.id === v.memberId)
+                const primary = v.rehabPrimaryStageId
+                  ? getStage(v.rehabPrimaryStageId)
+                  : undefined
+                const primaryGoal = primary
+                  ? getGoal(primary.personalGoalId)
+                  : undefined
+                return (
+                  <li key={v.id} className="px-4 py-3 sm:px-6">
+                    <div className="text-[12px] text-mist-gray">
+                      {v.date} · {v.visitedBy}
+                      {v.activityAffiliation === 'rehab' ? ' · שיקום' : ''}
+                      {member ? ` · ${member.name}` : ''}
+                    </div>
+                    <p className="mt-1 text-[14px]">{v.summary}</p>
+                    {primary && primaryGoal && member && (
+                      <div className="mt-2 rounded-md bg-pebble px-2.5 py-2 text-[12px]">
+                        <div className="font-semibold text-ink-navy">
+                          {member.name}
+                        </div>
+                        <div className="text-signal-blue">
+                          ← {primaryGoal.nameHe}
+                        </div>
+                        <div className="text-slate-gray">
+                          ← {primary.nameHe}
+                          {v.rehabSecondaryStageIds?.length
+                            ? ` · +${v.rehabSecondaryStageIds.length} שלבים נוספים`
+                            : ''}
+                        </div>
+                      </div>
+                    )}
+                  </li>
+                )
+              })}
               {visits.length === 0 && (
                 <li className="px-4 py-8 text-center text-[14px] text-slate-gray">
                   אין ביקורים מתועדים
@@ -263,86 +386,11 @@ export function UnitCase() {
       )}
 
       {tab === 'rehab' && (
-        <div className="space-y-4">
-          <AssumptionBanner>
-            שיקום — אבטיפוס מבני בלבד. עדכון חייב להיות משויך לבן/בת משפחה ספציפי.
-          </AssumptionBanner>
-          <Panel>
-            <h2 className="mb-2 text-[16px] font-semibold">
-              עדכון שיקום (דמה){action === 'rehab' ? ' · פעולה מהירה' : ''}
-            </h2>
-            <label className="mb-2 block space-y-1.5">
-              <span className="text-[13px] font-semibold">
-                בן/בת משפחה <span className="text-danger">*</span>
-              </span>
-              <select
-                className="h-10 w-full rounded-md border border-hairline bg-pebble px-3 text-[14px]"
-                value={rehabMemberId}
-                onChange={(e) => setRehabMemberId(e.target.value)}
-              >
-                <option value="">בחרו בן/בת משפחה…</option>
-                {unit.members.map((m) => (
-                  <option key={m.id} value={m.id}>
-                    {m.name} ({m.relation})
-                  </option>
-                ))}
-              </select>
-            </label>
-            <Input
-              className="mb-2"
-              value={rehabTitle}
-              onChange={(e) => setRehabTitle(e.target.value)}
-              placeholder="כותרת נקודת ביניים"
-            />
-            <Textarea
-              value={rehabNote}
-              onChange={(e) => setRehabNote(e.target.value)}
-              placeholder="תיעוד מבני…"
-            />
-            <Button
-              className="mt-2"
-              size="sm"
-              onClick={() => {
-                if (!rehabMemberId) {
-                  showToast('יש לבחור בן/בת משפחה לעדכון שיקום')
-                  return
-                }
-                if (!rehabTitle.trim() || !rehabNote.trim()) return
-                void addRehabNote({
-                  unitId: unit.id,
-                  memberId: rehabMemberId,
-                  title: rehabTitle.trim(),
-                  note: rehabNote.trim(),
-                }).then((created) => {
-                  setRehab((prev) => [created, ...prev])
-                  setRehabTitle('')
-                  setRehabNote('')
-                  setRehabMemberId('')
-                  showToast('עדכון שיקום נשמר לבן/בת המשפחה')
-                })
-              }}
-            >
-              שמירת עדכון
-            </Button>
-          </Panel>
-          <Panel className="!p-0 overflow-hidden">
-            <ul className="divide-y divide-hairline">
-              {rehab.map((r) => {
-                const person = getMember(r.unitId, r.memberId)
-                return (
-                  <li key={r.id} className="px-4 py-3 sm:px-6">
-                    <div className="text-[12px] text-mist-gray">
-                      {r.date}
-                      {person ? ` · ${person.name}` : ''}
-                    </div>
-                    <div className="font-semibold">{r.title}</div>
-                    <p className="mt-1 text-[14px] text-slate-gray">{r.note}</p>
-                  </li>
-                )
-              })}
-            </ul>
-          </Panel>
-        </div>
+        <MemberRehabPanel
+          unitId={unit.id}
+          members={unit.members}
+          initialMemberId={params.get('memberId') ?? undefined}
+        />
       )}
 
       {tab === 'docs' && (

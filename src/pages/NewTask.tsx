@@ -1,12 +1,14 @@
 import { useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { ActivityAffiliationControl } from '@/components/rehab/ActivityAffiliationControl'
+import { RehabStageSelector } from '@/components/rehab/RehabStageSelector'
 import { AssumptionBanner } from '@/components/ui/assumption'
 import { Button } from '@/components/ui/button'
 import { Input, Textarea } from '@/components/ui/input'
 import { Panel } from '@/components/ui/card'
 import { visibleUnits } from '@/lib/access'
 import { useApp } from '@/state/AppContext'
-import type { TaskPriority } from '@/types'
+import type { ActivityAffiliation, TaskPriority } from '@/types'
 
 const domains = [
   { domain: 'דיור', subs: ['דיור זמני', 'דיור קבע'] },
@@ -21,8 +23,13 @@ const domains = [
 export function NewTask() {
   const [params] = useSearchParams()
   const presetUnit = params.get('unitId') ?? ''
+  const presetMember = params.get('memberId') ?? ''
+  const presetStage = params.get('rehabStageId') ?? ''
+  const presetAffiliation =
+    (params.get('affiliation') as ActivityAffiliation) || 'routine'
+  const fromObs = params.get('fromObs')
   const fromUnitCase = Boolean(presetUnit)
-  const { currentUser, createNewTask } = useApp()
+  const { currentUser, createNewTask, showToast } = useApp()
   const navigate = useNavigate()
 
   const allowedUnits = useMemo(
@@ -30,21 +37,36 @@ export function NewTask() {
     [currentUser],
   )
 
-  // From a general screen: do NOT auto-select a family.
-  // From a treatment-unit case screen: auto-fill the unit affiliation.
   const initialUnit =
     fromUnitCase && allowedUnits.some((u) => u.id === presetUnit)
       ? presetUnit
       : ''
 
-  const [title, setTitle] = useState('')
+  const [title, setTitle] = useState(
+    fromObs ? 'מעקב בעקבות תצפית שיקום' : '',
+  )
   const [unitId, setUnitId] = useState(initialUnit)
-  const [memberId, setMemberId] = useState('')
-  const [description, setDescription] = useState('')
-  const [domain, setDomain] = useState(domains[0].domain)
-  const [subDomain, setSubDomain] = useState(domains[0].subs[0])
+  const [memberId, setMemberId] = useState(presetMember)
+  const [description, setDescription] = useState(
+    fromObs
+      ? `נוצרה מתצפית ${fromObs} — יש להשלים פרטי ביצוע.`
+      : '',
+  )
+  const [domain, setDomain] = useState(
+    presetAffiliation === 'rehab' ? 'שיקום' : domains[0].domain,
+  )
+  const [subDomain, setSubDomain] = useState(
+    presetAffiliation === 'rehab' ? 'תיאום' : domains[0].subs[0],
+  )
   const [priority, setPriority] = useState<TaskPriority>('medium')
   const [dueDate, setDueDate] = useState('')
+  const [affiliation, setAffiliation] =
+    useState<ActivityAffiliation>(presetAffiliation)
+  const [primaryStageId, setPrimaryStageId] = useState<string | undefined>(
+    presetStage || undefined,
+  )
+  const [secondaryStageIds, setSecondaryStageIds] = useState<string[]>([])
+  const [includeInactive, setIncludeInactive] = useState(Boolean(presetStage))
   const [errors, setErrors] = useState<string[]>([])
   const [saving, setSaving] = useState(false)
 
@@ -54,12 +76,58 @@ export function NewTask() {
   )
   const subs = domains.find((d) => d.domain === domain)?.subs ?? []
 
+  function clearRehabOnly() {
+    setPrimaryStageId(undefined)
+    setSecondaryStageIds([])
+  }
+
+  function onMemberChange(next: string) {
+    if (
+      memberId &&
+      next !== memberId &&
+      affiliation === 'rehab' &&
+      (primaryStageId || secondaryStageIds.length > 0)
+    ) {
+      if (
+        !window.confirm(
+          'שינוי בן המשפחה מחייב בחירה מחדש של שלבי השיקום.',
+        )
+      ) {
+        return
+      }
+      clearRehabOnly()
+    }
+    setMemberId(next)
+  }
+
+  function onAffiliationChange(next: ActivityAffiliation) {
+    if (affiliation === 'rehab' && next === 'routine') {
+      if (
+        !window.confirm(
+          'להסיר את קישורי השיקום מהמשימה? שאר פרטי המשימה יישמרו.',
+        )
+      ) {
+        return
+      }
+      clearRehabOnly()
+    }
+    setAffiliation(next)
+    if (next === 'rehab' && domain !== 'שיקום') {
+      setDomain('שיקום')
+      setSubDomain('תיאום')
+    }
+  }
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
     const next: string[] = []
     if (!title.trim()) next.push('כותרת')
     if (!unitId) next.push('יחידת טיפול')
     if (!description.trim()) next.push('תיאור')
+    if (affiliation === 'rehab') {
+      if (!memberId) next.push('בן/בת משפחה')
+      if (!primaryStageId) next.push('שלב שיקום ראשי')
+    }
     setErrors(next)
     if (next.length) return
 
@@ -76,8 +144,15 @@ export function NewTask() {
         ownerId: currentUser.id,
         creatorId: currentUser.id,
         dueDate: dueDate || undefined,
+        activityAffiliation: affiliation,
+        rehabPrimaryStageId: primaryStageId,
+        rehabSecondaryStageIds: secondaryStageIds,
+        actorUserId: currentUser.id,
       })
+      showToast('המשימה נוצרה')
       navigate(`/tasks/${task.id}`)
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'שגיאה בשמירה')
     } finally {
       setSaving(false)
     }
@@ -91,12 +166,12 @@ export function NewTask() {
           {fromUnitCase
             ? 'יחידת הטיפול מולאה אוטומטית מתוך התיק.'
             : 'ממסך כללי — בחרו יחידת טיפול ידנית (אין בחירה אוטומטית).'}
+          {presetStage ? ' · שלב שיקום מולא מראש.' : ''}
         </p>
       </div>
 
       <AssumptionBanner>
-        שדות חובה וולידציות מסומנים כהנחה שמרנית — לאימות מול Salesforce לפני
-        ייצור.
+        שיוך שיקום מחויב למופע שלב אישי של בן המשפחה שנבחר — נאכף בצד השרת (stub).
       </AssumptionBanner>
 
       <Panel>
@@ -116,6 +191,7 @@ export function NewTask() {
               onChange={(e) => {
                 setUnitId(e.target.value)
                 setMemberId('')
+                clearRehabOnly()
               }}
               disabled={fromUnitCase && Boolean(initialUnit)}
             >
@@ -132,7 +208,7 @@ export function NewTask() {
             <select
               className="h-10 w-full rounded-md border border-hairline bg-pebble px-3 text-[14px]"
               value={memberId}
-              onChange={(e) => setMemberId(e.target.value)}
+              onChange={(e) => onMemberChange(e.target.value)}
               disabled={!unit}
             >
               <option value="">ללא בחירה</option>
@@ -143,6 +219,31 @@ export function NewTask() {
               ))}
             </select>
           </Field>
+
+          <Field label="שיוך הפעילות">
+            <ActivityAffiliationControl
+              value={affiliation}
+              onChange={onAffiliationChange}
+            />
+          </Field>
+
+          {affiliation === 'rehab' && (
+            <div className="space-y-2 rounded-md border border-hairline p-3">
+              <h3 className="text-[14px] font-semibold">קישור למטרת שיקום</h3>
+              <RehabStageSelector
+                memberId={memberId}
+                primaryStageId={primaryStageId}
+                secondaryStageIds={secondaryStageIds}
+                includeInactive={includeInactive}
+                onIncludeInactiveChange={setIncludeInactive}
+                onPrimaryChange={setPrimaryStageId}
+                onSecondaryChange={setSecondaryStageIds}
+                emptyHref={
+                  unitId ? `/units/${unitId}?tab=rehab` : '/rehab/bank'
+                }
+              />
+            </div>
+          )}
 
           <Field label="תיאור" required>
             <Textarea
