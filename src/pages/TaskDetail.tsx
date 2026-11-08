@@ -351,9 +351,24 @@ export function TaskDetail() {
                       ) : (
                         task.rehabPrimaryStageId
                       )}
-                      {task.rehabSecondaryStageIds?.length
-                        ? ` · משניים: ${task.rehabSecondaryStageIds.length}`
-                        : ''}
+                      {task.rehabSecondaryStageIds &&
+                      task.rehabSecondaryStageIds.length > 0 ? (
+                        <span className="mt-1 block">
+                          שלבים נוספים:{' '}
+                          {task.rehabSecondaryStageIds.map((sid, i) => {
+                            const ss = getStage(sid)
+                            const gg = ss ? getGoal(ss.personalGoalId) : undefined
+                            return (
+                              <span key={sid}>
+                                {i > 0 ? ' · ' : ''}
+                                {gg && ss
+                                  ? `${gg.nameHe} / ${ss.nameHe}`
+                                  : sid}
+                              </span>
+                            )
+                          })}
+                        </span>
+                      ) : null}
                     </p>
                   )
                 })()}

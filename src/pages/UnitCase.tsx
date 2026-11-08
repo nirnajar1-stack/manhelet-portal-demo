@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { ActivityAffiliationControl } from '@/components/rehab/ActivityAffiliationControl'
 import { MemberRehabPanel } from '@/components/rehab/MemberRehabPanel'
-import { RehabStagePicker } from '@/components/rehab/RehabStagePicker'
+import { RehabStageSelector } from '@/components/rehab/RehabStageSelector'
+import { getGoal, getStage } from '@/lib/rehab-workflow/store'
 import { AssumptionBanner } from '@/components/ui/assumption'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -232,7 +234,22 @@ export function UnitCase() {
                 className="h-10 w-full rounded-md border border-hairline bg-pebble px-3 text-[14px]"
                 value={visitMemberId}
                 onChange={(e) => {
-                  setVisitMemberId(e.target.value)
+                  const next = e.target.value
+                  if (
+                    visitMemberId &&
+                    next !== visitMemberId &&
+                    visitAffiliation === 'rehab' &&
+                    (visitPrimaryStageId || visitSecondaryStageIds.length)
+                  ) {
+                    if (
+                      !window.confirm(
+                        'שינוי בן המשפחה מחייב בחירה מחדש של שלבי השיקום.',
+                      )
+                    ) {
+                      return
+                    }
+                  }
+                  setVisitMemberId(next)
                   setVisitPrimaryStageId(undefined)
                   setVisitSecondaryStageIds([])
                 }}
@@ -245,30 +262,50 @@ export function UnitCase() {
                 ))}
               </select>
             </label>
-            <label className="block space-y-1.5">
+            <div className="space-y-1.5">
               <span className="text-[13px] font-semibold">שיוך הפעילות</span>
-              <select
-                className="h-10 w-full rounded-md border border-hairline bg-pebble px-3 text-[14px]"
+              <ActivityAffiliationControl
                 value={visitAffiliation}
-                onChange={(e) =>
-                  setVisitAffiliation(e.target.value as ActivityAffiliation)
-                }
-              >
-                <option value="routine">ביקור שוטף</option>
-                <option value="rehab">ביקור במסגרת שיקום</option>
-              </select>
-            </label>
-            {visitAffiliation === 'rehab' && (
-              <RehabStagePicker
-                memberId={visitMemberId}
-                primaryStageId={visitPrimaryStageId}
-                secondaryStageIds={visitSecondaryStageIds}
-                includeInactive={visitIncludeInactive}
-                onIncludeInactiveChange={setVisitIncludeInactive}
-                onPrimaryChange={setVisitPrimaryStageId}
-                onSecondaryChange={setVisitSecondaryStageIds}
-                emptyHref={`/units/${unit.id}?tab=rehab`}
+                onChange={(next) => {
+                  if (
+                    visitAffiliation === 'rehab' &&
+                    next === 'routine' &&
+                    (visitPrimaryStageId || visitSecondaryStageIds.length)
+                  ) {
+                    if (
+                      !window.confirm(
+                        'להסיר את קישורי השיקום מהביקור? שאר הפרטים יישמרו.',
+                      )
+                    ) {
+                      return
+                    }
+                    setVisitPrimaryStageId(undefined)
+                    setVisitSecondaryStageIds([])
+                  }
+                  setVisitAffiliation(next)
+                }}
+                routineLabel="ביקור שוטף"
+                rehabLabel="ביקור שיקומי"
               />
+            </div>
+            {visitAffiliation === 'rehab' && (
+              <div className="space-y-2 rounded-md border border-hairline p-3">
+                <h3 className="text-[14px] font-semibold">קישור למטרת שיקום</h3>
+                <p className="text-[12px] text-slate-gray">
+                  הקישור מתייחס לבן המשפחה הראשי שנבחר. משתתפים נוספים אינם
+                  מקושרים אוטומטית.
+                </p>
+                <RehabStageSelector
+                  memberId={visitMemberId}
+                  primaryStageId={visitPrimaryStageId}
+                  secondaryStageIds={visitSecondaryStageIds}
+                  includeInactive={visitIncludeInactive}
+                  onIncludeInactiveChange={setVisitIncludeInactive}
+                  onPrimaryChange={setVisitPrimaryStageId}
+                  onSecondaryChange={setVisitSecondaryStageIds}
+                  emptyHref={`/units/${unit.id}?tab=rehab`}
+                />
+              </div>
             )}
             <Textarea
               value={visitNote}
@@ -303,23 +340,41 @@ export function UnitCase() {
           </Panel>
           <Panel className="!p-0 overflow-hidden">
             <ul className="divide-y divide-hairline">
-              {visits.map((v) => (
-                <li key={v.id} className="px-4 py-3 sm:px-6">
-                  <div className="text-[12px] text-mist-gray">
-                    {v.date} · {v.visitedBy}
-                    {v.activityAffiliation === 'rehab' ? ' · שיקום' : ''}
-                  </div>
-                  <p className="mt-1 text-[14px]">{v.summary}</p>
-                  {v.rehabPrimaryStageId && (
-                    <p className="mt-1 text-[12px] text-signal-blue">
-                      מקושר לשלב {v.rehabPrimaryStageId}
-                      {v.rehabSecondaryStageIds?.length
-                        ? ` (+${v.rehabSecondaryStageIds.length} משניים)`
-                        : ''}
-                    </p>
-                  )}
-                </li>
-              ))}
+              {visits.map((v) => {
+                const member = unit.members.find((m) => m.id === v.memberId)
+                const primary = v.rehabPrimaryStageId
+                  ? getStage(v.rehabPrimaryStageId)
+                  : undefined
+                const primaryGoal = primary
+                  ? getGoal(primary.personalGoalId)
+                  : undefined
+                return (
+                  <li key={v.id} className="px-4 py-3 sm:px-6">
+                    <div className="text-[12px] text-mist-gray">
+                      {v.date} · {v.visitedBy}
+                      {v.activityAffiliation === 'rehab' ? ' · שיקום' : ''}
+                      {member ? ` · ${member.name}` : ''}
+                    </div>
+                    <p className="mt-1 text-[14px]">{v.summary}</p>
+                    {primary && primaryGoal && member && (
+                      <div className="mt-2 rounded-md bg-pebble px-2.5 py-2 text-[12px]">
+                        <div className="font-semibold text-ink-navy">
+                          {member.name}
+                        </div>
+                        <div className="text-signal-blue">
+                          ← {primaryGoal.nameHe}
+                        </div>
+                        <div className="text-slate-gray">
+                          ← {primary.nameHe}
+                          {v.rehabSecondaryStageIds?.length
+                            ? ` · +${v.rehabSecondaryStageIds.length} שלבים נוספים`
+                            : ''}
+                        </div>
+                      </div>
+                    )}
+                  </li>
+                )
+              })}
               {visits.length === 0 && (
                 <li className="px-4 py-8 text-center text-[14px] text-slate-gray">
                   אין ביקורים מתועדים
@@ -330,7 +385,13 @@ export function UnitCase() {
         </div>
       )}
 
-      {tab === 'rehab' && <MemberRehabPanel unitId={unit.id} members={unit.members} />}
+      {tab === 'rehab' && (
+        <MemberRehabPanel
+          unitId={unit.id}
+          members={unit.members}
+          initialMemberId={params.get('memberId') ?? undefined}
+        />
+      )}
 
       {tab === 'docs' && (
         <Panel className="!p-0 overflow-hidden">
