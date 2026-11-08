@@ -13,7 +13,7 @@ export function RehabProgramDetail() {
 
   if (!program) {
     return (
-      <div className="rounded-xl border border-hairline bg-paper p-6 shadow-soft">
+      <div className="rounded-xl border border-hairline bg-paper p-6">
         <p>תוכנית לא נמצאה.</p>
         <Link to="/rehab-demo/programs" className="text-signal-blue underline">
           חזרה לרשימה
@@ -74,7 +74,7 @@ export function RehabProgramDetail() {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-xl border border-hairline bg-paper p-5 shadow-soft">
+      <div className="rounded-xl border border-hairline bg-paper p-5">
         <Link
           to="/rehab-demo/programs"
           className="text-[13px] text-signal-blue hover:underline"
@@ -90,7 +90,7 @@ export function RehabProgramDetail() {
         </p>
       </div>
 
-      <section className="rounded-xl border border-hairline bg-paper p-5 shadow-soft">
+      <section className="rounded-xl border border-hairline bg-paper p-5">
         <h3 className="text-[18px] font-bold text-ink-navy">Program_Patient (מרכז)</h3>
         <div className="mt-3 space-y-4">
           {patients.map((pp) => {
@@ -131,7 +131,7 @@ export function RehabProgramDetail() {
       </section>
 
       <div className="grid gap-4 lg:grid-cols-3">
-        <section className="rounded-xl border border-hairline bg-paper p-4 shadow-soft">
+        <section className="rounded-xl border border-hairline bg-paper p-4">
           <h3 className="font-bold text-ink-navy">מחזורים ושלבים</h3>
           {periods.map((period) => (
             <div key={period.id} className="mt-3">
@@ -155,7 +155,7 @@ export function RehabProgramDetail() {
           {!periods.length && <p className="mt-2 text-[13px] text-mist-gray">אין מחזורים</p>}
         </section>
 
-        <section className="rounded-xl border border-hairline bg-paper p-4 shadow-soft">
+        <section className="rounded-xl border border-hairline bg-paper p-4">
           <h3 className="font-bold text-ink-navy">מפגשים</h3>
           <ul className="mt-2 space-y-1 text-[14px] text-slate-gray">
             {sessions.map((s) => (
@@ -167,7 +167,7 @@ export function RehabProgramDetail() {
           </ul>
         </section>
 
-        <section className="rounded-xl border border-hairline bg-paper p-4 shadow-soft">
+        <section className="rounded-xl border border-hairline bg-paper p-4">
           <h3 className="font-bold text-ink-navy">משימות</h3>
           <ul className="mt-2 space-y-1 text-[14px] text-slate-gray">
             {tasks.map((t) => (

@@ -17,7 +17,7 @@ export function RehabScenarios() {
 
   return (
     <section className="space-y-4">
-      <div className="rounded-xl border border-hairline bg-paper p-5 shadow-soft">
+      <div className="rounded-xl border border-hairline bg-paper p-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="text-[20px] font-bold text-ink-navy">דפדפן תרחישים</h2>
@@ -59,7 +59,7 @@ export function RehabScenarios() {
           <article
             key={s.id}
             className={cn(
-              'rounded-xl border bg-paper p-4 shadow-soft transition-transform duration-200 hover:-translate-y-0.5',
+              'rounded-xl border bg-paper p-4',
               s.passed ? 'border-hairline' : 'border-danger',
             )}
           >

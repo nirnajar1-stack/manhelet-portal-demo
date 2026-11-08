@@ -12,7 +12,6 @@ import { AssumptionBanner } from '@/components/ui/assumption'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Panel } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/input'
 import {
   getMember,
@@ -204,13 +203,11 @@ export function TaskCenter() {
   ]
 
   return (
-    <div className="space-y-4 motion-fade-in">
+    <div className="page-stack motion-fade-in">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-[26px] font-bold text-ink-navy text-balance">
-            מרכז המשימות והמעקב
-          </h1>
-          <p className="mt-1 text-[13px] text-slate-gray">
+          <h1 className="page-title">מרכז המשימות והמעקב</h1>
+          <p className="page-lede">
             {filtered.length} משימות בתצוגה · לפי הרשאות שיוך יחידות
           </p>
         </div>
@@ -234,127 +231,140 @@ export function TaskCenter() {
         מסטטוס עסקי.
       </AssumptionBanner>
 
-      <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
-        <KpiCard tone="blue" value={kpis.active} label="סה״כ פעילות" />
-        <KpiCard tone="danger" value={kpis.urgent} label="דחופות ומיידיות" />
-        <KpiCard tone="warning" value={kpis.waiting} label="ממתינות למשרדים" />
-        <KpiCard tone="success" value={kpis.done} label="הושלמו" />
-      </div>
-
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-        <Input
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="חיפוש במשימות…"
-          className="sm:max-w-xs"
-        />
-        <Button
-          variant="outline"
-          size="sm"
-          className="sm:hidden"
-          onClick={() => setFiltersOpen((v) => !v)}
-        >
-          <Filter className="h-4 w-4" />
-          סינונים
-        </Button>
-        <div
-          className={cn('flex flex-wrap gap-2', !filtersOpen && 'hidden sm:flex')}
-        >
-          <Select
-            label="סטטוס"
-            value={status}
-            onChange={(v) => setStatus(v as TaskStatus | 'all')}
-            options={[
-              { value: 'all', label: 'כל הסטטוסים' },
-              ...Object.entries(statusLabel).map(([value, label]) => ({
-                value,
-                label,
-              })),
-            ]}
-          />
-          <Select
-            label="משפחה"
-            value={unitId}
-            onChange={setUnitId}
-            options={[
-              { value: 'all', label: 'כל היחידות' },
-              ...accessibleUnits.map((u) => ({
-                value: u.id,
-                label: `משפחת ${u.familyName}`,
-              })),
-            ]}
-          />
-          <Select
-            label="תחום"
-            value={domain}
-            onChange={setDomain}
-            options={[
-              { value: 'all', label: 'כל המולקולות/תחומים' },
-              ...domains.map((d) => ({ value: d, label: d })),
-            ]}
-          />
-          <label className="inline-flex items-center gap-2 rounded-md border border-hairline bg-paper px-2.5 text-[12px] text-slate-gray">
-            <input
-              type="checkbox"
-              checked={unreadOnly}
-              onChange={(e) => setUnreadOnly(e.target.checked)}
-              className="accent-ink-navy"
-            />
-            רק עם עדכונים שלא נקראו
-          </label>
+      {/* Dense KPI strip — one surface, hairline dividers */}
+      <div className="kpi-strip grid-cols-2 lg:grid-cols-4" role="group" aria-label="סיכום משימות">
+        <div className="kpi-cell">
+          <span className="kpi-value">{kpis.active}</span>
+          <span className="kpi-label">סה״כ פעילות</span>
+        </div>
+        <div className={cn('kpi-cell', kpis.urgent > 0 && 'bg-gold-wash/35')}>
+          <span className={cn('kpi-value', kpis.urgent > 0 && 'text-warning-text')}>
+            {kpis.urgent}
+          </span>
+          <span className="kpi-label">דחופות ומיידיות</span>
+        </div>
+        <div className="kpi-cell">
+          <span className="kpi-value">{kpis.waiting}</span>
+          <span className="kpi-label">ממתינות למשרדים</span>
+        </div>
+        <div className="kpi-cell">
+          <span className="kpi-value text-success">{kpis.done}</span>
+          <span className="kpi-label">הושלמו</span>
         </div>
       </div>
 
-      <div
-        className="flex gap-1 overflow-x-auto"
-        role="tablist"
-        aria-label="תצוגות משימות"
-      >
-        {viewTabs.map((t) => (
-          <button
-            key={t.id}
-            type="button"
-            role="tab"
-            aria-selected={view === t.id}
-            onClick={() => setView(t.id)}
-            className={cn(
-              'min-h-9 shrink-0 cursor-pointer rounded-md px-3 py-1.5 text-[12px] font-medium whitespace-nowrap transition-colors duration-200',
-              view === t.id
-                ? 'bg-dusk-blue text-ink-navy'
-                : 'bg-paper text-slate-gray shadow-soft hover:bg-soft-cyan',
-            )}
+      <div className="overflow-hidden rounded-[10px] border border-hairline bg-paper">
+        <div className="flex flex-col gap-2 border-b border-hairline px-3 py-2.5 sm:flex-row sm:items-center">
+          <Input
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="חיפוש במשימות…"
+            className="h-9 border-hairline bg-cloud/60 sm:max-w-xs"
+          />
+          <Button
+            variant="outline"
+            size="sm"
+            className="sm:hidden"
+            onClick={() => setFiltersOpen((v) => !v)}
           >
-            {t.label} ({t.count})
-          </button>
-        ))}
-      </div>
-
-      <div className="hidden gap-4 xl:grid xl:grid-cols-[minmax(0,1fr)_340px]">
-          <div className="overflow-hidden rounded-lg border border-hairline bg-paper shadow-soft">
-          <div className="grid grid-cols-[auto_1fr_140px_120px_100px] gap-2 border-b border-hairline bg-soft-cyan px-4 py-2 text-[11px] font-semibold text-ink-navy">
-            <span />
-            <span>משימה</span>
-            <span>משפחה</span>
-            <span>אחראי / מולקולה</span>
-            <span>יעד</span>
+            <Filter className="h-4 w-4" />
+            סינונים
+          </Button>
+          <div
+            className={cn('flex flex-wrap gap-2', !filtersOpen && 'hidden sm:flex')}
+          >
+            <Select
+              label="סטטוס"
+              value={status}
+              onChange={(v) => setStatus(v as TaskStatus | 'all')}
+              options={[
+                { value: 'all', label: 'כל הסטטוסים' },
+                ...Object.entries(statusLabel).map(([value, label]) => ({
+                  value,
+                  label,
+                })),
+              ]}
+            />
+            <Select
+              label="משפחה"
+              value={unitId}
+              onChange={setUnitId}
+              options={[
+                { value: 'all', label: 'כל היחידות' },
+                ...accessibleUnits.map((u) => ({
+                  value: u.id,
+                  label: `משפחת ${u.familyName}`,
+                })),
+              ]}
+            />
+            <Select
+              label="תחום"
+              value={domain}
+              onChange={setDomain}
+              options={[
+                { value: 'all', label: 'כל המולקולות/תחומים' },
+                ...domains.map((d) => ({ value: d, label: d })),
+              ]}
+            />
+            <label className="inline-flex items-center gap-2 rounded-md border border-hairline px-2.5 text-[12px] text-slate-gray">
+              <input
+                type="checkbox"
+                checked={unreadOnly}
+                onChange={(e) => setUnreadOnly(e.target.checked)}
+                className="accent-ink-navy"
+              />
+              רק עם עדכונים שלא נקראו
+            </label>
           </div>
-          <TaskTable
-            tasks={filtered}
-            selectedId={selected?.id}
-            onSelect={(t) => setSelectedId(t.id)}
+        </div>
+
+        <div
+          className="flex gap-0.5 overflow-x-auto border-b border-hairline bg-soft-cyan/40 px-2 py-1.5"
+          role="tablist"
+          aria-label="תצוגות משימות"
+        >
+          {viewTabs.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              role="tab"
+              aria-selected={view === t.id}
+              onClick={() => setView(t.id)}
+              className={cn(
+                'filter-chip cursor-pointer',
+                view === t.id ? 'filter-chip-active' : 'filter-chip-idle',
+              )}
+            >
+              {t.label} ({t.count})
+            </button>
+          ))}
+        </div>
+
+        <div className="hidden xl:grid xl:grid-cols-[minmax(0,1fr)_320px]">
+          <div className="min-w-0 border-e border-hairline">
+            <div className="grid grid-cols-[auto_1fr_130px_110px_88px] gap-2 border-b border-hairline bg-cloud/80 px-3 py-2 text-[11px] font-semibold text-slate-gray">
+              <span className="w-4" />
+              <span>משימה</span>
+              <span>משפחה</span>
+              <span>אחראי</span>
+              <span>יעד</span>
+            </div>
+            <TaskTable
+              tasks={filtered}
+              selectedId={selected?.id}
+              onSelect={(t) => setSelectedId(t.id)}
+            />
+          </div>
+          <TaskDrawer
+            task={selected}
+            messages={drawerMessages}
+            note={drawerNote}
+            onNoteChange={setDrawerNote}
+            onPost={() => void postDrawerNote()}
           />
         </div>
-        <TaskDrawer
-          task={selected}
-          messages={drawerMessages}
-          note={drawerNote}
-          onNoteChange={setDrawerNote}
-          onPost={() => void postDrawerNote()}
-        />
-      </div>
 
-      <div className="xl:hidden">
-        <div className="overflow-hidden rounded-lg border border-hairline/70 bg-paper shadow-soft">
+        <div className="xl:hidden">
           <TaskList
             tasks={filtered}
             selectedId={selected?.id}
@@ -365,38 +375,6 @@ export function TaskCenter() {
           />
         </div>
       </div>
-    </div>
-  )
-}
-
-function KpiCard({
-  value,
-  label,
-  tone,
-}: {
-  value: number
-  label: string
-  tone: 'blue' | 'danger' | 'warning' | 'success'
-}) {
-  const styles = {
-    blue: 'border-dusk-blue/35 bg-info-wash',
-    danger: 'border-gold/50 bg-gold-wash',
-    warning: 'border-warning/30 bg-warning-bg',
-    success: 'border-success/20 bg-success-bg',
-  }
-  /* KPI numbers: navy by default; gold wash for business-exception urgent */
-  const valueColor = {
-    blue: 'text-ink-navy',
-    danger: 'text-ink-navy',
-    warning: 'text-warning-text',
-    success: 'text-success',
-  }
-  return (
-    <div className={cn('rounded-lg border px-4 py-3 shadow-soft', styles[tone])}>
-      <div className={cn('text-[26px] font-bold tabular-nums', valueColor[tone])}>
-        {value}
-      </div>
-      <div className="mt-0.5 text-[12px] font-medium text-slate-gray">{label}</div>
     </div>
   )
 }
@@ -419,7 +397,7 @@ function Select({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-9 min-h-9 cursor-pointer rounded-md border border-hairline bg-paper px-2 text-[12px] text-ink-navy transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal-blue"
+        className="h-9 min-h-9 cursor-pointer rounded-md border border-hairline bg-paper px-2 text-[12px] text-ink-navy transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal-blue"
         aria-label={label}
       >
         {options.map((o) => (
@@ -443,7 +421,7 @@ function TaskTable({
 }) {
   if (tasks.length === 0) {
     return (
-      <div className="px-4 py-10 text-center text-[14px] text-slate-gray">
+      <div className="px-4 py-10 text-center text-[13px] text-slate-gray">
         אין משימות להצגה
       </div>
     )
@@ -462,26 +440,29 @@ function TaskTable({
               onClick={() => onSelect(task)}
               aria-pressed={selectedId === task.id}
               className={cn(
-                'grid w-full cursor-pointer grid-cols-[auto_1fr_140px_120px_100px] items-center gap-2 border-b border-hairline px-4 py-3 text-start transition-colors duration-200 hover:bg-soft-cyan',
-                selectedId === task.id && 'bg-info-wash ring-1 ring-inset ring-dusk-blue/35',
+                'data-row grid w-full cursor-pointer grid-cols-[auto_1fr_130px_110px_88px] items-center gap-2 border-b border-hairline px-3 py-2.5 text-start transition-colors duration-150 hover:bg-soft-cyan',
+                selectedId === task.id && 'bg-info-wash',
               )}
             >
-              <input
-                type="checkbox"
-                checked={selectedId === task.id}
-                readOnly
-                className="accent-ink-navy"
+              <span
+                className={cn(
+                  'h-1.5 w-1.5 shrink-0 rounded-full',
+                  task.priority === 'urgent'
+                    ? 'bg-danger'
+                    : task.priority === 'high'
+                      ? 'bg-warning'
+                      : 'bg-hairline',
+                )}
                 aria-hidden
-                tabIndex={-1}
               />
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-1.5">
-                  <span className="text-[11px] font-medium text-mist-gray">
+                  <span className="text-[11px] tabular-nums text-mist-gray">
                     {task.number}
                   </span>
                   <DuePill task={task} />
                 </div>
-                <div className="truncate text-[13px] font-semibold text-ink-navy">
+                <div className="truncate text-[13px] font-medium text-ink-navy">
                   {task.title}
                 </div>
               </div>
@@ -491,7 +472,7 @@ function TaskTable({
               <div className="truncate text-[12px] text-slate-gray">
                 {waiting?.name ?? owner?.name ?? '—'}
               </div>
-              <div className="text-[12px] text-mist-gray">
+              <div className="text-[12px] tabular-nums text-mist-gray">
                 {task.dueDate ?? '—'}
               </div>
             </button>
@@ -532,9 +513,9 @@ function TaskDrawer({
 }) {
   if (!task) {
     return (
-      <Panel className="!p-4">
-        <p className="text-[14px] text-slate-gray">בחרו משימה מהטבלה</p>
-      </Panel>
+      <div className="flex h-full items-center justify-center p-4">
+        <p className="text-[13px] text-slate-gray">בחרו משימה מהטבלה</p>
+      </div>
     )
   }
 
@@ -544,10 +525,10 @@ function TaskDrawer({
   const participants = task.participantIds.map(getUser).filter(Boolean)
 
   return (
-    <Panel className="flex max-h-[calc(100vh-12rem)] flex-col !p-0 overflow-hidden">
+    <div className="flex max-h-[calc(100vh-14rem)] flex-col overflow-hidden bg-paper">
       <div className="border-b border-hairline px-4 py-3">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-[12px] font-semibold text-mist-gray">
+          <span className="text-[11px] font-medium tabular-nums text-mist-gray">
             {task.number}
           </span>
           <Badge tone="danger">{priorityLabel[task.priority]}</Badge>
@@ -555,27 +536,27 @@ function TaskDrawer({
         <p className="mt-1 text-[11px] text-mist-gray">
           נוצר · {task.createdAt.slice(0, 10)}
         </p>
-        <h2 className="mt-2 text-[16px] font-semibold leading-snug">
+        <h2 className="mt-1.5 text-[15px] font-semibold leading-snug">
           {task.title}
         </h2>
         <p className="mt-1 text-[12px] text-slate-gray">
           תיק יחידה:{' '}
           <Link
             to={`/units/${task.unitId}`}
-            className="font-semibold text-signal-blue hover:underline"
+            className="font-medium text-signal-blue hover:underline"
           >
             משפחת {unit?.familyName}
             {member ? ` · ${member.name}` : ''}
           </Link>
         </p>
-        <p className="mt-1 text-[12px] text-slate-gray">
+        <p className="mt-0.5 text-[12px] text-slate-gray">
           אחראי: <span className="font-medium text-ink-navy">{owner?.name}</span>
         </p>
       </div>
 
       <div className="space-y-4 overflow-y-auto px-4 py-3">
         <div>
-          <p className="mb-2 text-[12px] font-semibold text-slate-gray">סטטוס</p>
+          <p className="section-label mb-1.5">סטטוס</p>
           <div className="flex flex-wrap gap-1">
             {(
               [
@@ -587,7 +568,7 @@ function TaskDrawer({
               <span
                 key={id}
                 className={cn(
-                  'rounded-md px-2.5 py-1 text-[11px] font-medium',
+                  'rounded-md px-2 py-1 text-[11px] font-medium',
                   task.status === id ||
                     (id === 'done' && task.status === 'closed')
                     ? 'bg-dusk-blue text-ink-navy'
@@ -601,44 +582,43 @@ function TaskDrawer({
         </div>
 
         <div>
-          <p className="mb-2 text-[12px] font-semibold text-slate-gray">
-            גורמים משתתפים
-          </p>
-          <ul className="space-y-1.5">
+          <p className="section-label mb-1.5">גורמים משתתפים</p>
+          <ul className="divide-y divide-hairline rounded-md border border-hairline">
             {participants.map((p) => (
               <li
                 key={p!.id}
-                className="flex items-center justify-between rounded-md bg-pebble/70 px-2.5 py-1.5 text-[12px]"
+                className="flex items-center justify-between px-2.5 py-1.5 text-[12px]"
               >
                 <span className="font-medium">{p!.name}</span>
                 <Badge tone="success">מעורב</Badge>
               </li>
             ))}
             {participants.length === 0 && (
-              <li className="text-[12px] text-mist-gray">אין משתתפים נוספים</li>
+              <li className="px-2.5 py-2 text-[12px] text-mist-gray">
+                אין משתתפים נוספים
+              </li>
             )}
           </ul>
         </div>
 
         <div>
-          <p className="mb-2 text-[12px] font-semibold text-slate-gray">
+          <p className="section-label mb-1.5">
             הערות ויומן פעולות ({messages.length})
           </p>
           <ul className="space-y-2">
             {messages.map((m) => {
               const author = getUser(m.authorId)
               return (
-                <li
-                  key={m.id}
-                  className="rounded-md border border-hairline bg-cloud/80 px-2.5 py-2"
-                >
+                <li key={m.id} className="border-b border-hairline pb-2 last:border-0">
                   <div className="mb-0.5 flex items-center gap-2 text-[11px]">
                     <span className="font-semibold">{author?.name ?? 'משתמש'}</span>
                     <span className="text-mist-gray">
                       {formatRelativeHe(m.createdAt)}
                     </span>
                   </div>
-                  <p className="text-[12px] leading-relaxed">{m.body}</p>
+                  <p className="text-[12px] leading-relaxed text-slate-gray">
+                    {m.body}
+                  </p>
                 </li>
               )
             })}
@@ -648,7 +628,7 @@ function TaskDrawer({
               value={note}
               onChange={(e) => onNoteChange(e.target.value)}
               placeholder="הוסיפו עדכון קצר למשימה…"
-              className="min-h-[64px] text-[13px]"
+              className="min-h-[56px] text-[13px]"
               aria-label="עדכון למשימה"
             />
             <Button size="sm" disabled={!note.trim()} onClick={onPost}>
@@ -658,7 +638,7 @@ function TaskDrawer({
         </div>
       </div>
 
-      <div className="mt-auto flex gap-2 border-t border-hairline px-4 py-3">
+      <div className="mt-auto flex gap-2 border-t border-hairline px-4 py-2.5">
         <Button size="sm" variant="outline" className="flex-1">
           <Share2 className="h-3.5 w-3.5" />
           שיתוף
@@ -667,6 +647,6 @@ function TaskDrawer({
           <Link to={`/tasks/${task.id}`}>מעבר לתיק המלא</Link>
         </Button>
       </div>
-    </Panel>
+    </div>
   )
 }

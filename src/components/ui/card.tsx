@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils'
 
+/** Default surface: hairline border, no decorative shadow. */
 export function Card({
   className,
   children,
@@ -12,8 +13,8 @@ export function Card({
   return (
     <div
       className={cn(
-        'rounded-lg border border-hairline bg-paper p-5 shadow-soft',
-        elevated && 'shadow-elevated border-transparent',
+        'rounded-[10px] border border-hairline bg-paper p-4',
+        elevated && 'shadow-elevated',
         className,
       )}
     >
@@ -34,8 +35,8 @@ export function Panel({
   return (
     <section
       className={cn(
-        'rounded-lg border border-hairline bg-paper p-5 shadow-soft',
-        elevated && 'shadow-elevated border-transparent',
+        'rounded-[10px] border border-hairline bg-paper p-4',
+        elevated && 'shadow-elevated',
         className,
       )}
     >

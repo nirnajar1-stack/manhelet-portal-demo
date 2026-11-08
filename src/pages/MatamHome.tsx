@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   AlertTriangle,
-  Briefcase,
   CalendarDays,
   ChevronLeft,
   ClipboardPlus,
@@ -121,19 +120,46 @@ export function MatamHome() {
   const nextEvent = orgNews.find((o) => o.kind === 'event')
   const procedure = orgNews.find((o) => o.kind === 'procedure')
 
+  const metrics = [
+    {
+      id: 'open' as const,
+      label: 'משימות פתוחות',
+      value: openCount,
+      hint: `מתוך ${myTasks.length}`,
+      emphasize: false,
+    },
+    {
+      id: 'overdue' as const,
+      label: 'חריגות SLA',
+      value: overdueCount,
+      hint: 'עיכובים בטיפול',
+      emphasize: true,
+    },
+    {
+      id: 'updates' as const,
+      label: 'עדכונים חדשים',
+      value: updatesCount,
+      hint: 'ממולקולות וגורמי מדינה',
+      emphasize: false,
+    },
+  ]
+
   return (
-    <div className="space-y-5 motion-fade-in">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+    <div className="page-stack motion-fade-in">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <div className="flex items-center gap-2">
-            <Briefcase className="h-5 w-5 text-signal-blue" aria-hidden />
-            <h1 className="text-[26px] font-bold leading-tight text-ink-navy text-balance md:text-[28px]">
-              {greetingHe()}, {currentUser.name.split(' ')[0]}
-            </h1>
-          </div>
-          <p className="mt-1.5 text-[14px] text-slate-gray">
-            {attentionCount} משימות דחופות מתוך {openCount} משימות פתוחות ביחידות
-            באחריותך.
+          <h1 className="page-title">
+            {greetingHe()}, {currentUser.name.split(' ')[0]}
+          </h1>
+          <p className="page-lede">
+            {attentionCount > 0 ? (
+              <>
+                <span className="font-medium text-ink-navy">{attentionCount}</span>
+                {' '}משימות דורשות טיפול מתוך {openCount} פתוחות ביחידות באחריותך.
+              </>
+            ) : (
+              <>אין משימות דחופות · {openCount} משימות פתוחות ביחידות באחריותך.</>
+            )}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -153,87 +179,88 @@ export function MatamHome() {
         האחראי הניהולי הוא משתמש אחר.
       </AssumptionBanner>
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-        {(
-          [
-            {
-              id: 'open' as const,
-              label: 'משימות פתוחות',
-              value: openCount,
-              hint: `מתוך ${myTasks.length} משימות בחודש`,
-              accent: 'text-ink-navy bg-dusk-blue/30',
-              highlight: false,
-            },
-            {
-              id: 'overdue' as const,
-              label: 'חריגות SLA',
-              value: overdueCount,
-              hint: 'עיכובים בטיפול',
-              accent: 'text-ink-navy bg-gold',
-              highlight: true,
-            },
-            {
-              id: 'updates' as const,
-              label: 'עדכונים חדשים',
-              value: updatesCount,
-              hint: 'ממולקולות וגורמי מדינה',
-              accent: 'text-ink-navy bg-badge-bg',
-              highlight: false,
-            },
-          ] as const
-        ).map((m) => (
+      {/* KPI strip — single surface, not identical cards */}
+      <div className="kpi-strip sm:grid-cols-3" role="group" aria-label="מדדים אישיים">
+        {metrics.map((m) => (
           <button
             key={m.id}
             type="button"
             aria-pressed={metric === m.id}
             onClick={() => setMetric((prev) => (prev === m.id ? null : m.id))}
             className={cn(
-              'cursor-pointer rounded-lg border border-hairline bg-paper px-4 py-3.5 text-start shadow-soft transition-colors duration-200 hover:border-dusk-blue/50',
-              metric === m.id && 'border-dusk-blue ring-1 ring-dusk-blue/40',
-              m.highlight && metric !== m.id && 'border-gold/50',
+              'kpi-cell cursor-pointer',
+              m.emphasize && m.value > 0 && metric !== m.id && 'bg-gold-wash/40',
             )}
           >
-            <div className="flex items-start justify-between gap-2">
-              <div>
-                <div className="text-[28px] font-bold tabular-nums leading-none text-ink-navy">
-                  {m.value}
-                </div>
-                <div className="mt-1.5 text-[13px] font-semibold text-ink-navy">
-                  {m.label}
-                </div>
-                <div className="mt-0.5 text-[12px] text-slate-gray">{m.hint}</div>
-              </div>
-              <span
-                className={cn(
-                  'flex h-9 w-9 items-center justify-center rounded-lg text-[14px] font-bold',
-                  m.accent,
-                )}
-              >
-                {m.value}
-              </span>
-            </div>
+            <span
+              className={cn(
+                'kpi-value',
+                m.emphasize && m.value > 0 && 'text-warning-text',
+              )}
+            >
+              {m.value}
+            </span>
+            <span className="kpi-label">{m.label}</span>
+            <span className="text-[11px] text-mist-gray">{m.hint}</span>
           </button>
         ))}
       </div>
 
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_280px]">
+      {waitingUnits.length > 0 && (
+        <div className="rounded-[10px] border border-danger/20 bg-danger-soft/60 px-3 py-2.5">
+          <div className="mb-2 flex items-center gap-2">
+            <AlertTriangle className="h-3.5 w-3.5 text-danger" aria-hidden />
+            <h2 className="text-[13px] font-semibold text-ink-navy">
+              יחידות הממתינות לך
+            </h2>
+          </div>
+          <ul className="divide-y divide-danger/10">
+            {waitingUnits.map((u) => (
+              <li
+                key={u.id}
+                className="flex flex-col gap-1.5 py-2 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between"
+              >
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span className="text-[13px] font-medium">
+                      משפחת {u.familyName}
+                    </span>
+                    <Badge tone="danger">דורשת התייחסות</Badge>
+                  </div>
+                  <p className="mt-0.5 truncate text-[12px] text-slate-gray">
+                    {u.summary} · {u.overdueTasks} משימות חורגות
+                  </p>
+                </div>
+                <Link
+                  to={`/units/${u.id}`}
+                  className="shrink-0 text-[12px] font-semibold text-signal-blue hover:underline"
+                >
+                  מעבר לתיק ›
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_260px]">
         <Panel className="!p-0 overflow-hidden">
-          <div className="flex flex-col gap-3 border-b border-hairline px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-5">
-            <h2 className="text-[17px] font-semibold text-ink-navy">
+          <div className="flex flex-col gap-2 border-b border-hairline px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+            <h2 className="text-[15px] font-semibold text-ink-navy">
               המשימות ביחידות שלי
             </h2>
             <Link
               to="/tasks"
-              className="inline-flex items-center gap-1 text-[13px] font-semibold text-signal-blue hover:underline"
+              className="inline-flex items-center gap-1 text-[12px] font-medium text-signal-blue hover:underline"
             >
               למרכז המשימות
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft className="h-3.5 w-3.5" />
             </Link>
           </div>
 
           {!metric && (
             <div
-              className="flex gap-1 overflow-x-auto border-b border-hairline px-2 py-2 sm:px-4"
+              className="flex gap-0.5 overflow-x-auto border-b border-hairline px-2 py-1.5 sm:px-3"
               role="tablist"
               aria-label="סינון משימות"
             >
@@ -245,10 +272,8 @@ export function MatamHome() {
                   aria-selected={tab === t.id}
                   onClick={() => setTab(t.id)}
                   className={cn(
-                    'min-h-9 shrink-0 cursor-pointer rounded-md px-3 py-1.5 text-[12px] font-medium whitespace-nowrap transition-colors duration-200',
-                    tab === t.id
-                      ? 'bg-dusk-blue text-ink-navy'
-                      : 'text-slate-gray hover:bg-soft-cyan',
+                    'filter-chip cursor-pointer',
+                    tab === t.id ? 'filter-chip-active' : 'filter-chip-idle',
                   )}
                 >
                   {t.label}
@@ -260,10 +285,10 @@ export function MatamHome() {
 
           {metric && (
             <div className="flex items-center justify-between border-b border-hairline px-4 py-2">
-              <span className="text-[13px] text-slate-gray">מסונן לפי מדד אישי</span>
+              <span className="text-[12px] text-slate-gray">מסונן לפי מדד אישי</span>
               <button
                 type="button"
-                className="min-h-9 cursor-pointer text-[13px] font-semibold text-signal-blue hover:underline"
+                className="min-h-8 cursor-pointer text-[12px] font-semibold text-signal-blue hover:underline"
                 onClick={() => setMetric(null)}
               >
                 נקה סינון
@@ -274,12 +299,10 @@ export function MatamHome() {
           <TaskList tasks={filtered} compact showOpenAction />
         </Panel>
 
-        <div className="space-y-3">
-          <Panel className="!p-4">
-            <h3 className="mb-3 text-[14px] font-semibold text-ink-navy">
-              קיצורי דרך תפעוליים
-            </h3>
-            <ul className="space-y-1.5">
+        <aside className="space-y-0 divide-y divide-hairline rounded-[10px] border border-hairline bg-paper">
+          <div className="p-3.5">
+            <h3 className="section-label mb-2">קיצורי דרך</h3>
+            <ul className="space-y-0.5">
               {(
                 [
                   {
@@ -302,29 +325,29 @@ export function MatamHome() {
                 <li key={a.label}>
                   <Link
                     to={a.to}
-                    className="flex items-center justify-between gap-2 rounded-md px-2 py-2 text-[13px] font-medium hover:bg-soft-cyan"
+                    className="flex items-center justify-between gap-2 rounded-md px-1.5 py-1.5 text-[13px] font-medium hover:bg-soft-cyan"
                   >
                     <span className="inline-flex items-center gap-2">
-                      <a.icon className="h-4 w-4 text-signal-blue" />
+                      <a.icon className="h-3.5 w-3.5 text-slate-gray" aria-hidden />
                       {a.label}
                     </span>
-                    <ChevronLeft className="h-3.5 w-3.5 text-mist-gray" />
+                    <ChevronLeft className="h-3.5 w-3.5 text-mist-gray" aria-hidden />
                   </Link>
                 </li>
               ))}
             </ul>
-          </Panel>
+          </div>
 
-          <Panel className="!p-4">
-            <h3 className="mb-3 text-[14px] font-semibold">משפחות שביקרתי לאחרונה</h3>
-            <ul className="space-y-2">
+          <div className="p-3.5">
+            <h3 className="section-label mb-2">משפחות אחרונות</h3>
+            <ul className="space-y-1">
               {recentFamilies.map((u) => (
                 <li key={u.id}>
                   <Link
                     to={`/units/${u.id}`}
-                    className="block rounded-md px-2 py-1.5 hover:bg-soft-cyan"
+                    className="block rounded-md px-1.5 py-1.5 hover:bg-soft-cyan"
                   >
-                    <div className="text-[13px] font-semibold">משפחת {u.familyName}</div>
+                    <div className="text-[13px] font-medium">משפחת {u.familyName}</div>
                     <div className="text-[11px] text-mist-gray">
                       {u.region} · {formatRelativeHe(u.lastActivityAt)}
                     </div>
@@ -332,70 +355,35 @@ export function MatamHome() {
                 </li>
               ))}
             </ul>
-          </Panel>
+          </div>
 
-          <Panel className="!p-4">
-            <h3 className="mb-3 text-[14px] font-semibold">עדכונים ונהלים</h3>
-            <div className="space-y-3">
+          <div className="p-3.5">
+            <h3 className="section-label mb-2">עדכונים ונהלים</h3>
+            <div className="space-y-2.5">
               {nextEvent && (
-                <div className="rounded-md bg-pebble/80 px-3 py-2">
+                <div>
                   <div className="flex items-center gap-1.5 text-[11px] font-medium text-signal-blue">
-                    <CalendarDays className="h-3.5 w-3.5" />
+                    <CalendarDays className="h-3 w-3" aria-hidden />
                     {nextEvent.date}
                   </div>
-                  <p className="mt-1 text-[13px] font-semibold">{nextEvent.title}</p>
+                  <p className="mt-0.5 text-[13px] font-medium leading-snug">
+                    {nextEvent.title}
+                  </p>
                 </div>
               )}
               {procedure && (
-                <div className="flex items-start gap-2 px-1">
-                  <FileText className="mt-0.5 h-4 w-4 text-danger" />
+                <div className="flex items-start gap-2">
+                  <FileText className="mt-0.5 h-3.5 w-3.5 shrink-0 text-slate-gray" aria-hidden />
                   <div>
-                    <p className="text-[13px] font-semibold">{procedure.title}</p>
+                    <p className="text-[13px] font-medium">{procedure.title}</p>
                     <p className="text-[11px] text-mist-gray">PDF · להורדה</p>
                   </div>
                 </div>
               )}
             </div>
-          </Panel>
-        </div>
-      </div>
-
-      {waitingUnits.length > 0 && (
-        <Panel className="border-danger/25 bg-danger-soft !p-4">
-          <div className="mb-3 flex items-center gap-2">
-            <AlertTriangle className="h-4 w-4 text-danger" />
-            <h2 className="text-[15px] font-semibold text-ink-navy">
-              יחידות טיפול הממתינות לך
-            </h2>
           </div>
-          <ul className="space-y-2">
-            {waitingUnits.map((u) => (
-              <li
-                key={u.id}
-                className="flex flex-col gap-2 rounded-md border border-danger/15 bg-paper px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between"
-              >
-                <div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-[14px] font-semibold">
-                      משפחת {u.familyName}
-                    </span>
-                    <Badge tone="danger">דורשת התייחסות</Badge>
-                  </div>
-                  <p className="mt-0.5 text-[12px] text-slate-gray">
-                    {u.summary} · {u.overdueTasks} משימות חורגות
-                  </p>
-                </div>
-                <Link
-                  to={`/units/${u.id}`}
-                  className="shrink-0 text-[13px] font-semibold text-signal-blue hover:underline"
-                >
-                  מעבר לתיק היחידה ›
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </Panel>
-      )}
+        </aside>
+      </div>
     </div>
   )
 }

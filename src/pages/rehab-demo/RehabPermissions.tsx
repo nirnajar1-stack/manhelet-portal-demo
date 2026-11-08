@@ -67,7 +67,7 @@ export function RehabPermissions() {
 
   return (
     <div className="space-y-4">
-      <section className="rounded-xl border border-hairline bg-paper p-5 shadow-soft">
+      <section className="rounded-xl border border-hairline bg-paper p-5">
         <h2 className="text-[20px] font-bold text-ink-navy">סימולציית הרשאות</h2>
         <p className="mt-1 max-w-3xl text-[14px] text-slate-gray">
           בחרו שחקן ויעד Program_Patient. הכללים משקפים את פונקציות ה־SQL (
@@ -130,7 +130,7 @@ export function RehabPermissions() {
         />
       </section>
 
-      <section className="rounded-xl border border-hairline bg-paper p-5 shadow-soft">
+      <section className="rounded-xl border border-hairline bg-paper p-5">
         <h3 className="text-[16px] font-bold text-ink-navy">מטריצת בדיקה מהירה (יוסי)</h3>
         <div className="mt-3 overflow-auto">
           <table className="min-w-full text-[13px]">
@@ -179,7 +179,7 @@ function ResultCard({
   return (
     <div
       className={cn(
-        'rounded-xl border bg-paper p-4 shadow-soft transition-shadow hover:shadow-elevated',
+        'rounded-xl border bg-paper p-4',
         soft ? 'border-hairline' : ok ? 'border-success/40' : 'border-danger/40',
       )}
     >

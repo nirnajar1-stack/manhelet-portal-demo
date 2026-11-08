@@ -101,8 +101,8 @@ export function UnitCase() {
   }
 
   return (
-    <div className="space-y-4">
-      <div className="text-[13px] text-slate-gray">
+    <div className="page-stack">
+      <div className="text-[12px] text-slate-gray">
         <Link to="/units" className="hover:text-ink-navy">
           יחידות טיפול
         </Link>
@@ -113,18 +113,18 @@ export function UnitCase() {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <div className="flex flex-wrap items-center gap-2">
-            <h1 className="text-[28px] font-bold">משפחת {unit.familyName}</h1>
+            <h1 className="page-title">משפחת {unit.familyName}</h1>
             <Badge tone="muted">{unit.region}</Badge>
             {unit.needsAttention && <Badge tone="danger">דורשת התייחסות</Badge>}
           </div>
-          <p className="mt-2 max-w-2xl text-[15px] text-slate-gray">
+          <p className="mt-1.5 max-w-2xl text-[13px] text-slate-gray">
             {unit.summary}
           </p>
-          <p className="mt-1 text-[12px] text-mist-gray">
+          <p className="mt-1 text-[11px] text-mist-gray">
             פעילות אחרונה · {formatRelativeHe(unit.lastActivityAt)}
           </p>
         </div>
-        <Button onClick={() => navigate(`/tasks/new?unitId=${unit.id}`)}>
+        <Button size="sm" onClick={() => navigate(`/tasks/new?unitId=${unit.id}`)}>
           משימה חדשה לתיק
         </Button>
       </div>
@@ -155,18 +155,18 @@ export function UnitCase() {
       {tab === 'overview' && (
         <div className="grid gap-4 lg:grid-cols-3">
           <Panel className="lg:col-span-2">
-            <h2 className="mb-2 text-[18px] font-semibold">סקירה</h2>
-            <p className="text-[14px] leading-relaxed text-slate-gray">
+            <h2 className="mb-2 text-[15px] font-semibold">סקירה</h2>
+            <p className="text-[13px] leading-relaxed text-slate-gray">
               {unit.summary} הממשק מציג מידע תפעולי בלבד. אין כאן נתונים רפואיים.
             </p>
-            <div className="mt-4 grid grid-cols-3 gap-2">
+            <div className="kpi-strip mt-3 grid-cols-3">
               <Stat label="פתוחות" value={unit.openTasks} />
               <Stat label="חורגות" value={unit.overdueTasks} danger={unit.overdueTasks > 0} />
               <Stat label="בני משפחה" value={unit.members.length} />
             </div>
           </Panel>
           <Panel>
-            <h2 className="mb-2 text-[16px] font-semibold">גישה מהירה</h2>
+            <h2 className="mb-2 text-[15px] font-semibold">גישה מהירה</h2>
             <ul className="space-y-2 text-[14px]">
               <li>
                 <button
@@ -430,13 +430,13 @@ function Stat({
   danger?: boolean
 }) {
   return (
-    <div className="rounded-lg bg-pebble px-3 py-3">
+    <div className="kpi-cell !border-0">
       <div
-        className={`text-[22px] font-bold tabular-nums ${danger ? 'text-danger' : ''}`}
+        className={`kpi-value ${danger ? 'text-danger' : ''}`}
       >
         {value}
       </div>
-      <div className="text-[12px] text-slate-gray">{label}</div>
+      <div className="kpi-label">{label}</div>
     </div>
   )
 }

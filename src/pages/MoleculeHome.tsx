@@ -46,12 +46,10 @@ export function MoleculeHome() {
   )
 
   return (
-    <div className="space-y-6">
+    <div className="page-stack">
       <div>
-        <h1 className="text-[28px] font-bold md:text-[38px] md:leading-[1.21]">
-          סביבת מולקולה
-        </h1>
-        <p className="mt-2 text-[16px] text-slate-gray">
+        <h1 className="page-title">סביבת מולקולה</h1>
+        <p className="page-lede">
           שלום {currentUser.name.split(' ')[0]} · {currentUser.org} — טיפול שוטף
           ותכלול באותה סביבה.
         </p>
@@ -181,7 +179,7 @@ export function MoleculeHome() {
 
 function Metric({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-lg border border-hairline bg-paper px-3 py-3 shadow-soft sm:px-4 sm:py-4">
+    <div className="rounded-lg border border-hairline bg-paper px-3 py-3 sm:px-4 sm:py-4">
       <div className="text-[22px] font-bold tabular-nums text-ink-navy sm:text-[28px]">
         {value}
       </div>

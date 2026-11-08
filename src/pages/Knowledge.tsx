@@ -9,7 +9,6 @@ import {
   HeartPulse,
   Home,
   Search,
-  Sparkles,
   Wallet,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
@@ -251,10 +250,7 @@ export function Knowledge() {
           <Panel className="!p-4">
             <div className="mb-3 flex items-center justify-between">
               <h3 className="text-[14px] font-semibold">עוזר ידע AI למת״ם</h3>
-              <Badge tone="info">
-                <Sparkles className="me-1 inline h-3 w-3" />
-                RAG
-              </Badge>
+              <Badge tone="info">RAG</Badge>
             </div>
             <div className="rounded-md bg-pebble px-3 py-2 text-[12px] text-slate-gray">
               «מה התנאים להארכת סבסוד דיור זמני?»

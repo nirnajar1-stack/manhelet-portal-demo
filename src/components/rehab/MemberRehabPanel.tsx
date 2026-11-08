@@ -184,7 +184,7 @@ export function MemberRehabPanel({ unitId, members, initialMemberId }: Props) {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+      <div className="kpi-strip grid-cols-2 sm:grid-cols-4">
         <Kpi label="מטרות פעילות" value={kpis.active} />
         <Kpi label="מטרות שהושלמו" value={kpis.completed} />
         <Kpi label="שלבים בביצוע" value={kpis.stagesInProgress} accent />
@@ -443,17 +443,17 @@ function Kpi({
   warn?: boolean
 }) {
   return (
-    <div className="rounded-md border border-hairline bg-paper px-3 py-2.5">
+    <div className="kpi-cell">
       <div
         className={cn(
-          'text-[20px] font-bold tabular-nums text-ink-navy',
+          'kpi-value',
           accent && 'text-signal-blue',
           warn && value > 0 && 'text-warning-text',
         )}
       >
         {value}
       </div>
-      <div className="text-[11px] text-slate-gray">{label}</div>
+      <div className="kpi-label">{label}</div>
     </div>
   )
 }

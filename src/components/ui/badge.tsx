@@ -12,6 +12,7 @@ const tones = {
   accent: 'bg-dusk-blue/25 text-ink-navy',
 } as const
 
+/** Compact status chip — 6px radius (not pill) for denser ops UI. */
 export function Badge({
   children,
   tone = 'info',
@@ -24,7 +25,7 @@ export function Badge({
   return (
     <span
       className={cn(
-        'inline-flex max-w-full items-center rounded-full px-2.5 py-0.5 text-[12px] font-medium whitespace-nowrap',
+        'inline-flex max-w-full items-center rounded-sm px-1.5 py-0.5 text-[11px] font-medium whitespace-nowrap',
         tones[tone],
         className,
       )}
