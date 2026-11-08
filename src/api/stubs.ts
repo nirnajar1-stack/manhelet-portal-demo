@@ -21,19 +21,31 @@ import {
   tasks as seedTasks,
   units,
   users,
-  visits,
+  visits as seedVisits,
 } from '@/data/mock'
+import { portalMemberPersonId } from '@/data/rehab-workflow-seed'
+import {
+  RehabWorkflowError,
+  createRehabVisit,
+  getTaskRehab,
+  onTaskClosed,
+  resolveActorFromPortalUser,
+  validateAndSetTaskRehab,
+} from '@/lib/rehab-workflow/store'
 import type {
+  ActivityAffiliation,
   ChatterMessage,
   Task,
   TaskStatus,
   TreatmentUnit,
   User,
+  Visit,
 } from '@/types'
 
 let tasksStore: Task[] = structuredClone(seedTasks)
 let chatterStore: ChatterMessage[] = structuredClone(chatterSeed)
 let rehabStore = structuredClone(rehabNotes)
+let visitsStore: Visit[] = structuredClone(seedVisits)
 
 function resolveUser(userId: string): User {
   const u = users.find((x) => x.id === userId)
@@ -172,7 +184,11 @@ export async function closeTaskWithDocumentation(input: {
     visibility,
   })
 
-  return updateTaskStatus(input.taskId, 'done', { needsAttention: false })
+  const closed = await updateTaskStatus(input.taskId, 'done', {
+    needsAttention: false,
+  })
+  onTaskClosed(input.taskId)
+  return closed
 }
 
 export async function createTask(
@@ -188,13 +204,39 @@ export async function createTask(
     | 'waitingOnIds'
     | 'status'
     | 'needsAttention'
-  > & { status?: TaskStatus; needsAttention?: boolean },
+  > & {
+    status?: TaskStatus
+    needsAttention?: boolean
+    actorUserId?: string
+    confirmClearRehabLinks?: boolean
+  },
 ): Promise<Task> {
+  const affiliation: ActivityAffiliation = input.activityAffiliation ?? 'routine'
+  const actorUser = resolveUser(input.actorUserId ?? input.creatorId)
+  const actor = resolveActorFromPortalUser(actorUser)
   const n = 1000 + tasksStore.length + 1
   const now = new Date().toISOString()
+  const taskId = `t-${n}`
+
+  try {
+    validateAndSetTaskRehab({
+      actor,
+      taskId,
+      memberId: input.memberId,
+      activityAffiliation: affiliation,
+      rehabPrimaryStageId: input.rehabPrimaryStageId,
+      secondaryStageIds: input.rehabSecondaryStageIds,
+      confirmClearLinks: input.confirmClearRehabLinks,
+    })
+  } catch (e) {
+    if (e instanceof RehabWorkflowError) throw new Error(e.message)
+    throw e
+  }
+
+  const rehabMeta = getTaskRehab(taskId)
   const task: Task = {
     ...input,
-    id: `t-${n}`,
+    id: taskId,
     number: `TSK-${n}`,
     status: input.status ?? 'open',
     needsAttention: input.needsAttention ?? false,
@@ -203,10 +245,55 @@ export async function createTask(
     createdAt: now,
     updatedAt: now,
     hasNewReply: false,
-    lastActivity: 'נוצרה משימה',
+    lastActivity:
+      affiliation === 'rehab' ? 'נוצרה משימת שיקום' : 'נוצרה משימה',
+    activityAffiliation: affiliation,
+    rehabPrimaryStageId: rehabMeta.rehabPrimaryStageId,
+    rehabSecondaryStageIds: rehabMeta.secondaryStageIds,
   }
   tasksStore = [task, ...tasksStore]
   return structuredClone(task)
+}
+
+export async function updateTaskRehabLinks(input: {
+  taskId: string
+  actorUserId: string
+  memberId?: string
+  activityAffiliation: ActivityAffiliation
+  rehabPrimaryStageId?: string
+  rehabSecondaryStageIds?: string[]
+  confirmClearRehabLinks?: boolean
+}): Promise<Task | undefined> {
+  const actor = resolveActorFromPortalUser(resolveUser(input.actorUserId))
+  try {
+    validateAndSetTaskRehab({
+      actor,
+      taskId: input.taskId,
+      memberId: input.memberId,
+      activityAffiliation: input.activityAffiliation,
+      rehabPrimaryStageId: input.rehabPrimaryStageId,
+      secondaryStageIds: input.rehabSecondaryStageIds,
+      confirmClearLinks: input.confirmClearRehabLinks,
+    })
+  } catch (e) {
+    if (e instanceof RehabWorkflowError) throw new Error(e.message)
+    throw e
+  }
+  const meta = getTaskRehab(input.taskId)
+  tasksStore = tasksStore.map((t) =>
+    t.id === input.taskId
+      ? {
+          ...t,
+          memberId: input.memberId,
+          activityAffiliation: meta.activityAffiliation,
+          rehabPrimaryStageId: meta.rehabPrimaryStageId,
+          rehabSecondaryStageIds: meta.secondaryStageIds,
+          updatedAt: new Date().toISOString(),
+          lastActivity: 'עודכן שיוך שיקום',
+        }
+      : t,
+  )
+  return fetchTask(input.taskId)
 }
 
 export async function fetchNotifications() {
@@ -227,10 +314,64 @@ export async function fetchFamilyRequests() {
 
 export async function fetchUnitExtras(unitId: string) {
   return {
-    visits: visits.filter((v) => v.unitId === unitId),
+    visits: visitsStore.filter((v) => v.unitId === unitId),
     rehab: rehabStore.filter((r) => r.unitId === unitId),
     documents: documents.filter((d) => d.unitId === unitId),
   }
+}
+
+export async function createVisit(input: {
+  unitId: string
+  summary: string
+  visitedBy: string
+  memberId?: string
+  activityAffiliation?: ActivityAffiliation
+  rehabPrimaryStageId?: string
+  rehabSecondaryStageIds?: string[]
+  participantMemberIds?: string[]
+  visitTypeHe?: string
+  actorUserId: string
+}): Promise<Visit> {
+  const affiliation = input.activityAffiliation ?? 'routine'
+  if (affiliation === 'rehab') {
+    if (!input.memberId) throw new Error('ביקור שיקומי מחייב בן משפחה')
+    const actor = resolveActorFromPortalUser(resolveUser(input.actorUserId))
+    try {
+      createRehabVisit({
+        actor,
+        portalMemberId: input.memberId,
+        portalUnitId: input.unitId,
+        personId: portalMemberPersonId[input.memberId] ?? input.memberId,
+        activityAffiliation: 'rehab',
+        rehabPrimaryStageId: input.rehabPrimaryStageId,
+        secondaryStageIds: input.rehabSecondaryStageIds,
+        participantMemberIds: input.participantMemberIds,
+        summaryHe: input.summary,
+        visitTypeHe: input.visitTypeHe,
+        status: 'completed',
+      })
+    } catch (e) {
+      if (e instanceof RehabWorkflowError) throw new Error(e.message)
+      throw e
+    }
+  }
+
+  const created: Visit = {
+    id: `v-${Date.now()}`,
+    unitId: input.unitId,
+    date: new Date().toISOString().slice(0, 10),
+    summary: input.summary.trim(),
+    visitedBy: input.visitedBy,
+    memberId: input.memberId,
+    activityAffiliation: affiliation,
+    rehabPrimaryStageId: input.rehabPrimaryStageId,
+    rehabSecondaryStageIds: input.rehabSecondaryStageIds,
+    participantMemberIds: input.participantMemberIds,
+    visitTypeHe: input.visitTypeHe ?? 'ביקור בית',
+    status: 'completed',
+  }
+  visitsStore = [created, ...visitsStore]
+  return structuredClone(created)
 }
 
 export async function addRehabNote(input: {
@@ -260,4 +401,5 @@ export function resetMockStores() {
   tasksStore = structuredClone(seedTasks)
   chatterStore = structuredClone(chatterSeed)
   rehabStore = structuredClone(rehabNotes)
+  visitsStore = structuredClone(seedVisits)
 }

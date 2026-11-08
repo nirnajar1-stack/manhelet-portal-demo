@@ -31,6 +31,7 @@ import {
 } from '@/lib/access'
 import { formatRelativeHe, cn } from '@/lib/utils'
 import { useApp } from '@/state/AppContext'
+import { getStage, getGoal } from '@/lib/rehab-workflow/store'
 import type { ChatterMessage, ChatterVisibility, Task, TaskStatus } from '@/types'
 
 export function TaskDetail() {
@@ -331,6 +332,33 @@ export function TaskDetail() {
             <p className="text-[14px] leading-relaxed text-slate-gray">
               {task.description}
             </p>
+            {task.activityAffiliation === 'rehab' && task.rehabPrimaryStageId && (
+              <div className="mt-3 rounded-md border border-gold/40 bg-gold/10 p-3 text-[13px]">
+                <div className="font-semibold">שיוך לתהליך השיקום</div>
+                {(() => {
+                  const stage = getStage(task.rehabPrimaryStageId!)
+                  const goal = stage ? getGoal(stage.personalGoalId) : undefined
+                  return (
+                    <p className="mt-1 text-slate-gray">
+                      ראשי:{' '}
+                      {goal && stage ? (
+                        <Link
+                          className="text-signal-blue hover:underline"
+                          to={`/rehab/goals/${goal.id}?stage=${stage.id}`}
+                        >
+                          {goal.nameHe} › {stage.nameHe}
+                        </Link>
+                      ) : (
+                        task.rehabPrimaryStageId
+                      )}
+                      {task.rehabSecondaryStageIds?.length
+                        ? ` · משניים: ${task.rehabSecondaryStageIds.length}`
+                        : ''}
+                    </p>
+                  )
+                })()}
+              </div>
+            )}
             <div className="mt-4 rounded-md border border-hairline bg-pebble/50 p-3">
               <p className="mb-2 text-[12px] font-semibold text-slate-gray">
                 קבצים מצורפים

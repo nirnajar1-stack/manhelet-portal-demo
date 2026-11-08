@@ -361,6 +361,32 @@ export const tasks: Task[] = [
     hasNewReply: false,
     lastActivity: 'בטיפול',
   },
+  {
+    id: 't-rehab-dual',
+    number: 'TSK-1101',
+    title: 'תיאום פגישה עם גורם תעסוקה',
+    description:
+      'משימת דמה המקושרת לשלב ראשי בתעסוקה ולשלב משני בעצמאות אישית של דניאל.',
+    status: 'open',
+    needsAttention: false,
+    priority: 'high',
+    domain: 'שיקום',
+    subDomain: 'תיאום',
+    unitId: 'unit-mizrahi',
+    memberId: 'm-miz-1',
+    ownerId: 'u-nir',
+    creatorId: 'u-nir',
+    participantIds: ['u-dana'],
+    waitingOnIds: [],
+    dueDate: '2026-11-15',
+    updatedAt: '2026-11-06T09:30:00',
+    createdAt: '2026-11-06T09:30:00',
+    hasNewReply: false,
+    lastActivity: 'נוצרה משימת שיקום',
+    activityAffiliation: 'rehab',
+    rehabPrimaryStageId: 'ps-dan-e-2',
+    rehabSecondaryStageIds: ['ps-dan-i-3'],
+  },
 ]
 
 export let chatterSeed: ChatterMessage[] = [
@@ -413,6 +439,7 @@ export const visits: Visit[] = [
     date: '2026-10-27',
     summary: 'ביקור בית — עדכון כללי על צרכים שוטפים. (דמה מבני)',
     visitedBy: 'ניר נ.',
+    activityAffiliation: 'routine',
   },
   {
     id: 'v-2',
@@ -420,6 +447,21 @@ export const visits: Visit[] = [
     date: '2026-10-20',
     summary: 'מפגש ליווי — תיאום המשך. (דמה מבני)',
     visitedBy: 'ניר נ.',
+    activityAffiliation: 'routine',
+  },
+  {
+    id: 'v-rehab-1',
+    unitId: 'unit-mizrahi',
+    date: '2026-11-05',
+    summary: 'בוצעה הערכת תפקוד ושיחה קצרה על תעסוקה.',
+    visitedBy: 'יואב מלווה',
+    memberId: 'm-miz-1',
+    activityAffiliation: 'rehab',
+    rehabPrimaryStageId: 'ps-dan-i-2',
+    rehabSecondaryStageIds: ['ps-dan-e-2'],
+    participantMemberIds: ['m-miz-1', 'm-miz-2'],
+    visitTypeHe: 'ביקור בית',
+    status: 'completed',
   },
 ]
 

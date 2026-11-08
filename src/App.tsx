@@ -12,6 +12,8 @@ import { TaskCenter } from '@/pages/TaskCenter'
 import { TaskDetail } from '@/pages/TaskDetail'
 import { UnitCase } from '@/pages/UnitCase'
 import { UnitsList } from '@/pages/UnitsList'
+import { RehabGoalBank } from '@/pages/RehabGoalBank'
+import { RehabGoalDetail } from '@/pages/RehabGoalDetail'
 import { RehabDemoLayout } from '@/pages/rehab-demo/RehabDemoLayout'
 import { RehabErd } from '@/pages/rehab-demo/RehabErd'
 import { RehabHouseholds } from '@/pages/rehab-demo/RehabHouseholds'
@@ -48,6 +50,8 @@ function Bootstrap() {
         <Route path="org" element={<OrgHome />} />
         <Route path="molecule" element={<MoleculeHome />} />
         <Route path="family" element={<FamilyPortal />} />
+        <Route path="rehab/bank" element={<RehabGoalBank />} />
+        <Route path="rehab/goals/:goalId" element={<RehabGoalDetail />} />
         <Route path="rehab-demo" element={<RehabDemoLayout />}>
           <Route index element={<RehabOverview />} />
           <Route path="erd" element={<RehabErd />} />
