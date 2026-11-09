@@ -136,7 +136,7 @@ export function AppShell() {
         <div className="flex h-14 items-center gap-4 px-4 lg:px-6">
           <button
             type="button"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-[10px] transition-colors duration-200 hover:bg-soft-cyan lg:hidden"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-[10px] text-ink-navy transition-colors duration-200 hover:bg-soft-cyan lg:hidden"
             aria-label="תפריט"
             aria-expanded={mobileOpen}
             aria-controls="mobile-nav"
@@ -170,7 +170,7 @@ export function AppShell() {
                   if (e.key === 'Enter') navigate('/tasks')
                 }}
                 placeholder="חיפוש מהיר: משימה, משפחה, אדם או יחידת טיפול…"
-                className="h-10 border-transparent bg-pebble pe-10 text-[14px]"
+                className="h-10 border-hairline bg-pebble pe-10 text-[14px] text-ink-navy placeholder:text-slate-gray"
                 aria-label="חיפוש מרכזי"
               />
             </div>
@@ -337,7 +337,7 @@ export function AppShell() {
                 end={item.to === '/' || item.to === '/molecule'}
                 className={({ isActive }) =>
                   cn(
-                    'flex min-h-11 items-center gap-3 rounded-[10px] px-3 py-2.5 text-[14px] font-medium text-paper/80 transition-colors duration-150 hover:bg-paper/10 hover:text-paper',
+                    'flex min-h-11 items-center gap-3 rounded-[10px] px-3 py-2.5 text-[14px] font-medium text-paper/90 transition-colors duration-150 hover:bg-paper/10 hover:text-paper',
                     isActive && 'bg-dusk-blue text-ink-navy hover:bg-dusk-blue hover:text-ink-navy',
                   )
                 }
@@ -347,7 +347,7 @@ export function AppShell() {
                     <item.icon
                       className={cn(
                         'h-4 w-4 shrink-0',
-                        isActive ? 'text-ink-navy' : 'text-paper/70',
+                        isActive ? 'text-ink-navy' : 'text-paper/80',
                       )}
                       aria-hidden
                     />
@@ -374,12 +374,12 @@ export function AppShell() {
             ))}
           </nav>
 
-          <div className="border-t border-paper/12 p-4">
-            <p className="mb-2.5 px-1 text-[11px] font-semibold tracking-wide text-paper/50">
+          <div className="border-t border-paper/20 p-4">
+            <p className="mb-2.5 px-1 text-[11px] font-semibold tracking-wide text-paper/70">
               החלפת סביבה
             </p>
             <div
-              className="space-y-0.5 rounded-xl bg-paper/[0.06] p-1.5"
+              className="space-y-0.5 rounded-xl bg-paper/10 p-1.5"
               role="radiogroup"
               aria-label="החלפת סביבה"
             >
@@ -411,7 +411,7 @@ export function AppShell() {
                 }}
               />
             </div>
-            <p className="mt-4 px-1 text-[11px] leading-relaxed text-paper/40">
+            <p className="mt-4 px-1 text-[11px] leading-relaxed text-paper/60">
               אבטיפוס · נתוני דמה · אין Salesforce
             </p>
           </div>
@@ -421,7 +421,7 @@ export function AppShell() {
           <div className="fixed inset-0 z-50 lg:hidden" id="mobile-nav">
             <button
               type="button"
-              className="absolute inset-0 bg-ink-navy/30"
+              className="absolute inset-0 bg-ink-navy/45"
               aria-label="סגור תפריט"
               onClick={() => setMobileOpen(false)}
             />
@@ -429,13 +429,13 @@ export function AppShell() {
               role="dialog"
               aria-modal="true"
               aria-label="תפריט ניווט"
-              className="absolute inset-y-0 end-0 flex w-80 flex-col bg-paper shadow-elevated motion-fade-in"
+              className="absolute inset-y-0 end-0 flex w-[min(20rem,88vw)] flex-col border-s border-paper/15 bg-ink-navy shadow-elevated motion-fade-in"
             >
-              <div className="flex items-center justify-between border-b border-hairline p-5">
-                <span className="font-semibold">תפריט</span>
+              <div className="flex items-center justify-between border-b border-paper/20 p-5">
+                <span className="font-semibold text-paper">תפריט</span>
                 <button
                   type="button"
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-[10px] hover:bg-pebble"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-[10px] text-paper hover:bg-paper/10"
                   onClick={() => setMobileOpen(false)}
                   aria-label="סגור"
                 >
@@ -456,12 +456,37 @@ export function AppShell() {
                         'flex min-h-11 items-center gap-3 rounded-[10px] px-3 py-3 text-[14px] font-medium transition-colors duration-200',
                         isActive
                           ? 'bg-dusk-blue text-ink-navy'
-                          : 'text-ink-navy hover:bg-soft-cyan',
+                          : 'text-paper/90 hover:bg-paper/10 hover:text-paper',
                       )
                     }
                   >
-                    <item.icon className="h-4 w-4" aria-hidden />
-                    {item.label}
+                    {({ isActive }) => (
+                      <>
+                        <item.icon
+                          className={cn(
+                            'h-4 w-4 shrink-0',
+                            isActive ? 'text-ink-navy' : 'text-paper/75',
+                          )}
+                          aria-hidden
+                        />
+                        <span className="min-w-0 flex-1 leading-snug">{item.label}</span>
+                        {'badgeKey' in item &&
+                          item.badgeKey === 'tasks' &&
+                          attentionCount > 0 && (
+                            <span
+                              className={cn(
+                                'rounded-full px-1.5 text-[11px] font-bold whitespace-nowrap',
+                                isActive
+                                  ? 'bg-ink-navy/15 text-ink-navy'
+                                  : 'bg-gold text-ink-navy',
+                              )}
+                            >
+                              {attentionCount}
+                              <span className="sr-only"> משימות דורשות טיפול</span>
+                            </span>
+                          )}
+                      </>
+                    )}
                   </NavLink>
                 ))}
                 <Button className="mt-4" onClick={() => navigate('/tasks/new')}>
@@ -470,18 +495,19 @@ export function AppShell() {
                 </Button>
               </nav>
 
-              <div className="border-t border-hairline p-4">
-                <p className="mb-2 px-1 text-[11px] font-semibold tracking-wide text-slate-gray">
+              <div className="border-t border-paper/20 p-4">
+                <p className="mb-2.5 px-1 text-[11px] font-semibold tracking-wide text-paper/70">
                   החלפת סביבה
                 </p>
                 <div
-                  className="space-y-1 rounded-[10px] bg-pebble p-2"
+                  className="space-y-0.5 rounded-xl bg-paper/10 p-1.5"
                   role="radiogroup"
                   aria-label="החלפת סביבה"
                 >
                   <EnvOption
                     active={currentUser.role === 'matam'}
                     label="מת״מים ומנהלי תיק"
+                    onDark
                     onClick={() => {
                       setRole('matam')
                       setMobileOpen(false)
@@ -491,6 +517,7 @@ export function AppShell() {
                   <EnvOption
                     active={currentUser.role === 'molecule'}
                     label="מרחב מולקולות"
+                    onDark
                     onClick={() => {
                       switchUser('u-dana')
                       setMobileOpen(false)
@@ -500,6 +527,7 @@ export function AppShell() {
                   <EnvOption
                     active={false}
                     label="תצוגת שירות למשפחות"
+                    onDark
                     onClick={() => {
                       setRole('family')
                       setMobileOpen(false)
@@ -553,7 +581,7 @@ function EnvOption({
         onDark
           ? active
             ? 'bg-dusk-blue text-ink-navy'
-            : 'text-paper/70 hover:bg-paper/10 hover:text-paper'
+            : 'text-paper/85 hover:bg-paper/10 hover:text-paper'
           : active
             ? 'bg-paper text-ink-navy'
             : 'text-slate-gray hover:bg-paper/70',
@@ -567,7 +595,7 @@ function EnvOption({
               ? 'border-ink-navy bg-gold'
               : 'border-dusk-blue bg-dusk-blue'
             : onDark
-              ? 'border-paper/40 bg-transparent'
+              ? 'border-paper/55 bg-transparent'
               : 'border-mist-gray bg-transparent',
         )}
         aria-hidden

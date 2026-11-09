@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 /*
-  Design tokens — Apple-like Operate UI polish (see DESIGN.md).
-  Palette: Midnight Navy, Dusk Blue, Soft Golden Yellow (unchanged).
-  Elevation: soft hairlines over shadows. Spacing: 8pt rhythm.
+  Design tokens — Apple-like Operate UI + mobile contrast restore (see DESIGN.md).
+  Palette: Midnight Navy, Dusk Blue, Soft Golden Yellow.
+  Elevation: readable hairlines on #F6F9FD (not near-white). Spacing: 8pt rhythm.
 */
 
 @theme {
@@ -15,16 +15,19 @@
   --color-gold-hover: #e8b52f;
   /* Readable dusk-derived blue for links / focus (WCAG AA on white) */
   --color-signal-blue: #3d6fa5;
-  --color-slate-gray: #64748b;
-  --color-mist-gray: #64748b;
+  /* Secondary text ~4.6:1 on paper / cloud */
+  --color-slate-gray: #5b6b7c;
+  --color-mist-gray: #5b6b7c;
   --color-cloud: #f6f9fd;
   --color-paper: #ffffff;
-  --color-soft-cyan: #f0f5fb;
-  --color-pebble: #f0f5fb;
-  --color-hairline: #e2e8f0;
+  /* Fills must read against cloud — not near-identical washes */
+  --color-soft-cyan: #edf4fc;
+  --color-pebble: #edf4fc;
+  /* Hairline clear on #F6F9FD and paper (Apple polish had washed #e2e8f0) */
+  --color-hairline: #c5d4e6;
   --color-carbon: #0a0a0a;
   --color-deep-cobalt: #3d6fa5;
-  --color-badge-bg: #f0f5fb;
+  --color-badge-bg: #edf4fc;
 
   /* Semantic status — preserved */
   --color-success: #2e7d32;
@@ -66,10 +69,10 @@
   --radius-xl: 14px;
   --radius-full: 9999px;
 
-  /* Soft hairline elevation — overlays only by default */
-  --shadow-elevated: 0 8px 24px rgba(13, 26, 51, 0.06);
-  --shadow-soft: 0 1px 2px rgba(13, 26, 51, 0.03);
-  --shadow-button: 0 1px 1px rgba(13, 26, 51, 0.04);
+  /* Soft elevation — overlays; keep enough depth for mobile drawers */
+  --shadow-elevated: 0 10px 28px rgba(13, 26, 51, 0.14);
+  --shadow-soft: 0 1px 2px rgba(13, 26, 51, 0.05);
+  --shadow-button: 0 1px 2px rgba(13, 26, 51, 0.08);
 
   --ease-portal: cubic-bezier(0.25, 0.1, 0.25, 1);
   --duration-fast: 140ms;
@@ -228,10 +231,10 @@
     background: var(--color-soft-cyan);
   }
   .bg-info-wash {
-    background: color-mix(in srgb, var(--color-dusk-blue) 14%, var(--color-paper));
+    background: color-mix(in srgb, var(--color-dusk-blue) 20%, var(--color-paper));
   }
   .bg-gold-wash {
-    background: color-mix(in srgb, var(--color-gold) 18%, var(--color-paper));
+    background: color-mix(in srgb, var(--color-gold) 22%, var(--color-paper));
   }
 
   /* Page composition helpers — 8pt airier rhythm */
