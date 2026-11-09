@@ -1,0 +1,240 @@
+.mh-task .ss-stage {
+  --gutter: 40px;
+  overflow: hidden;
+  background: var(--ss-well);
+}
+
+/* Pinned top + equal sides, bleeds bottom — form-error layout */
+.mh-task-win {
+  position: absolute;
+  left: var(--gutter);
+  top: 28px;
+  width: 640px;
+  height: 520px;
+  box-shadow: var(--ss-shadow-hero);
+}
+
+.mh-task[data-layout="compact"] .mh-task-win {
+  left: 16px;
+  top: 16px;
+  width: 388px;
+  height: 440px;
+}
+
+/* LTR chrome avoids kit bar spill false-positives under RTL stage */
+.mh-task-win > .ss-window__bar,
+.mh-task-win[data-kind] > .ss-window__bar {
+  direction: ltr;
+}
+
+.mh-task-body {
+  position: relative;
+  padding: 20px 24px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #f6f9fd;
+  direction: rtl;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.mh-task-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0d1a33;
+}
+
+.mh-task-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.mh-task-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  line-height: 1.1;
+}
+
+.mh-task-field {
+  height: 34px;
+  border: 1px solid #d8e3f0;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: #0d1a33;
+}
+
+.mh-seg {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 34px;
+  padding: 3px;
+  border-radius: 8px;
+  background: #edf4fc;
+  border: 1px solid #d8e3f0;
+}
+
+.mh-seg__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748b;
+  will-change: transform;
+}
+
+.mh-seg__item[data-active] {
+  background: #ffffff;
+  color: #0d1a33;
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(13, 26, 51, 0.06);
+}
+
+.mh-selector {
+  border: 1px solid #d8e3f0;
+  border-radius: 10px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.mh-selector__head {
+  padding: 10px 12px;
+  border-bottom: 1px solid #edf4fc;
+  font-size: 12px;
+  font-weight: 600;
+  color: #0d1a33;
+}
+
+.mh-selector__goals {
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+  gap: 2px;
+  border-bottom: 1px solid #edf4fc;
+}
+
+.mh-goal {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  color: #0d1a33;
+}
+
+.mh-goal .ss-text {
+  flex: 0 1 auto;
+}
+
+.mh-goal[data-active] {
+  background: rgba(143, 180, 227, 0.18);
+  font-weight: 600;
+}
+
+.mh-goal[data-hover] {
+  background: rgba(245, 197, 66, 0.16);
+}
+
+.mh-selector__stages {
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+  gap: 2px;
+}
+
+.mh-stage {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  color: #0d1a33;
+}
+
+.mh-stage[data-hover] {
+  background: rgba(245, 197, 66, 0.16);
+}
+
+.mh-stage[data-picked] {
+  background: rgba(245, 197, 66, 0.22);
+  font-weight: 600;
+}
+
+.mh-stage__hint {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.mh-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mh-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 6px;
+  border: 1px solid #f5c542;
+  background: rgba(245, 197, 66, 0.15);
+  font-size: 12px;
+  font-weight: 600;
+  color: #0d1a33;
+}
+
+.mh-tag__kind {
+  font-size: 10px;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.mh-task-submit {
+  position: absolute;
+  bottom: 28px;
+  inset-inline-start: 24px;
+  height: 34px;
+  padding: 0 16px;
+  border-radius: 8px;
+  background: #f5c542;
+  color: #0d1a33;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  will-change: transform;
+}
+
+.mh-task-submit[data-done] {
+  background: #e8f5e9;
+  color: #1b5e20;
+}
+
+.mh-task-done-check {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.mh-task-spacer {
+  height: 48px;
+  flex-shrink: 0;
+}

@@ -22,6 +22,7 @@ import { RehabPermissions } from '@/pages/rehab-demo/RehabPermissions'
 import { RehabProgramDetail } from '@/pages/rehab-demo/RehabProgramDetail'
 import { RehabPrograms } from '@/pages/rehab-demo/RehabPrograms'
 import { RehabScenarios } from '@/pages/rehab-demo/RehabScenarios'
+import { StageshowPage } from '@/stageshow/StageshowPage'
 import { AppProvider, useApp } from '@/state/AppContext'
 
 function RoleHome() {
@@ -38,6 +39,7 @@ function Bootstrap() {
   }, [refreshTasks])
   return (
     <Routes>
+      <Route path="stageshow" element={<StageshowPage />} />
       <Route element={<AppShell />}>
         <Route index element={<RoleHome />} />
         <Route path="tasks" element={<TaskCenter />} />

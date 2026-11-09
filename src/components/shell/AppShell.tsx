@@ -14,6 +14,7 @@ import {
   Plus,
   Search,
   ShieldCheck,
+  Clapperboard,
   Users,
   X,
 } from 'lucide-react'
@@ -34,6 +35,7 @@ const matamNav = [
   { to: '/org', label: 'בית המנהלת', icon: Building2 },
   { to: '/rehab/bank', label: 'בנק מטרות שיקום', icon: HeartHandshake },
   { to: '/rehab-demo', label: 'סייר מודל שיקום', icon: Database },
+  { to: '/stageshow', label: 'הדגמות מוצר', icon: Clapperboard },
 ]
 
 const moleculeNav = [
