@@ -1,8 +1,8 @@
 # Design System — פורטל המנהלת (אבטיפוס)
 
 > **Source of truth for visual language:** this file + tokens in `src/index.css`
-> (`@theme` block). Apple-like Operate UI polish (2026-11-09) on Navy / Soft Gold —
-> 8pt rhythm, airier chrome, soft hairlines; no business-logic changes.
+> (`@theme` block). Apple-like Operate UI + mobile contrast restore on Navy / Soft Gold —
+> 8pt rhythm, readable hairlines on `#F6F9FD`; no business-logic changes.
 
 ## Provenance
 
@@ -31,11 +31,11 @@
 | Soft Golden Yellow | `#F5C542` | `--color-gold` | Primary CTAs, key callouts, active indicators, attention tags |
 | Gold hover | `#E8B52F` | `--color-gold-hover` | Primary button hover |
 | Signal (link/focus) | `#3D6FA5` | `--color-signal-blue` | Links & focus — dusk-derived, WCAG AA on white |
-| Secondary text | `#64748B` | `--color-slate-gray` / `--color-mist-gray` | Muted copy |
+| Secondary text | `#5B6B7C` | `--color-slate-gray` / `--color-mist-gray` | Muted copy (WCAG-ish on paper/cloud) |
 | Page bg | `#F6F9FD` | `--color-cloud` | App background |
-| Soft cyan | `#EDF4FC` | `--color-soft-cyan` / `--color-pebble` / `--color-badge-bg` | Muted fills, table hover base |
+| Soft cyan | `#EDF4FC` | `--color-soft-cyan` / `--color-pebble` / `--color-badge-bg` | Muted fills — must read vs cloud |
 | Cards | `#FFFFFF` | `--color-paper` | Cards / panels |
-| Borders | `#D8E3F0` | `--color-hairline` | Dividers / outlines |
+| Borders | `#C5D4E6` | `--color-hairline` | Dividers / outlines (clear on `#F6F9FD`) |
 | Success | `#2E7D32` / `#E8F5E9` | `--color-success` / `--color-success-bg` | Semantic success |
 | Warning | `#F5C542` / `#7A5A00` / `#FFF8E1` | `--color-warning` / `--color-warning-text` / `--color-warning-bg` | Semantic warning |
 | Danger | `#C62828` / `#FFEBEE` | `--color-danger` / `--color-danger-bg` | Semantic error |
@@ -51,9 +51,10 @@
 
 ### Navigation
 
-- Sidebar: Midnight Navy background, light text/icons
+- Sidebar (desktop) + mobile drawer: Midnight Navy background, light text/icons
 - Active item: Dusk Blue background + navy text
 - Yellow: sparse indicators only (e.g. attention counts)
+- Do not use near-white paper drawers on mobile — navy chrome matches desktop
 
 ### KPI / charts
 
