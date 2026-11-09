@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { RehabBreadcrumbs } from '@/components/rehab/RehabBreadcrumbs'
 import { AssumptionBanner } from '@/components/ui/assumption'
@@ -635,17 +635,31 @@ function StageWorkspace({
   const stage = getStage(stageId)!
   const goal = getGoal(stage.personalGoalId)!
   const [tab, setTab] = useState<StageTab>('activity')
+  const { showToast } = useApp()
   const [obsOpen, setObsOpen] = useState(false)
   const [obsBody, setObsBody] = useState('')
   const [obsKind, setObsKind] = useState<ObservationKind>('progress')
   const [obsVisibility, setObsVisibility] =
     useState<ObservationVisibility>('internal')
+  const [obsSaving, setObsSaving] = useState(false)
+  const obsSavingRef = useRef(false)
+  const [obsError, setObsError] = useState<string | null>(null)
+  const [highlightObsId, setHighlightObsId] = useState<string | null>(null)
+  const highlightTimerRef = useRef<number | null>(null)
   const [replyFor, setReplyFor] = useState<string | null>(null)
   const [replyBody, setReplyBody] = useState('')
   const [activityFilter, setActivityFilter] = useState<'all' | 'obs' | 'system'>(
     'all',
   )
   const [tick, setTick] = useState(0)
+
+  useEffect(() => {
+    return () => {
+      if (highlightTimerRef.current != null) {
+        window.clearTimeout(highlightTimerRef.current)
+      }
+    }
+  }, [])
 
   void tick
   const state = getRehabState()
@@ -672,7 +686,13 @@ function StageWorkspace({
   const primaryAction =
     stage.status === 'not_started'
       ? { label: 'התחלת שלב', run: () => setStatus('in_progress') }
-      : { label: 'הוספת תצפית', run: () => setObsOpen(true) }
+      : {
+          label: 'הוספת תצפית',
+          run: () => {
+            setObsError(null)
+            setObsOpen(true)
+          },
+        }
 
   return (
     <Panel className="space-y-3">
@@ -780,6 +800,7 @@ function StageWorkspace({
                   <select
                     className="h-9 w-full rounded-md border border-hairline bg-paper px-2 text-[13px]"
                     value={obsKind}
+                    disabled={obsSaving}
                     onChange={(e) => setObsKind(e.target.value as ObservationKind)}
                   >
                     {(Object.keys(observationKindLabelHe) as ObservationKind[]).map(
@@ -796,6 +817,7 @@ function StageWorkspace({
                   <select
                     className="h-9 w-full rounded-md border border-hairline bg-paper px-2 text-[13px]"
                     value={obsVisibility}
+                    disabled={obsSaving}
                     onChange={(e) =>
                       setObsVisibility(e.target.value as ObservationVisibility)
                     }
@@ -808,16 +830,36 @@ function StageWorkspace({
               </div>
               <Textarea
                 value={obsBody}
-                onChange={(e) => setObsBody(e.target.value)}
+                onChange={(e) => {
+                  setObsBody(e.target.value)
+                  if (obsError) setObsError(null)
+                }}
                 placeholder="תוכן התצפית…"
                 className="min-h-[7rem]"
+                disabled={obsSaving}
+                aria-invalid={obsError ? true : undefined}
+                aria-describedby={obsError ? 'obs-save-error' : undefined}
               />
+              {obsError && (
+                <p
+                  id="obs-save-error"
+                  role="alert"
+                  className="rounded-md border border-danger/30 bg-danger-bg px-2.5 py-2 text-[13px] text-danger"
+                >
+                  {obsError}
+                </p>
+              )}
               <div className="flex gap-2">
                 <Button
                   size="sm"
+                  disabled={obsSaving}
                   onClick={() => {
+                    if (obsSavingRef.current) return
+                    obsSavingRef.current = true
+                    setObsSaving(true)
+                    setObsError(null)
                     try {
-                      addObservation({
+                      const obs = addObservation({
                         actor,
                         stageId,
                         kind: obsKind,
@@ -826,19 +868,39 @@ function StageWorkspace({
                       })
                       setObsBody('')
                       setObsOpen(false)
+                      setHighlightObsId(obs.id)
+                      if (highlightTimerRef.current != null) {
+                        window.clearTimeout(highlightTimerRef.current)
+                      }
+                      highlightTimerRef.current = window.setTimeout(() => {
+                        setHighlightObsId(null)
+                        highlightTimerRef.current = null
+                      }, 2400)
+                      showToast('התצפית נשמרה')
                       onChanged()
                       setTick((x) => x + 1)
                     } catch (e) {
-                      alert(e instanceof RehabWorkflowError ? e.message : 'שגיאה')
+                      setObsError(
+                        e instanceof RehabWorkflowError
+                          ? e.message
+                          : 'שמירת התצפית נכשלה',
+                      )
+                    } finally {
+                      obsSavingRef.current = false
+                      setObsSaving(false)
                     }
                   }}
                 >
-                  שמירת תצפית
+                  {obsSaving ? 'שומר…' : 'שמירת תצפית'}
                 </Button>
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => setObsOpen(false)}
+                  disabled={obsSaving}
+                  onClick={() => {
+                    setObsOpen(false)
+                    setObsError(null)
+                  }}
                 >
                   ביטול
                 </Button>
@@ -879,7 +941,11 @@ function StageWorkspace({
                 return (
                   <li
                     key={o.id}
-                    className="rounded-md border border-hairline bg-paper p-3"
+                    data-obs-id={o.id}
+                    className={cn(
+                      'rounded-md border border-hairline bg-paper p-3',
+                      highlightObsId === o.id && 'rehab-obs-highlight',
+                    )}
                   >
                     <div className="flex flex-wrap items-center gap-2 text-[11px] text-mist-gray">
                       <span className="font-semibold text-ink-navy">
