@@ -110,9 +110,9 @@ export function UnitCase() {
         <span>משפחת {unit.familyName}</span>
       </div>
 
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <div>
-          <div className="flex flex-wrap items-center gap-2.5">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
             <h1 className="page-title">משפחת {unit.familyName}</h1>
             <Badge tone="muted">{unit.region}</Badge>
             {unit.needsAttention && <Badge tone="danger">דורשת התייחסות</Badge>}
@@ -120,17 +120,21 @@ export function UnitCase() {
           <p className="mt-2 max-w-2xl text-[14px] leading-snug text-slate-gray">
             {unit.summary}
           </p>
-          <p className="mt-1.5 text-[11px] text-mist-gray">
+          <p className="meta-xs-hide mt-1.5 text-[11px] text-mist-gray">
             פעילות אחרונה · {formatRelativeHe(unit.lastActivityAt)}
           </p>
         </div>
-        <Button size="sm" onClick={() => navigate(`/tasks/new?unitId=${unit.id}`)}>
+        <Button
+          size="sm"
+          className="min-h-11 w-full sm:min-h-0 sm:w-auto"
+          onClick={() => navigate(`/tasks/new?unitId=${unit.id}`)}
+        >
           משימה חדשה לתיק
         </Button>
       </div>
 
       <div
-        className="flex gap-1 overflow-x-auto border-b border-hairline pb-px"
+        className="flex gap-0.5 overflow-x-auto border-b border-hairline pb-px sm:gap-1"
         role="tablist"
       >
         {tabs.map((t) => (
@@ -141,7 +145,7 @@ export function UnitCase() {
             aria-selected={tab === t.id}
             onClick={() => setTab(t.id)}
             className={cn(
-              'shrink-0 border-b-2 px-3.5 py-3 text-[14px] font-medium whitespace-nowrap',
+              'min-h-12 shrink-0 border-b-2 px-3 py-3 text-[14px] font-medium whitespace-nowrap sm:min-h-0 sm:px-3.5',
               tab === t.id
                 ? 'border-gold text-ink-navy'
                 : 'border-transparent text-slate-gray hover:text-ink-navy',
@@ -153,13 +157,13 @@ export function UnitCase() {
       </div>
 
       {tab === 'overview' && (
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-4 sm:gap-6 lg:grid-cols-3">
           <Panel className="lg:col-span-2">
             <h2 className="mb-3 text-[17px] font-semibold tracking-tight">סקירה</h2>
             <p className="text-[14px] leading-relaxed text-slate-gray">
               {unit.summary} הממשק מציג מידע תפעולי בלבד. אין כאן נתונים רפואיים.
             </p>
-            <div className="kpi-strip mt-5 grid-cols-3">
+            <div className="kpi-strip mt-5 grid-cols-1 sm:grid-cols-3">
               <Stat label="פתוחות" value={unit.openTasks} />
               <Stat label="חורגות" value={unit.overdueTasks} danger={unit.overdueTasks > 0} />
               <Stat label="בני משפחה" value={unit.members.length} />
@@ -167,11 +171,11 @@ export function UnitCase() {
           </Panel>
           <Panel>
             <h2 className="mb-3 text-[17px] font-semibold tracking-tight">גישה מהירה</h2>
-            <ul className="space-y-2.5 text-[14px]">
+            <ul className="space-y-1 text-[14px] sm:space-y-2.5">
               <li>
                 <button
                   type="button"
-                  className="text-signal-blue hover:underline"
+                  className="flex min-h-11 w-full items-center text-start text-signal-blue hover:underline sm:min-h-0 sm:inline"
                   onClick={() => setTab('tasks')}
                 >
                   {unitTasks.length} משימות בתיק
@@ -180,7 +184,7 @@ export function UnitCase() {
               <li>
                 <button
                   type="button"
-                  className="text-signal-blue hover:underline"
+                  className="flex min-h-11 w-full items-center text-start text-signal-blue hover:underline sm:min-h-0 sm:inline"
                   onClick={() => setTab('visits')}
                 >
                   ביקורים
@@ -189,7 +193,7 @@ export function UnitCase() {
               <li>
                 <button
                   type="button"
-                  className="text-signal-blue hover:underline"
+                  className="flex min-h-11 w-full items-center text-start text-signal-blue hover:underline sm:min-h-0 sm:inline"
                   onClick={() => setTab('rehab')}
                 >
                   תהליך השיקום
@@ -204,7 +208,10 @@ export function UnitCase() {
         <Panel className="!p-0 overflow-hidden">
           <ul className="divide-y divide-hairline">
             {unit.members.map((m) => (
-              <li key={m.id} className="flex items-center justify-between px-5 py-4 sm:px-6">
+              <li
+                key={m.id}
+                className="flex flex-col gap-1 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6"
+              >
                 <div>
                   <div className="font-semibold">{m.name}</div>
                   <div className="text-[13px] text-slate-gray">{m.relation}</div>

@@ -55,13 +55,13 @@ export function MoleculeHome() {
         </p>
       </div>
 
-      <AssumptionBanner>
+      <AssumptionBanner className="hidden sm:flex">
         מולקולה אינה משנה סטטוס ואינה סוגרת משימות; אין גישה להודעות פנימיות גם
         בתצוגת «הכול».
       </AssumptionBanner>
 
       <div
-        className="inline-flex rounded-md border border-hairline bg-paper p-1"
+        className="inline-flex w-full rounded-md border border-hairline bg-paper p-1 sm:w-auto"
         role="tablist"
         aria-label="מצב עבודה"
       >
@@ -78,7 +78,7 @@ export function MoleculeHome() {
             aria-selected={mode === m.id}
             onClick={() => setMode(m.id)}
             className={cn(
-              'rounded-sm px-4 py-2 text-[14px] font-semibold',
+              'min-h-11 flex-1 rounded-[8px] px-4 py-2 text-[14px] font-semibold sm:min-h-0 sm:flex-none',
               mode === m.id
                 ? 'bg-dusk-blue text-ink-navy'
                 : 'text-slate-gray hover:bg-soft-cyan',
@@ -89,7 +89,7 @@ export function MoleculeHome() {
         ))}
       </div>
 
-      <div className="grid grid-cols-3 gap-2 sm:gap-3">
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-3">
         <Metric label="ממתינות לי" value={waitingOnMe.length} />
         <Metric label="פתוחות אצלי" value={open.length} />
         <Metric label="יחידות קשורות" value={relatedUnits.length} />

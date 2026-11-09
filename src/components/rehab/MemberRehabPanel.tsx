@@ -141,23 +141,25 @@ export function MemberRehabPanel({ unitId, members, initialMemberId }: Props) {
     .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+    <div className="space-y-5 sm:space-y-6">
+      <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <h2 className="text-[20px] font-semibold tracking-tight text-ink-navy">תהליך השיקום</h2>
           <p className="mt-1.5 text-[13px] leading-snug text-slate-gray">
             {member?.name ?? '—'}
             {unit ? ` · משפחת ${unit.familyName}` : ''}
-            {matam ? ` · מת״מ ${matam.name}` : ''}
-            {` · ${kpis.active} מטרות פעילות`}
-            {` · עודכן ${kpis.lastUpdated}`}
+            <span className="meta-xs-hide">
+              {matam ? ` · מת״מ ${matam.name}` : ''}
+              {` · ${kpis.active} מטרות פעילות`}
+              {` · עודכן ${kpis.lastUpdated}`}
+            </span>
           </p>
         </div>
-        <div className="flex flex-wrap items-end gap-2.5">
-          <label className="block space-y-1.5">
+        <div className="flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-end">
+          <label className="block w-full space-y-1.5 sm:w-auto">
             <span className="text-[12px] font-medium text-slate-gray">בן משפחה</span>
             <select
-              className="h-10 min-w-[10rem] rounded-[10px] border border-hairline bg-pebble px-3 text-[14px]"
+              className="h-11 w-full min-w-[10rem] rounded-[10px] border border-hairline bg-pebble px-3 text-[14px] sm:h-10"
               value={memberId}
               onChange={(e) => {
                 setMemberId(e.target.value)
@@ -171,12 +173,17 @@ export function MemberRehabPanel({ unitId, members, initialMemberId }: Props) {
               ))}
             </select>
           </label>
-          <Button size="sm" onClick={() => setDrawerOpen(true)}>
+          <Button
+            size="sm"
+            className="min-h-11 w-full sm:min-h-0 sm:w-auto"
+            onClick={() => setDrawerOpen(true)}
+          >
             הוספת מטרת שיקום
           </Button>
           <Button
             size="sm"
             variant="outline"
+            className="hidden sm:inline-flex"
             onClick={() => navigate('/rehab/bank')}
           >
             בנק מטרות
@@ -184,23 +191,23 @@ export function MemberRehabPanel({ unitId, members, initialMemberId }: Props) {
         </div>
       </div>
 
-      <div className="kpi-strip grid-cols-2 sm:grid-cols-4">
+      <div className="kpi-strip !grid-cols-2 sm:!grid-cols-4">
         <Kpi label="מטרות פעילות" value={kpis.active} />
         <Kpi label="מטרות שהושלמו" value={kpis.completed} />
         <Kpi label="שלבים בביצוע" value={kpis.stagesInProgress} accent />
         <Kpi label="פעילויות לטיפול" value={kpis.openActivities} warn={kpis.openActivities > 0} />
       </div>
 
-      <div className="flex flex-col gap-2.5 rounded-xl border border-hairline bg-paper p-4 sm:flex-row sm:flex-wrap sm:items-center">
+      <div className="flex flex-col gap-2.5 rounded-xl border border-hairline bg-paper p-3.5 sm:flex-row sm:flex-wrap sm:items-center sm:p-4">
         <Input
-          className="sm:max-w-xs"
+          className="h-11 sm:h-10 sm:max-w-xs"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="חיפוש לפי שם מטרה…"
           aria-label="חיפוש מטרות"
         />
         <select
-          className="h-10 rounded-[10px] border border-hairline bg-pebble px-3 text-[13px]"
+          className="h-11 rounded-[10px] border border-hairline bg-pebble px-3 text-[13px] sm:h-10"
           value={statusFilter}
           onChange={(e) =>
             setStatusFilter(e.target.value as typeof statusFilter)
@@ -214,7 +221,7 @@ export function MemberRehabPanel({ unitId, members, initialMemberId }: Props) {
           <option value="cancelled">בוטלו</option>
         </select>
         <select
-          className="h-10 rounded-[10px] border border-hairline bg-pebble px-3 text-[13px]"
+          className="hidden h-10 rounded-[10px] border border-hairline bg-pebble px-3 text-[13px] sm:block"
           value={domainFilter}
           onChange={(e) =>
             setDomainFilter(e.target.value as typeof domainFilter)
@@ -229,7 +236,7 @@ export function MemberRehabPanel({ unitId, members, initialMemberId }: Props) {
           ))}
         </select>
         <select
-          className="h-10 rounded-[10px] border border-hairline bg-pebble px-3 text-[13px]"
+          className="hidden h-10 rounded-[10px] border border-hairline bg-pebble px-3 text-[13px] sm:block"
           value={ownerFilter}
           onChange={(e) => setOwnerFilter(e.target.value)}
           aria-label="סינון אחראי"
@@ -370,7 +377,7 @@ function GoalCard({
   return (
     <Panel
       className={cn(
-        'flex flex-col gap-2.5',
+        'flex flex-col gap-2 sm:gap-2.5',
         muted && 'opacity-75',
         goal.mgmtStatus === 'active' && 'border-s-4 border-s-gold',
       )}
@@ -409,10 +416,13 @@ function GoalCard({
         />
       </div>
       <p className="text-[12px] text-slate-gray">
-        {prog.completed} מתוך {prog.total} שלבים הושלמו · אחראי:{' '}
-        {goal.ownerNameHe ?? '—'}
+        {prog.completed} מתוך {prog.total} שלבים
+        <span className="meta-xs-hide">
+          {' '}
+          הושלמו · אחראי: {goal.ownerNameHe ?? '—'}
+        </span>
       </p>
-      <p className="text-[12px] text-mist-gray">
+      <p className="meta-xs-hide text-[12px] text-mist-gray">
         עודכן {goal.updatedAt.slice(0, 10)}
         {lastObs
           ? ` · פעילות אחרונה: ${lastObs.kind === 'blocker' ? 'חסם' : 'תצפית'} ${lastObs.observedAt.slice(0, 10)}`
@@ -423,7 +433,7 @@ function GoalCard({
       )}
       <Link
         to={`/rehab/goals/${goal.id}${current ? `?stage=${current.id}` : ''}`}
-        className="mt-1 inline-flex text-[13px] font-semibold text-signal-blue hover:underline"
+        className="mt-1 inline-flex min-h-10 items-center text-[13px] font-semibold text-signal-blue hover:underline sm:min-h-0"
       >
         כניסה למטרה
       </Link>

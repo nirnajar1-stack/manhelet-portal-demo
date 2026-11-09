@@ -146,7 +146,7 @@ export function MatamHome() {
 
   return (
     <div className="page-stack motion-fade-in">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+      <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <h1 className="page-title">
             {greetingHe()}, {currentUser.name.split(' ')[0]}
@@ -155,32 +155,43 @@ export function MatamHome() {
             {attentionCount > 0 ? (
               <>
                 <span className="font-medium text-ink-navy">{attentionCount}</span>
-                {' '}משימות דורשות טיפול מתוך {openCount} פתוחות ביחידות באחריותך.
+                {' '}משימות דורשות טיפול
+                <span className="meta-xs-hide"> מתוך {openCount} פתוחות ביחידות באחריותך</span>
+                <span className="sm:hidden">.</span>
               </>
             ) : (
-              <>אין משימות דחופות · {openCount} משימות פתוחות ביחידות באחריותך.</>
+              <>אין משימות דחופות · {openCount} פתוחות.</>
             )}
           </p>
         </div>
         <div className="flex flex-wrap gap-2.5">
-          <Button variant="outline" size="sm" onClick={() => navigate('/tasks')}>
+          <Button
+            variant="outline"
+            size="sm"
+            className="hidden sm:inline-flex"
+            onClick={() => navigate('/tasks')}
+          >
             <CalendarDays className="h-4 w-4" />
             יומן משימות יומי
           </Button>
-          <Button size="sm" onClick={() => navigate('/tasks/new')}>
+          <Button
+            size="sm"
+            className="hidden sm:inline-flex"
+            onClick={() => navigate('/tasks/new')}
+          >
             <ClipboardPlus className="h-4 w-4" />
             פתיחת משימה חדשה
           </Button>
         </div>
       </div>
 
-      <AssumptionBanner>
+      <AssumptionBanner className="hidden sm:flex">
         מדדים לפי יחידות טיפול באחריות המת״ם — כל המשימות ביחידות אלו, גם אם
         האחראי הניהולי הוא משתמש אחר.
       </AssumptionBanner>
 
-      {/* KPI strip — single surface, not identical cards */}
-      <div className="kpi-strip sm:grid-cols-3" role="group" aria-label="מדדים אישיים">
+      {/* KPI strip — stacks on xs, single surface on sm+ */}
+      <div className="kpi-strip grid-cols-1 sm:grid-cols-3" role="group" aria-label="מדדים אישיים">
         {metrics.map((m) => (
           <button
             key={m.id}
@@ -201,7 +212,7 @@ export function MatamHome() {
               {m.value}
             </span>
             <span className="kpi-label">{m.label}</span>
-            <span className="text-[11px] text-mist-gray">{m.hint}</span>
+            <span className="meta-xs-hide text-[11px] text-mist-gray">{m.hint}</span>
           </button>
         ))}
       </div>
@@ -218,22 +229,22 @@ export function MatamHome() {
             {waitingUnits.map((u) => (
               <li
                 key={u.id}
-                className="flex flex-col gap-1.5 py-2.5 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between"
+                className="flex flex-col gap-2 py-3 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between sm:gap-1.5 sm:py-2.5"
               >
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-1.5">
-                    <span className="text-[13px] font-medium">
+                    <span className="text-[14px] font-medium sm:text-[13px]">
                       משפחת {u.familyName}
                     </span>
                     <Badge tone="danger">דורשת התייחסות</Badge>
                   </div>
-                  <p className="mt-0.5 truncate text-[12px] text-slate-gray">
+                  <p className="meta-xs-hide mt-0.5 truncate text-[12px] text-slate-gray">
                     {u.summary} · {u.overdueTasks} משימות חורגות
                   </p>
                 </div>
                 <Link
                   to={`/units/${u.id}`}
-                  className="shrink-0 text-[12px] font-semibold text-signal-blue hover:underline"
+                  className="inline-flex min-h-10 items-center text-[13px] font-semibold text-signal-blue hover:underline sm:min-h-0 sm:text-[12px]"
                 >
                   מעבר לתיק ›
                 </Link>
@@ -243,15 +254,15 @@ export function MatamHome() {
         </div>
       )}
 
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_280px]">
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_280px] xl:gap-6">
         <Panel className="!p-0 overflow-hidden">
-          <div className="flex flex-col gap-2 border-b border-hairline px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-2 border-b border-hairline px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
             <h2 className="text-[17px] font-semibold tracking-tight text-ink-navy">
               המשימות ביחידות שלי
             </h2>
             <Link
               to="/tasks"
-              className="inline-flex items-center gap-1 text-[13px] font-medium text-signal-blue hover:underline"
+              className="inline-flex min-h-10 items-center gap-1 text-[13px] font-medium text-signal-blue hover:underline sm:min-h-0"
             >
               למרכז המשימות
               <ChevronLeft className="h-3.5 w-3.5" />
@@ -260,7 +271,7 @@ export function MatamHome() {
 
           {!metric && (
             <div
-              className="flex gap-1 overflow-x-auto border-b border-hairline px-3 py-2 sm:px-4"
+              className="flex gap-1.5 overflow-x-auto border-b border-hairline px-3 py-2.5 sm:gap-1 sm:px-4 sm:py-2"
               role="tablist"
               aria-label="סינון משימות"
             >
@@ -277,18 +288,20 @@ export function MatamHome() {
                   )}
                 >
                   {t.label}
-                  {typeof t.count === 'number' ? ` (${t.count})` : ''}
+                  {typeof t.count === 'number' ? (
+                    <span className="meta-xs-hide">{` (${t.count})`}</span>
+                  ) : null}
                 </button>
               ))}
             </div>
           )}
 
           {metric && (
-            <div className="flex items-center justify-between border-b border-hairline px-5 py-2.5">
+            <div className="flex items-center justify-between border-b border-hairline px-4 py-3 sm:px-5 sm:py-2.5">
               <span className="text-[12px] text-slate-gray">מסונן לפי מדד אישי</span>
               <button
                 type="button"
-                className="min-h-8 cursor-pointer text-[12px] font-semibold text-signal-blue hover:underline"
+                className="min-h-10 cursor-pointer text-[13px] font-semibold text-signal-blue hover:underline sm:min-h-8 sm:text-[12px]"
                 onClick={() => setMetric(null)}
               >
                 נקה סינון
@@ -300,7 +313,28 @@ export function MatamHome() {
         </Panel>
 
         <aside className="space-y-0 divide-y divide-hairline rounded-xl border border-hairline bg-paper">
-          <div className="p-5">
+          <div className="p-4 sm:p-5">
+            <h3 className="section-label mb-3">משפחות אחרונות</h3>
+            <ul className="space-y-1">
+              {recentFamilies.map((u) => (
+                <li key={u.id}>
+                  <Link
+                    to={`/units/${u.id}`}
+                    className="block rounded-[10px] px-2 py-2.5 hover:bg-soft-cyan sm:py-2"
+                  >
+                    <div className="text-[14px] font-medium sm:text-[13px]">
+                      משפחת {u.familyName}
+                    </div>
+                    <div className="meta-xs-hide text-[11px] text-mist-gray">
+                      {u.region} · {formatRelativeHe(u.lastActivityAt)}
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="hidden p-5 sm:block">
             <h3 className="section-label mb-3">קיצורי דרך</h3>
             <ul className="space-y-0.5">
               {(
@@ -338,26 +372,7 @@ export function MatamHome() {
             </ul>
           </div>
 
-          <div className="p-5">
-            <h3 className="section-label mb-3">משפחות אחרונות</h3>
-            <ul className="space-y-1">
-              {recentFamilies.map((u) => (
-                <li key={u.id}>
-                  <Link
-                    to={`/units/${u.id}`}
-                    className="block rounded-[10px] px-2 py-2 hover:bg-soft-cyan"
-                  >
-                    <div className="text-[13px] font-medium">משפחת {u.familyName}</div>
-                    <div className="text-[11px] text-mist-gray">
-                      {u.region} · {formatRelativeHe(u.lastActivityAt)}
-                    </div>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="p-5">
+          <div className="hidden p-5 sm:block">
             <h3 className="section-label mb-3">עדכונים ונהלים</h3>
             <div className="space-y-3">
               {nextEvent && (

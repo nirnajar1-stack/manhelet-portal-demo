@@ -47,8 +47,8 @@ export function TaskRow({
   const content = (
     <>
       <div className="min-w-0 flex-1">
-        <div className="mb-1 flex flex-wrap items-center gap-2">
-          <span className="text-[12px] font-medium text-mist-gray">
+        <div className="mb-1.5 flex flex-wrap items-center gap-1.5 sm:mb-1 sm:gap-2">
+          <span className="meta-xs-hide text-[12px] font-medium text-mist-gray">
             {task.number}
           </span>
           <span
@@ -76,33 +76,38 @@ export function TaskRow({
           {task.hasNewReply && (
             <span className="inline-flex items-center gap-1 text-[12px] font-medium text-signal-blue">
               <MessageCircle className="h-3.5 w-3.5" aria-hidden />
-              תגובה חדשה
+              <span className="meta-xs-hide">תגובה חדשה</span>
+              <span className="sr-only sm:hidden">תגובה חדשה</span>
             </span>
           )}
         </div>
-        <h3 className="truncate text-[13px] font-medium text-ink-navy text-balance">
+        <h3 className="text-[15px] font-medium leading-snug text-ink-navy text-balance sm:truncate sm:text-[13px]">
           {task.title}
         </h3>
-        <p className="mt-1 truncate text-[13px] text-slate-gray">
+        <p className="mt-1.5 text-[13px] text-slate-gray sm:mt-1 sm:truncate">
           משפחת {unit?.familyName ?? '—'}
-          {member ? ` · ${member.name}` : ''}
-          {owner ? ` · ${owner.name}` : ''}
+          {member ? (
+            <span className="meta-xs-hide">{` · ${member.name}`}</span>
+          ) : null}
+          {owner ? (
+            <span className="meta-xs-hide">{` · ${owner.name}`}</span>
+          ) : null}
         </p>
         {!compact && (
-          <p className="mt-1 truncate text-[12px] text-mist-gray">
+          <p className="meta-xs-hide mt-1 truncate text-[12px] text-mist-gray">
             {task.lastActivity} · {formatRelativeHe(task.updatedAt)}
           </p>
         )}
       </div>
-      <div className="flex shrink-0 flex-col items-end gap-2">
-        <span className="text-[12px] text-mist-gray">
+      <div className="flex shrink-0 flex-col items-stretch gap-2 sm:items-end">
+        <span className="meta-xs-hide text-[12px] text-mist-gray">
           {formatRelativeHe(task.updatedAt)}
         </span>
         {showOpenAction && (
           <Button
             size="sm"
             variant="soft"
-            className="h-7 text-[12px]"
+            className="min-h-10 text-[13px] sm:h-7 sm:min-h-0 sm:text-[12px]"
             onClick={(e) => {
               if (onSelect) {
                 e.preventDefault()
@@ -123,9 +128,9 @@ export function TaskRow({
         type="button"
         onClick={() => onSelect(task)}
         className={cn(
-          'data-row flex w-full cursor-pointer items-start justify-between gap-3 border-b border-hairline px-5 py-3.5 text-start transition-colors duration-150 hover:bg-soft-cyan focus-visible:bg-soft-cyan',
+          'data-row flex w-full cursor-pointer items-start justify-between gap-3 border-b border-hairline px-4 py-4 text-start transition-colors duration-150 hover:bg-soft-cyan focus-visible:bg-soft-cyan sm:px-5 sm:py-3.5',
           selected && 'bg-info-wash',
-          compact && 'px-4 py-3',
+          compact && 'sm:px-4 sm:py-3',
         )}
       >
         {content}
@@ -137,9 +142,9 @@ export function TaskRow({
     <Link
       to={`/tasks/${task.id}`}
       className={cn(
-        'data-row flex cursor-pointer items-start justify-between gap-3 border-b border-hairline px-5 py-3.5 transition-colors duration-150 hover:bg-soft-cyan focus-visible:bg-soft-cyan',
+        'data-row flex cursor-pointer items-start justify-between gap-3 border-b border-hairline px-4 py-4 transition-colors duration-150 hover:bg-soft-cyan focus-visible:bg-soft-cyan sm:px-5 sm:py-3.5',
         selected && 'bg-info-wash',
-        compact && 'px-4 py-3',
+        compact && 'sm:px-4 sm:py-3',
       )}
     >
       {content}

@@ -204,35 +204,40 @@ export function TaskCenter() {
 
   return (
     <div className="page-stack motion-fade-in">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
         <div>
           <h1 className="page-title">מרכז המשימות והמעקב</h1>
           <p className="page-lede">
-            {filtered.length} משימות בתצוגה · לפי הרשאות שיוך יחידות
+            {filtered.length} משימות בתצוגה
+            <span className="meta-xs-hide"> · לפי הרשאות שיוך יחידות</span>
           </p>
         </div>
         <div className="flex flex-wrap gap-2.5">
-          <Button size="sm" onClick={() => navigate('/tasks/new')}>
+          <Button
+            size="sm"
+            className="hidden sm:inline-flex"
+            onClick={() => navigate('/tasks/new')}
+          >
             + משימה חדשה
           </Button>
-          <Button size="sm" variant="outline">
+          <Button size="sm" variant="outline" className="hidden sm:inline-flex">
             <Download className="h-3.5 w-3.5" aria-hidden />
             ייצוא לאקסל
           </Button>
-          <Button size="sm" variant="ghost">
+          <Button size="sm" variant="ghost" className="hidden sm:inline-flex">
             <Save className="h-3.5 w-3.5" aria-hidden />
             שמירת תצוגה
           </Button>
         </div>
       </div>
 
-      <AssumptionBanner>
+      <AssumptionBanner className="hidden sm:flex">
         תצוגות שמורות הן אבטיפוס מקומי. סינון «דורש טיפול» הוא אינדיקטור נפרד
         מסטטוס עסקי.
       </AssumptionBanner>
 
-      {/* Dense KPI strip — one surface, hairline dividers */}
-      <div className="kpi-strip grid-cols-2 lg:grid-cols-4" role="group" aria-label="סיכום משימות">
+      {/* KPI strip — 2×2 on phone, row on lg */}
+      <div className="kpi-strip !grid-cols-2 lg:!grid-cols-4" role="group" aria-label="סיכום משימות">
         <div className="kpi-cell">
           <span className="kpi-value">{kpis.active}</span>
           <span className="kpi-label">סה״כ פעילות</span>
@@ -259,16 +264,17 @@ export function TaskCenter() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="חיפוש במשימות…"
-            className="h-10 border-hairline bg-cloud/60 sm:max-w-xs"
+            className="h-11 border-hairline bg-cloud/60 sm:h-10 sm:max-w-xs"
           />
           <Button
             variant="outline"
             size="sm"
-            className="sm:hidden"
+            className="min-h-11 sm:hidden"
             onClick={() => setFiltersOpen((v) => !v)}
+            aria-expanded={filtersOpen}
           >
             <Filter className="h-4 w-4" />
-            סינונים
+            {filtersOpen ? 'הסתרת סינונים' : 'סינונים'}
           </Button>
           <div
             className={cn('flex flex-wrap gap-2.5', !filtersOpen && 'hidden sm:flex')}
@@ -319,7 +325,7 @@ export function TaskCenter() {
         </div>
 
         <div
-          className="flex gap-1 overflow-x-auto border-b border-hairline bg-soft-cyan/40 px-3 py-2"
+          className="flex gap-1.5 overflow-x-auto border-b border-hairline bg-soft-cyan/40 px-3 py-2.5 sm:gap-1 sm:py-2"
           role="tablist"
           aria-label="תצוגות משימות"
         >
@@ -335,7 +341,8 @@ export function TaskCenter() {
                 view === t.id ? 'filter-chip-active' : 'filter-chip-idle',
               )}
             >
-              {t.label} ({t.count})
+              {t.label}
+              <span className="meta-xs-hide">{` (${t.count})`}</span>
             </button>
           ))}
         </div>

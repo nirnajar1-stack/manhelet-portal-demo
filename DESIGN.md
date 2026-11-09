@@ -96,6 +96,14 @@ Letter-spacing: slightly tight on titles (`-0.02em`).
 - Home: attention first, task list primary, quiet rail for shortcuts
 - Family portal: minimal shell; no decorative blurs / AI blobs
 
+### Mobile density (below 640px)
+
+- Progressive disclosure: hide secondary meta / assumption banners / tertiary actions (`.meta-xs-hide` or `hidden sm:*`)
+- Prefer stacking over cramped multi-column KPI / metric grids
+- Larger tap targets (≈44px+) on rows, chips, drawer nav, and primary CTAs
+- Mobile drawer: primary nav first; «כלים נוספים» collapses secondary destinations
+- FAB + main bottom padding so content clears the gold action button
+
 ## Anti-patterns to avoid
 
 - Identical large KPI cards with decorative duplicate numbers
