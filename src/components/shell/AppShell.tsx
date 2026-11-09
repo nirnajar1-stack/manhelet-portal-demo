@@ -26,17 +26,22 @@ import { cn } from '@/lib/utils'
 import { useApp } from '@/state/AppContext'
 import type { NotificationItem, UserRole } from '@/types'
 
-const matamNav = [
+const matamNavPrimary = [
   { to: '/', label: 'סביבת העבודה שלי', icon: Home },
   { to: '/tasks', label: 'מרכז המשימות', icon: CheckSquare, badgeKey: 'tasks' as const },
   { to: '/units', label: 'משפחות ויחידות טיפול', icon: Users },
   { to: '/programs', label: 'תוכניות, אירועים והטבות', icon: CalendarDays },
+]
+
+const matamNavMore = [
   { to: '/knowledge', label: 'מרכז ידע ונהלים', icon: BookOpen },
   { to: '/org', label: 'בית המנהלת', icon: Building2 },
   { to: '/rehab/bank', label: 'בנק מטרות שיקום', icon: HeartHandshake },
   { to: '/rehab-demo', label: 'סייר מודל שיקום', icon: Database },
   { to: '/stageshow', label: 'הדגמות מוצר', icon: Clapperboard },
 ]
+
+const matamNav = [...matamNavPrimary, ...matamNavMore]
 
 const moleculeNav = [
   { to: '/molecule', label: 'סביבת מולקולה', icon: Home },
@@ -60,6 +65,7 @@ export function AppShell() {
     tasks,
   } = useApp()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [mobileMoreOpen, setMobileMoreOpen] = useState(false)
   const [notifOpen, setNotifOpen] = useState(false)
   const [notifs, setNotifs] = useState<NotificationItem[]>([])
   const [profileOpen, setProfileOpen] = useState(false)
@@ -68,7 +74,15 @@ export function AppShell() {
 
   const onFamilyRoute = location.pathname.startsWith('/family')
   const isFamily = currentUser.role === 'family' || onFamilyRoute
-  const nav = currentUser.role === 'molecule' ? moleculeNav : matamNav
+  const isMolecule = currentUser.role === 'molecule'
+  const nav = isMolecule ? moleculeNav : matamNav
+  const mobilePrimaryNav = isMolecule ? moleculeNav : matamNavPrimary
+  const mobileMoreNav = isMolecule ? [] : matamNavMore
+  const morePathActive = mobileMoreNav.some(
+    (item) =>
+      location.pathname === item.to ||
+      location.pathname.startsWith(`${item.to}/`),
+  )
   const attentionCount = tasks.filter(
     (t) => t.needsAttention || t.hasNewReply,
   ).length
@@ -79,9 +93,14 @@ export function AppShell() {
 
   useEffect(() => {
     setMobileOpen(false)
+    setMobileMoreOpen(false)
     setNotifOpen(false)
     setProfileOpen(false)
   }, [location.pathname])
+
+  useEffect(() => {
+    if (morePathActive) setMobileMoreOpen(true)
+  }, [morePathActive, mobileOpen])
 
   useEffect(() => {
     if (onFamilyRoute && currentUser.role !== 'family') {
@@ -133,10 +152,10 @@ export function AppShell() {
         דלג לתוכן הראשי
       </a>
       <header className="sticky top-0 z-40 border-b border-hairline bg-paper">
-        <div className="flex h-14 items-center gap-4 px-4 lg:px-6">
+        <div className="flex h-14 items-center gap-2 px-3 sm:gap-3 sm:px-4 lg:gap-4 lg:px-6">
           <button
             type="button"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-[10px] text-ink-navy transition-colors duration-200 hover:bg-soft-cyan lg:hidden"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] text-ink-navy transition-colors duration-200 hover:bg-soft-cyan lg:hidden"
             aria-label="תפריט"
             aria-expanded={mobileOpen}
             aria-controls="mobile-nav"
@@ -157,8 +176,8 @@ export function AppShell() {
             </div>
           </Link>
 
-          <div className="relative mx-auto flex w-full max-w-2xl flex-1 items-center gap-2">
-            <div className="relative w-full">
+          <div className="relative mx-auto flex min-w-0 w-full max-w-2xl flex-1 items-center gap-2">
+            <div className="relative w-full min-w-0">
               <Search
                 className="pointer-events-none absolute end-3 top-1/2 h-4 w-4 -translate-y-1/2 text-mist-gray"
                 aria-hidden
@@ -169,8 +188,8 @@ export function AppShell() {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') navigate('/tasks')
                 }}
-                placeholder="חיפוש מהיר: משימה, משפחה, אדם או יחידת טיפול…"
-                className="h-10 border-hairline bg-pebble pe-10 text-[14px] text-ink-navy placeholder:text-slate-gray"
+                placeholder="חיפוש משימה או משפחה…"
+                className="h-11 border-hairline bg-pebble pe-10 text-[14px] text-ink-navy placeholder:text-slate-gray sm:h-10 sm:placeholder:tracking-normal"
                 aria-label="חיפוש מרכזי"
               />
             </div>
@@ -180,7 +199,7 @@ export function AppShell() {
             </span>
           </div>
 
-          <div className="flex items-center gap-1.5 sm:gap-2">
+          <div className="flex shrink-0 items-center gap-0.5 sm:gap-2">
             <Button
               size="sm"
               className="hidden sm:inline-flex"
@@ -431,8 +450,13 @@ export function AppShell() {
               aria-label="תפריט ניווט"
               className="absolute inset-y-0 end-0 flex w-[min(20rem,88vw)] flex-col border-s border-paper/15 bg-ink-navy shadow-elevated motion-fade-in"
             >
-              <div className="flex items-center justify-between border-b border-paper/20 p-5">
-                <span className="font-semibold text-paper">תפריט</span>
+              <div className="flex items-center justify-between border-b border-paper/20 px-4 py-3.5">
+                <div>
+                  <div className="text-[15px] font-semibold text-paper">
+                    מנהלת החטופים
+                  </div>
+                  <div className="mt-0.5 text-[11px] text-paper/60">תפריט ניווט</div>
+                </div>
                 <button
                   type="button"
                   className="inline-flex h-11 w-11 items-center justify-center rounded-[10px] text-paper hover:bg-paper/10"
@@ -443,53 +467,43 @@ export function AppShell() {
                 </button>
               </div>
               <nav
-                className="flex flex-1 flex-col gap-1 overflow-y-auto p-4"
+                className="flex flex-1 flex-col gap-0.5 overflow-y-auto p-3"
                 aria-label="ניווט ראשי"
               >
-                {nav.map((item) => (
-                  <NavLink
+                {mobilePrimaryNav.map((item) => (
+                  <MobileNavItem
                     key={item.to}
-                    to={item.to}
-                    end={item.to === '/' || item.to === '/molecule'}
-                    className={({ isActive }) =>
-                      cn(
-                        'flex min-h-11 items-center gap-3 rounded-[10px] px-3 py-3 text-[14px] font-medium transition-colors duration-200',
-                        isActive
-                          ? 'bg-dusk-blue text-ink-navy'
-                          : 'text-paper/90 hover:bg-paper/10 hover:text-paper',
-                      )
-                    }
-                  >
-                    {({ isActive }) => (
-                      <>
-                        <item.icon
-                          className={cn(
-                            'h-4 w-4 shrink-0',
-                            isActive ? 'text-ink-navy' : 'text-paper/75',
-                          )}
-                          aria-hidden
-                        />
-                        <span className="min-w-0 flex-1 leading-snug">{item.label}</span>
-                        {'badgeKey' in item &&
-                          item.badgeKey === 'tasks' &&
-                          attentionCount > 0 && (
-                            <span
-                              className={cn(
-                                'rounded-full px-1.5 text-[11px] font-bold whitespace-nowrap',
-                                isActive
-                                  ? 'bg-ink-navy/15 text-ink-navy'
-                                  : 'bg-gold text-ink-navy',
-                              )}
-                            >
-                              {attentionCount}
-                              <span className="sr-only"> משימות דורשות טיפול</span>
-                            </span>
-                          )}
-                      </>
-                    )}
-                  </NavLink>
+                    item={item}
+                    attentionCount={attentionCount}
+                  />
                 ))}
-                <Button className="mt-4" onClick={() => navigate('/tasks/new')}>
+                {mobileMoreNav.length > 0 && (
+                  <div className="mt-2 border-t border-paper/15 pt-2">
+                    <button
+                      type="button"
+                      className="flex min-h-11 w-full items-center justify-between rounded-[10px] px-3 py-2.5 text-[13px] font-medium text-paper/75 transition-colors duration-200 hover:bg-paper/10 hover:text-paper"
+                      aria-expanded={mobileMoreOpen}
+                      onClick={() => setMobileMoreOpen((v) => !v)}
+                    >
+                      <span>כלים נוספים</span>
+                      <span className="text-[11px] text-paper/55">
+                        {mobileMoreOpen ? 'הסתרה' : `${mobileMoreNav.length}`}
+                      </span>
+                    </button>
+                    {mobileMoreOpen &&
+                      mobileMoreNav.map((item) => (
+                        <MobileNavItem
+                          key={item.to}
+                          item={item}
+                          attentionCount={attentionCount}
+                        />
+                      ))}
+                  </div>
+                )}
+                <Button
+                  className="mt-3 min-h-11"
+                  onClick={() => navigate('/tasks/new')}
+                >
                   <Plus className="h-4 w-4" aria-hidden />
                   פעולה חדשה
                 </Button>
@@ -540,14 +554,14 @@ export function AppShell() {
           </div>
         )}
 
-        <main id="main-content" className="min-w-0 flex-1 px-4 py-6 lg:px-8 lg:py-8">
+        <main id="main-content" className="min-w-0 flex-1 px-4 py-5 pb-24 sm:py-6 sm:pb-6 lg:px-8 lg:py-8">
           <Outlet />
         </main>
       </div>
 
       <button
         type="button"
-        className="fixed bottom-5 start-5 z-30 flex h-12 w-12 items-center justify-center rounded-[10px] bg-gold text-ink-navy shadow-button transition-colors duration-200 hover:bg-gold-hover sm:hidden"
+        className="fixed bottom-5 start-5 z-30 flex h-14 w-14 items-center justify-center rounded-[12px] bg-gold text-ink-navy shadow-button transition-colors duration-200 hover:bg-gold-hover sm:hidden"
         aria-label="פעולה חדשה"
         onClick={() => navigate('/tasks/new')}
       >
@@ -556,6 +570,57 @@ export function AppShell() {
 
       {toast && <Toast message={toast} />}
     </div>
+  )
+}
+
+function MobileNavItem({
+  item,
+  attentionCount,
+}: {
+  item: (typeof matamNav)[number]
+  attentionCount: number
+}) {
+  return (
+    <NavLink
+      to={item.to}
+      end={item.to === '/' || item.to === '/molecule'}
+      className={({ isActive }) =>
+        cn(
+          'flex min-h-12 items-center gap-3 rounded-[10px] px-3 py-3 text-[14px] font-medium transition-colors duration-200',
+          isActive
+            ? 'bg-dusk-blue text-ink-navy'
+            : 'text-paper/90 hover:bg-paper/10 hover:text-paper',
+        )
+      }
+    >
+      {({ isActive }) => (
+        <>
+          <item.icon
+            className={cn(
+              'h-5 w-5 shrink-0',
+              isActive ? 'text-ink-navy' : 'text-paper/75',
+            )}
+            aria-hidden
+          />
+          <span className="min-w-0 flex-1 leading-snug">{item.label}</span>
+          {'badgeKey' in item &&
+            item.badgeKey === 'tasks' &&
+            attentionCount > 0 && (
+              <span
+                className={cn(
+                  'rounded-full px-1.5 text-[11px] font-bold whitespace-nowrap',
+                  isActive
+                    ? 'bg-ink-navy/15 text-ink-navy'
+                    : 'bg-gold text-ink-navy',
+                )}
+              >
+                {attentionCount}
+                <span className="sr-only"> משימות דורשות טיפול</span>
+              </span>
+            )}
+        </>
+      )}
+    </NavLink>
   )
 }
 
@@ -577,7 +642,7 @@ function EnvOption({
       aria-checked={active}
       onClick={onClick}
       className={cn(
-        'flex min-h-10 w-full cursor-pointer items-center gap-2 rounded-[10px] px-2 py-2.5 text-start text-[12px] font-medium transition-colors duration-200',
+        'flex min-h-11 w-full cursor-pointer items-center gap-2 rounded-[10px] px-2.5 py-2.5 text-start text-[13px] font-medium transition-colors duration-200',
         onDark
           ? active
             ? 'bg-dusk-blue text-ink-navy'
