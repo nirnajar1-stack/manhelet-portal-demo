@@ -33,3 +33,5 @@ dist-ssr
 /reasoning_contract.py
 /search.py
 /validate_data.py
+/.cursor/skills/stageshow/node_modules
+/.cursor/skills/stageshow/package-lock.json
