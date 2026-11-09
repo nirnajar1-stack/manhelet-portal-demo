@@ -442,7 +442,10 @@ export function AppShell() {
                   <X className="h-5 w-5" aria-hidden />
                 </button>
               </div>
-              <nav className="flex flex-1 flex-col gap-1 p-4" aria-label="ניווט ראשי">
+              <nav
+                className="flex flex-1 flex-col gap-1 overflow-y-auto p-4"
+                aria-label="ניווט ראשי"
+              >
                 {nav.map((item) => (
                   <NavLink
                     key={item.to}
@@ -466,6 +469,45 @@ export function AppShell() {
                   פעולה חדשה
                 </Button>
               </nav>
+
+              <div className="border-t border-hairline p-4">
+                <p className="mb-2 px-1 text-[11px] font-semibold tracking-wide text-slate-gray">
+                  החלפת סביבה
+                </p>
+                <div
+                  className="space-y-1 rounded-[10px] bg-pebble p-2"
+                  role="radiogroup"
+                  aria-label="החלפת סביבה"
+                >
+                  <EnvOption
+                    active={currentUser.role === 'matam'}
+                    label="מת״מים ומנהלי תיק"
+                    onClick={() => {
+                      setRole('matam')
+                      setMobileOpen(false)
+                      navigate('/')
+                    }}
+                  />
+                  <EnvOption
+                    active={currentUser.role === 'molecule'}
+                    label="מרחב מולקולות"
+                    onClick={() => {
+                      switchUser('u-dana')
+                      setMobileOpen(false)
+                      navigate('/molecule')
+                    }}
+                  />
+                  <EnvOption
+                    active={false}
+                    label="תצוגת שירות למשפחות"
+                    onClick={() => {
+                      setRole('family')
+                      setMobileOpen(false)
+                      navigate('/family')
+                    }}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         )}
