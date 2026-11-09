@@ -110,17 +110,17 @@ export function UnitCase() {
         <span>משפחת {unit.familyName}</span>
       </div>
 
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2.5">
             <h1 className="page-title">משפחת {unit.familyName}</h1>
             <Badge tone="muted">{unit.region}</Badge>
             {unit.needsAttention && <Badge tone="danger">דורשת התייחסות</Badge>}
           </div>
-          <p className="mt-1.5 max-w-2xl text-[13px] text-slate-gray">
+          <p className="mt-2 max-w-2xl text-[14px] leading-snug text-slate-gray">
             {unit.summary}
           </p>
-          <p className="mt-1 text-[11px] text-mist-gray">
+          <p className="mt-1.5 text-[11px] text-mist-gray">
             פעילות אחרונה · {formatRelativeHe(unit.lastActivityAt)}
           </p>
         </div>
@@ -141,7 +141,7 @@ export function UnitCase() {
             aria-selected={tab === t.id}
             onClick={() => setTab(t.id)}
             className={cn(
-              'shrink-0 border-b-2 px-3 py-2.5 text-[13px] font-medium whitespace-nowrap',
+              'shrink-0 border-b-2 px-3.5 py-3 text-[14px] font-medium whitespace-nowrap',
               tab === t.id
                 ? 'border-gold text-ink-navy'
                 : 'border-transparent text-slate-gray hover:text-ink-navy',
@@ -153,21 +153,21 @@ export function UnitCase() {
       </div>
 
       {tab === 'overview' && (
-        <div className="grid gap-4 lg:grid-cols-3">
+        <div className="grid gap-6 lg:grid-cols-3">
           <Panel className="lg:col-span-2">
-            <h2 className="mb-2 text-[15px] font-semibold">סקירה</h2>
-            <p className="text-[13px] leading-relaxed text-slate-gray">
+            <h2 className="mb-3 text-[17px] font-semibold tracking-tight">סקירה</h2>
+            <p className="text-[14px] leading-relaxed text-slate-gray">
               {unit.summary} הממשק מציג מידע תפעולי בלבד. אין כאן נתונים רפואיים.
             </p>
-            <div className="kpi-strip mt-3 grid-cols-3">
+            <div className="kpi-strip mt-5 grid-cols-3">
               <Stat label="פתוחות" value={unit.openTasks} />
               <Stat label="חורגות" value={unit.overdueTasks} danger={unit.overdueTasks > 0} />
               <Stat label="בני משפחה" value={unit.members.length} />
             </div>
           </Panel>
           <Panel>
-            <h2 className="mb-2 text-[15px] font-semibold">גישה מהירה</h2>
-            <ul className="space-y-2 text-[14px]">
+            <h2 className="mb-3 text-[17px] font-semibold tracking-tight">גישה מהירה</h2>
+            <ul className="space-y-2.5 text-[14px]">
               <li>
                 <button
                   type="button"
@@ -204,7 +204,7 @@ export function UnitCase() {
         <Panel className="!p-0 overflow-hidden">
           <ul className="divide-y divide-hairline">
             {unit.members.map((m) => (
-              <li key={m.id} className="flex items-center justify-between px-4 py-3 sm:px-6">
+              <li key={m.id} className="flex items-center justify-between px-5 py-4 sm:px-6">
                 <div>
                   <div className="font-semibold">{m.name}</div>
                   <div className="text-[13px] text-slate-gray">{m.relation}</div>
@@ -219,19 +219,19 @@ export function UnitCase() {
       {tab === 'tasks' && <TaskList tasks={unitTasks} />}
 
       {tab === 'visits' && (
-        <div className="space-y-4">
+        <div className="space-y-6">
           <AssumptionBanner>
             ביקורים — כולל שיוך שיקום אופציונלי לשלב אישי של בן המשפחה הראשי.
             אין קישור אוטומטי לכל משתתפי הביקור.
           </AssumptionBanner>
-          <Panel className="space-y-3">
-            <h2 className="text-[16px] font-semibold">
+          <Panel className="space-y-4">
+            <h2 className="text-[17px] font-semibold tracking-tight">
               תיעוד ביקור{action === 'visit' ? ' · פעולה מהירה' : ''}
             </h2>
             <label className="block space-y-1.5">
               <span className="text-[13px] font-semibold">בן/בת משפחה ראשי</span>
               <select
-                className="h-10 w-full rounded-md border border-hairline bg-pebble px-3 text-[14px]"
+                className="h-10 w-full rounded-[10px] border border-hairline bg-pebble px-3 text-[14px]"
                 value={visitMemberId}
                 onChange={(e) => {
                   const next = e.target.value
@@ -289,7 +289,7 @@ export function UnitCase() {
               />
             </div>
             {visitAffiliation === 'rehab' && (
-              <div className="space-y-2 rounded-md border border-hairline p-3">
+              <div className="space-y-3 rounded-xl border border-hairline p-4">
                 <h3 className="text-[14px] font-semibold">קישור למטרת שיקום</h3>
                 <p className="text-[12px] text-slate-gray">
                   הקישור מתייחס לבן המשפחה הראשי שנבחר. משתתפים נוספים אינם
@@ -349,15 +349,15 @@ export function UnitCase() {
                   ? getGoal(primary.personalGoalId)
                   : undefined
                 return (
-                  <li key={v.id} className="px-4 py-3 sm:px-6">
+                  <li key={v.id} className="px-5 py-4 sm:px-6">
                     <div className="text-[12px] text-mist-gray">
                       {v.date} · {v.visitedBy}
                       {v.activityAffiliation === 'rehab' ? ' · שיקום' : ''}
                       {member ? ` · ${member.name}` : ''}
                     </div>
-                    <p className="mt-1 text-[14px]">{v.summary}</p>
+                    <p className="mt-1.5 text-[14px]">{v.summary}</p>
                     {primary && primaryGoal && member && (
-                      <div className="mt-2 rounded-md bg-pebble px-2.5 py-2 text-[12px]">
+                      <div className="mt-2.5 rounded-[10px] bg-pebble px-3 py-2.5 text-[12px]">
                         <div className="font-semibold text-ink-navy">
                           {member.name}
                         </div>

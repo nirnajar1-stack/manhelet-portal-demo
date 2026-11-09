@@ -123,9 +123,9 @@ export function TaskRow({
         type="button"
         onClick={() => onSelect(task)}
         className={cn(
-          'data-row flex w-full cursor-pointer items-start justify-between gap-3 border-b border-hairline px-4 py-2.5 text-start transition-colors duration-150 hover:bg-soft-cyan focus-visible:bg-soft-cyan',
+          'data-row flex w-full cursor-pointer items-start justify-between gap-3 border-b border-hairline px-5 py-3.5 text-start transition-colors duration-150 hover:bg-soft-cyan focus-visible:bg-soft-cyan',
           selected && 'bg-info-wash',
-          compact && 'px-3 py-2',
+          compact && 'px-4 py-3',
         )}
       >
         {content}
@@ -137,9 +137,9 @@ export function TaskRow({
     <Link
       to={`/tasks/${task.id}`}
       className={cn(
-        'data-row flex cursor-pointer items-start justify-between gap-3 border-b border-hairline px-4 py-2.5 transition-colors duration-150 hover:bg-soft-cyan focus-visible:bg-soft-cyan',
+        'data-row flex cursor-pointer items-start justify-between gap-3 border-b border-hairline px-5 py-3.5 transition-colors duration-150 hover:bg-soft-cyan focus-visible:bg-soft-cyan',
         selected && 'bg-info-wash',
-        compact && 'px-3 py-2',
+        compact && 'px-4 py-3',
       )}
     >
       {content}
