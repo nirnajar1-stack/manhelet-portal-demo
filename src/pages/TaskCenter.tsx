@@ -204,14 +204,14 @@ export function TaskCenter() {
 
   return (
     <div className="page-stack motion-fade-in">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="page-title">מרכז המשימות והמעקב</h1>
           <p className="page-lede">
             {filtered.length} משימות בתצוגה · לפי הרשאות שיוך יחידות
           </p>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2.5">
           <Button size="sm" onClick={() => navigate('/tasks/new')}>
             + משימה חדשה
           </Button>
@@ -253,13 +253,13 @@ export function TaskCenter() {
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-[10px] border border-hairline bg-paper">
-        <div className="flex flex-col gap-2 border-b border-hairline px-3 py-2.5 sm:flex-row sm:items-center">
+      <div className="overflow-hidden rounded-xl border border-hairline bg-paper">
+        <div className="flex flex-col gap-3 border-b border-hairline px-4 py-3.5 sm:flex-row sm:items-center">
           <Input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="חיפוש במשימות…"
-            className="h-9 border-hairline bg-cloud/60 sm:max-w-xs"
+            className="h-10 border-hairline bg-cloud/60 sm:max-w-xs"
           />
           <Button
             variant="outline"
@@ -271,7 +271,7 @@ export function TaskCenter() {
             סינונים
           </Button>
           <div
-            className={cn('flex flex-wrap gap-2', !filtersOpen && 'hidden sm:flex')}
+            className={cn('flex flex-wrap gap-2.5', !filtersOpen && 'hidden sm:flex')}
           >
             <Select
               label="סטטוס"
@@ -306,7 +306,7 @@ export function TaskCenter() {
                 ...domains.map((d) => ({ value: d, label: d })),
               ]}
             />
-            <label className="inline-flex items-center gap-2 rounded-md border border-hairline px-2.5 text-[12px] text-slate-gray">
+            <label className="inline-flex min-h-10 items-center gap-2 rounded-[10px] border border-hairline px-3 text-[12px] text-slate-gray">
               <input
                 type="checkbox"
                 checked={unreadOnly}
@@ -319,7 +319,7 @@ export function TaskCenter() {
         </div>
 
         <div
-          className="flex gap-0.5 overflow-x-auto border-b border-hairline bg-soft-cyan/40 px-2 py-1.5"
+          className="flex gap-1 overflow-x-auto border-b border-hairline bg-soft-cyan/40 px-3 py-2"
           role="tablist"
           aria-label="תצוגות משימות"
         >
@@ -342,7 +342,7 @@ export function TaskCenter() {
 
         <div className="hidden xl:grid xl:grid-cols-[minmax(0,1fr)_320px]">
           <div className="min-w-0 border-e border-hairline">
-            <div className="grid grid-cols-[auto_1fr_130px_110px_88px] gap-2 border-b border-hairline bg-cloud/80 px-3 py-2 text-[11px] font-semibold text-slate-gray">
+            <div className="grid grid-cols-[auto_1fr_130px_110px_88px] gap-2 border-b border-hairline bg-cloud/80 px-4 py-2.5 text-[11px] font-semibold text-slate-gray">
               <span className="w-4" />
               <span>משימה</span>
               <span>משפחה</span>
@@ -391,13 +391,13 @@ function Select({
   options: { value: string; label: string }[]
 }) {
   return (
-    <label className="inline-flex min-h-9 items-center gap-1.5 text-[12px] text-slate-gray">
+    <label className="inline-flex min-h-10 items-center gap-2 text-[12px] text-slate-gray">
       <span className="hidden font-medium sm:inline">{label}</span>
       <span className="sr-only sm:hidden">{label}</span>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-9 min-h-9 cursor-pointer rounded-md border border-hairline bg-paper px-2 text-[12px] text-ink-navy transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal-blue"
+        className="h-10 min-h-10 cursor-pointer rounded-[10px] border border-hairline bg-paper px-2.5 text-[12px] text-ink-navy transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal-blue"
         aria-label={label}
       >
         {options.map((o) => (
@@ -440,7 +440,7 @@ function TaskTable({
               onClick={() => onSelect(task)}
               aria-pressed={selectedId === task.id}
               className={cn(
-                'data-row grid w-full cursor-pointer grid-cols-[auto_1fr_130px_110px_88px] items-center gap-2 border-b border-hairline px-3 py-2.5 text-start transition-colors duration-150 hover:bg-soft-cyan',
+                'data-row grid w-full cursor-pointer grid-cols-[auto_1fr_130px_110px_88px] items-center gap-2 border-b border-hairline px-4 py-3.5 text-start transition-colors duration-150 hover:bg-soft-cyan',
                 selectedId === task.id && 'bg-info-wash',
               )}
             >
@@ -526,20 +526,20 @@ function TaskDrawer({
 
   return (
     <div className="flex max-h-[calc(100vh-14rem)] flex-col overflow-hidden bg-paper">
-      <div className="border-b border-hairline px-4 py-3">
+      <div className="border-b border-hairline px-5 py-4">
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-[11px] font-medium tabular-nums text-mist-gray">
             {task.number}
           </span>
           <Badge tone="danger">{priorityLabel[task.priority]}</Badge>
         </div>
-        <p className="mt-1 text-[11px] text-mist-gray">
+        <p className="mt-1.5 text-[11px] text-mist-gray">
           נוצר · {task.createdAt.slice(0, 10)}
         </p>
-        <h2 className="mt-1.5 text-[15px] font-semibold leading-snug">
+        <h2 className="mt-2 text-[16px] font-semibold leading-snug tracking-tight">
           {task.title}
         </h2>
-        <p className="mt-1 text-[12px] text-slate-gray">
+        <p className="mt-1.5 text-[12px] text-slate-gray">
           תיק יחידה:{' '}
           <Link
             to={`/units/${task.unitId}`}
@@ -549,15 +549,15 @@ function TaskDrawer({
             {member ? ` · ${member.name}` : ''}
           </Link>
         </p>
-        <p className="mt-0.5 text-[12px] text-slate-gray">
+        <p className="mt-1 text-[12px] text-slate-gray">
           אחראי: <span className="font-medium text-ink-navy">{owner?.name}</span>
         </p>
       </div>
 
-      <div className="space-y-4 overflow-y-auto px-4 py-3">
+      <div className="space-y-5 overflow-y-auto px-5 py-4">
         <div>
-          <p className="section-label mb-1.5">סטטוס</p>
-          <div className="flex flex-wrap gap-1">
+          <p className="section-label mb-2">סטטוס</p>
+          <div className="flex flex-wrap gap-1.5">
             {(
               [
                 ['open', 'לא התחיל'],
@@ -568,7 +568,7 @@ function TaskDrawer({
               <span
                 key={id}
                 className={cn(
-                  'rounded-md px-2 py-1 text-[11px] font-medium',
+                  'rounded-[10px] px-2.5 py-1 text-[11px] font-medium',
                   task.status === id ||
                     (id === 'done' && task.status === 'closed')
                     ? 'bg-dusk-blue text-ink-navy'
@@ -582,12 +582,12 @@ function TaskDrawer({
         </div>
 
         <div>
-          <p className="section-label mb-1.5">גורמים משתתפים</p>
-          <ul className="divide-y divide-hairline rounded-md border border-hairline">
+          <p className="section-label mb-2">גורמים משתתפים</p>
+          <ul className="divide-y divide-hairline rounded-[10px] border border-hairline">
             {participants.map((p) => (
               <li
                 key={p!.id}
-                className="flex items-center justify-between px-2.5 py-1.5 text-[12px]"
+                className="flex items-center justify-between px-3 py-2 text-[12px]"
               >
                 <span className="font-medium">{p!.name}</span>
                 <Badge tone="success">מעורב</Badge>

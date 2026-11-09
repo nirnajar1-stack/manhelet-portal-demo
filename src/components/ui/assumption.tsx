@@ -13,7 +13,7 @@ export function AssumptionBanner({
     <div
       role="note"
       className={cn(
-        'flex items-start gap-2 rounded-md border border-dusk-blue/40 bg-info-wash px-3 py-2 text-[12px] text-slate-gray',
+        'flex items-start gap-2 rounded-[10px] border border-dusk-blue/28 bg-info-wash px-4 py-3 text-[12px] leading-snug text-slate-gray',
         className,
       )}
     >

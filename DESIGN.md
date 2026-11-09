@@ -1,8 +1,8 @@
 # Design System — פורטל המנהלת (אבטיפוס)
 
 > **Source of truth for visual language:** this file + tokens in `src/index.css`
-> (`@theme` block). Portal SaaS design pass (2026-11-08) on Navy / Soft Gold —
-> hierarchy, density, hairline elevation; no business-logic changes.
+> (`@theme` block). Apple-like Operate UI polish (2026-11-09) on Navy / Soft Gold —
+> 8pt rhythm, airier chrome, soft hairlines; no business-logic changes.
 
 ## Provenance
 
@@ -18,7 +18,7 @@
 - **Direction:** Modern SaaS operations portal — Midnight Navy + Soft Golden Yellow on cool page wash
 - **Mode:** Light operational UI; clear hierarchy; measured yellow (never large page backgrounds)
 - **RTL:** Hebrew-first; `dir="rtl"` on `html`
-- **Fonts:** **Rubik** (primary) + **Heebo** / **Assistant** fallbacks + system sans
+- **Fonts:** SF-like stack — `system-ui` / `-apple-system` first, **Heebo** for Hebrew, **Inter** / Rubik / Assistant fallbacks
 - **Branding in product:** **מנהלת החטופים, הנעדרים והשבים**
 
 ## Color tokens
@@ -67,30 +67,31 @@
 |------|------|
 | Caption | 12px |
 | Body sm | 13px |
-| Body | 14px |
+| Body | 15px |
 | Button | 14px |
-| Section title | 15–17px |
-| Page title | 22px |
+| Section title | 17–20px |
+| Page title | 28px |
 
-Font stack: `"Heebo", "Rubik", "Assistant", ui-sans-serif, system-ui, sans-serif`
+Font stack: `system-ui, -apple-system, "Heebo", "Inter", "Rubik", "Assistant", …`
 
 Weight discipline: default 400; labels/CTAs 500; titles 600. Avoid bold everywhere.
+Letter-spacing: slightly tight on titles (`-0.02em`).
 
 ## Radii & elevation
 
-- Buttons / fields: **8px** (`--radius-md`)
-- Cards / panels: **10px** (`--radius-lg`) — **hairline border, no default shadow**
-- Badges: **6px** (not pills)
-- Overlay shadow only (menus/toasts): `0 8px 20px rgba(13, 26, 51, 0.1)`
-- Spacing: 4 / 8 / 12 / 16 / 24
-- Top bar: **60px**; sidebar: **232px**; data rows: **~46px**
+- Buttons / fields: **10px** (`--radius-md`)
+- Cards / panels: **12px** (`--radius-lg`) — **soft hairline border, no default shadow**
+- Badges: **~8–10px** (not pills)
+- Overlay shadow only (menus/toasts): `0 8px 24px rgba(13, 26, 51, 0.06)`
+- Spacing: **8pt rhythm** (8 / 16 / 24 / 32 / 40 / 48)
+- Top bar: **56px**; sidebar: **248px**; data rows: **~52px**
 
 ## Layout patterns (portal)
 
 - Persistent **right sidebar** (RTL) — Midnight Navy chrome, environment switcher at bottom
 - Top bar: logo, global search, **+ פעולה חדשה** (gold CTA), notifications, profile
 - Content: page wash `#F6F9FD` + white surfaces; KPI as single strip with hairline dividers
-- Task center: dense table + filters in chrome + detail drawer (no nested card shadows)
+- Task center: calmer table + filters in chrome + detail drawer (no nested card shadows)
 - Home: attention first, task list primary, quiet rail for shortcuts
 - Family portal: minimal shell; no decorative blurs / AI blobs
 

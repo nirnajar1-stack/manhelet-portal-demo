@@ -141,11 +141,11 @@ export function MemberRehabPanel({ unitId, members, initialMemberId }: Props) {
     .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+    <div className="space-y-6">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <h2 className="text-[18px] font-semibold text-ink-navy">תהליך השיקום</h2>
-          <p className="mt-1 text-[13px] text-slate-gray">
+          <h2 className="text-[20px] font-semibold tracking-tight text-ink-navy">תהליך השיקום</h2>
+          <p className="mt-1.5 text-[13px] leading-snug text-slate-gray">
             {member?.name ?? '—'}
             {unit ? ` · משפחת ${unit.familyName}` : ''}
             {matam ? ` · מת״מ ${matam.name}` : ''}
@@ -153,11 +153,11 @@ export function MemberRehabPanel({ unitId, members, initialMemberId }: Props) {
             {` · עודכן ${kpis.lastUpdated}`}
           </p>
         </div>
-        <div className="flex flex-wrap items-end gap-2">
-          <label className="block space-y-1">
+        <div className="flex flex-wrap items-end gap-2.5">
+          <label className="block space-y-1.5">
             <span className="text-[12px] font-medium text-slate-gray">בן משפחה</span>
             <select
-              className="h-10 min-w-[10rem] rounded-md border border-hairline bg-pebble px-3 text-[14px]"
+              className="h-10 min-w-[10rem] rounded-[10px] border border-hairline bg-pebble px-3 text-[14px]"
               value={memberId}
               onChange={(e) => {
                 setMemberId(e.target.value)
@@ -191,7 +191,7 @@ export function MemberRehabPanel({ unitId, members, initialMemberId }: Props) {
         <Kpi label="פעילויות לטיפול" value={kpis.openActivities} warn={kpis.openActivities > 0} />
       </div>
 
-      <div className="flex flex-col gap-2 rounded-md border border-hairline bg-paper p-3 sm:flex-row sm:flex-wrap sm:items-center">
+      <div className="flex flex-col gap-2.5 rounded-xl border border-hairline bg-paper p-4 sm:flex-row sm:flex-wrap sm:items-center">
         <Input
           className="sm:max-w-xs"
           value={search}
@@ -200,7 +200,7 @@ export function MemberRehabPanel({ unitId, members, initialMemberId }: Props) {
           aria-label="חיפוש מטרות"
         />
         <select
-          className="h-10 rounded-md border border-hairline bg-pebble px-3 text-[13px]"
+          className="h-10 rounded-[10px] border border-hairline bg-pebble px-3 text-[13px]"
           value={statusFilter}
           onChange={(e) =>
             setStatusFilter(e.target.value as typeof statusFilter)
@@ -214,7 +214,7 @@ export function MemberRehabPanel({ unitId, members, initialMemberId }: Props) {
           <option value="cancelled">בוטלו</option>
         </select>
         <select
-          className="h-10 rounded-md border border-hairline bg-pebble px-3 text-[13px]"
+          className="h-10 rounded-[10px] border border-hairline bg-pebble px-3 text-[13px]"
           value={domainFilter}
           onChange={(e) =>
             setDomainFilter(e.target.value as typeof domainFilter)
@@ -229,7 +229,7 @@ export function MemberRehabPanel({ unitId, members, initialMemberId }: Props) {
           ))}
         </select>
         <select
-          className="h-10 rounded-md border border-hairline bg-pebble px-3 text-[13px]"
+          className="h-10 rounded-[10px] border border-hairline bg-pebble px-3 text-[13px]"
           value={ownerFilter}
           onChange={(e) => setOwnerFilter(e.target.value)}
           aria-label="סינון אחראי"
@@ -324,11 +324,11 @@ function GoalSection({
   muted?: boolean
 }) {
   return (
-    <section className="space-y-2">
+    <section className="space-y-3">
       {title && (
-        <h3 className="text-[13px] font-semibold text-slate-gray">{title}</h3>
+        <h3 className="text-[13px] font-semibold tracking-wide text-slate-gray">{title}</h3>
       )}
-      <div className="grid gap-3 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2">
         {goals.map((g) => (
           <GoalCard key={g.id} goal={g} muted={muted} />
         ))}
@@ -370,13 +370,13 @@ function GoalCard({
   return (
     <Panel
       className={cn(
-        'flex flex-col gap-2',
+        'flex flex-col gap-2.5',
         muted && 'opacity-75',
         goal.mgmtStatus === 'active' && 'border-s-4 border-s-gold',
       )}
     >
       <div className="flex flex-wrap items-start justify-between gap-2">
-        <h3 className="text-[16px] font-semibold leading-snug text-ink-navy">
+        <h3 className="text-[16px] font-semibold leading-snug tracking-tight text-ink-navy">
           {goal.nameHe}
         </h3>
         <Badge

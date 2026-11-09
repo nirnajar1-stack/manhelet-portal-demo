@@ -146,7 +146,7 @@ export function MatamHome() {
 
   return (
     <div className="page-stack motion-fade-in">
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <h1 className="page-title">
             {greetingHe()}, {currentUser.name.split(' ')[0]}
@@ -162,7 +162,7 @@ export function MatamHome() {
             )}
           </p>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2.5">
           <Button variant="outline" size="sm" onClick={() => navigate('/tasks')}>
             <CalendarDays className="h-4 w-4" />
             יומן משימות יומי
@@ -207,8 +207,8 @@ export function MatamHome() {
       </div>
 
       {waitingUnits.length > 0 && (
-        <div className="rounded-[10px] border border-danger/20 bg-danger-soft/60 px-3 py-2.5">
-          <div className="mb-2 flex items-center gap-2">
+        <div className="rounded-xl border border-danger/20 bg-danger-soft/60 px-4 py-3.5">
+          <div className="mb-2.5 flex items-center gap-2">
             <AlertTriangle className="h-3.5 w-3.5 text-danger" aria-hidden />
             <h2 className="text-[13px] font-semibold text-ink-navy">
               יחידות הממתינות לך
@@ -218,7 +218,7 @@ export function MatamHome() {
             {waitingUnits.map((u) => (
               <li
                 key={u.id}
-                className="flex flex-col gap-1.5 py-2 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between"
+                className="flex flex-col gap-1.5 py-2.5 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-1.5">
@@ -243,15 +243,15 @@ export function MatamHome() {
         </div>
       )}
 
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_260px]">
+      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_280px]">
         <Panel className="!p-0 overflow-hidden">
-          <div className="flex flex-col gap-2 border-b border-hairline px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-            <h2 className="text-[15px] font-semibold text-ink-navy">
+          <div className="flex flex-col gap-2 border-b border-hairline px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+            <h2 className="text-[17px] font-semibold tracking-tight text-ink-navy">
               המשימות ביחידות שלי
             </h2>
             <Link
               to="/tasks"
-              className="inline-flex items-center gap-1 text-[12px] font-medium text-signal-blue hover:underline"
+              className="inline-flex items-center gap-1 text-[13px] font-medium text-signal-blue hover:underline"
             >
               למרכז המשימות
               <ChevronLeft className="h-3.5 w-3.5" />
@@ -260,7 +260,7 @@ export function MatamHome() {
 
           {!metric && (
             <div
-              className="flex gap-0.5 overflow-x-auto border-b border-hairline px-2 py-1.5 sm:px-3"
+              className="flex gap-1 overflow-x-auto border-b border-hairline px-3 py-2 sm:px-4"
               role="tablist"
               aria-label="סינון משימות"
             >
@@ -284,7 +284,7 @@ export function MatamHome() {
           )}
 
           {metric && (
-            <div className="flex items-center justify-between border-b border-hairline px-4 py-2">
+            <div className="flex items-center justify-between border-b border-hairline px-5 py-2.5">
               <span className="text-[12px] text-slate-gray">מסונן לפי מדד אישי</span>
               <button
                 type="button"
@@ -299,9 +299,9 @@ export function MatamHome() {
           <TaskList tasks={filtered} compact showOpenAction />
         </Panel>
 
-        <aside className="space-y-0 divide-y divide-hairline rounded-[10px] border border-hairline bg-paper">
-          <div className="p-3.5">
-            <h3 className="section-label mb-2">קיצורי דרך</h3>
+        <aside className="space-y-0 divide-y divide-hairline rounded-xl border border-hairline bg-paper">
+          <div className="p-5">
+            <h3 className="section-label mb-3">קיצורי דרך</h3>
             <ul className="space-y-0.5">
               {(
                 [
@@ -325,7 +325,7 @@ export function MatamHome() {
                 <li key={a.label}>
                   <Link
                     to={a.to}
-                    className="flex items-center justify-between gap-2 rounded-md px-1.5 py-1.5 text-[13px] font-medium hover:bg-soft-cyan"
+                    className="flex items-center justify-between gap-2 rounded-[10px] px-2 py-2 text-[13px] font-medium hover:bg-soft-cyan"
                   >
                     <span className="inline-flex items-center gap-2">
                       <a.icon className="h-3.5 w-3.5 text-slate-gray" aria-hidden />
@@ -338,14 +338,14 @@ export function MatamHome() {
             </ul>
           </div>
 
-          <div className="p-3.5">
-            <h3 className="section-label mb-2">משפחות אחרונות</h3>
+          <div className="p-5">
+            <h3 className="section-label mb-3">משפחות אחרונות</h3>
             <ul className="space-y-1">
               {recentFamilies.map((u) => (
                 <li key={u.id}>
                   <Link
                     to={`/units/${u.id}`}
-                    className="block rounded-md px-1.5 py-1.5 hover:bg-soft-cyan"
+                    className="block rounded-[10px] px-2 py-2 hover:bg-soft-cyan"
                   >
                     <div className="text-[13px] font-medium">משפחת {u.familyName}</div>
                     <div className="text-[11px] text-mist-gray">
@@ -357,9 +357,9 @@ export function MatamHome() {
             </ul>
           </div>
 
-          <div className="p-3.5">
-            <h3 className="section-label mb-2">עדכונים ונהלים</h3>
-            <div className="space-y-2.5">
+          <div className="p-5">
+            <h3 className="section-label mb-3">עדכונים ונהלים</h3>
+            <div className="space-y-3">
               {nextEvent && (
                 <div>
                   <div className="flex items-center gap-1.5 text-[11px] font-medium text-signal-blue">
