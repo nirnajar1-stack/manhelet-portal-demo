@@ -165,7 +165,7 @@ export function RehabGoalDetail() {
       : 'activity'
 
   return (
-    <div className="space-y-4 pb-28 sm:pb-24">
+    <div className="page-stack">
       <RehabBreadcrumbs
         items={[
           { label: 'יחידות טיפול', to: '/units' },

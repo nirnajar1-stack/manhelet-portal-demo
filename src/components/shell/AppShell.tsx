@@ -15,16 +15,11 @@ import {
   Search,
   ShieldCheck,
   Clapperboard,
-  Map,
   Users,
   X,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import {
-  VisitorTour,
-  VisitorTourLauncher,
-} from '@/components/visitor/VisitorTour'
 import { fetchNotifications } from '@/api/stubs'
 import { users } from '@/data/mock'
 import { cn } from '@/lib/utils'
@@ -44,7 +39,6 @@ const matamNavMore = [
   { to: '/rehab/bank', label: 'בנק מטרות שיקום', icon: HeartHandshake },
   { to: '/rehab-demo', label: 'סייר מודל שיקום', icon: Database },
   { to: '/stageshow', label: 'הדגמות מוצר', icon: Clapperboard },
-  { to: '/?tour=1&tourStep=0', label: 'סיור מבקר', icon: Map },
 ]
 
 const matamNav = [...matamNavPrimary, ...matamNavMore]
@@ -206,7 +200,6 @@ export function AppShell() {
           </div>
 
           <div className="flex shrink-0 items-center gap-0.5 sm:gap-2">
-            <VisitorTourLauncher className="hidden lg:inline-flex" />
             <Button
               size="sm"
               className="hidden sm:inline-flex"
@@ -564,7 +557,6 @@ export function AppShell() {
         <main id="main-content" className="min-w-0 flex-1 px-4 py-5 pb-24 sm:py-6 sm:pb-6 lg:px-8 lg:py-8">
           <Outlet />
         </main>
-        <VisitorTour />
       </div>
 
       <button
