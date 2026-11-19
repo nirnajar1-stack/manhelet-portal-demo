@@ -1,7 +1,11 @@
 import { useEffect } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AppShell } from '@/components/shell/AppShell'
-import { FamilyPortal } from '@/pages/FamilyPortal'
+import { FamiliesShell } from '@/components/families/FamiliesShell'
+import { FamiliesCompanion } from '@/pages/families/FamiliesCompanion'
+import { FamiliesHome } from '@/pages/families/FamiliesHome'
+import { FamiliesPrograms } from '@/pages/families/FamiliesPrograms'
+import { FamiliesRequests } from '@/pages/families/FamiliesRequests'
 import { Knowledge } from '@/pages/Knowledge'
 import { MatamHome } from '@/pages/MatamHome'
 import { MoleculeHome } from '@/pages/MoleculeHome'
@@ -28,7 +32,7 @@ import { AppProvider, useApp } from '@/state/AppContext'
 function RoleHome() {
   const { currentUser } = useApp()
   if (currentUser.role === 'molecule') return <Navigate to="/molecule" replace />
-  if (currentUser.role === 'family') return <Navigate to="/family" replace />
+  if (currentUser.role === 'family') return <Navigate to="/families" replace />
   return <MatamHome />
 }
 
@@ -51,7 +55,13 @@ function Bootstrap() {
         <Route path="programs" element={<Programs />} />
         <Route path="org" element={<OrgHome />} />
         <Route path="molecule" element={<MoleculeHome />} />
-        <Route path="family" element={<FamilyPortal />} />
+        <Route path="families" element={<FamiliesShell />}>
+          <Route index element={<FamiliesHome />} />
+          <Route path="requests" element={<FamiliesRequests />} />
+          <Route path="companion" element={<FamiliesCompanion />} />
+          <Route path="programs" element={<FamiliesPrograms />} />
+        </Route>
+        <Route path="family" element={<Navigate to="/families" replace />} />
         <Route path="rehab/bank" element={<RehabGoalBank />} />
         <Route path="rehab/goals/:goalId" element={<RehabGoalDetail />} />
         <Route path="rehab-demo" element={<RehabDemoLayout />}>

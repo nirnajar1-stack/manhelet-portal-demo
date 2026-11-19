@@ -73,7 +73,9 @@ export function AppShell() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const onFamilyRoute = location.pathname.startsWith('/family')
+  const onFamilyRoute =
+    location.pathname.startsWith('/families') ||
+    location.pathname.startsWith('/family')
   const isFamily = currentUser.role === 'family' || onFamilyRoute
   const isMolecule = currentUser.role === 'molecule'
   const nav = isMolecule ? moleculeNav : matamNav
@@ -109,42 +111,15 @@ export function AppShell() {
     }
   }, [onFamilyRoute, currentUser.role, setRole])
 
+  /* Family chrome lives in FamiliesShell (dedicated nav + three-column layouts). */
   if (isFamily) {
     return (
-      <div className="min-h-screen bg-cloud">
+      <>
         <a href="#main-content" className="skip-link">
           דלג לתוכן הראשי
         </a>
-        <header className="sticky top-0 z-40 border-b border-hairline bg-paper/95 backdrop-blur">
-          <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between gap-4 px-4 sm:px-6">
-            <div className="flex min-w-0 items-center gap-3">
-              <BrandLogo to="/family" size="sm" />
-              <span className="hidden text-[15px] font-semibold tracking-tight text-ink-navy sm:inline">
-                הפורטל למשפחות
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  setRole('matam')
-                  navigate('/')
-                }}
-              >
-                מעבר לתצוגת עובדים
-              </Button>
-              <span className="rounded-full bg-pebble px-3 py-1.5 text-[13px] font-medium">
-                {currentUser.name}
-              </span>
-            </div>
-          </div>
-        </header>
-        <main id="main-content" className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 sm:py-10">
-          <Outlet />
-        </main>
-        {toast && <Toast message={toast} />}
-      </div>
+        <Outlet />
+      </>
     )
   }
 
@@ -343,7 +318,7 @@ export function AppShell() {
                     className="mt-1 w-full cursor-pointer rounded-[10px] px-2.5 py-3 text-start text-[13px] font-medium text-signal-blue transition-colors duration-200 hover:bg-pebble"
                     onClick={() => {
                       setRole('family' as UserRole)
-                      navigate('/family')
+                      navigate('/families')
                     }}
                   >
                     מעבר לפורטל משפחות
@@ -444,7 +419,7 @@ export function AppShell() {
                 onDark
                 onClick={() => {
                   setRole('family')
-                  navigate('/family')
+                  navigate('/families')
                 }}
               />
             </div>
@@ -563,7 +538,7 @@ export function AppShell() {
                     onClick={() => {
                       setRole('family')
                       setMobileOpen(false)
-                      navigate('/family')
+                      navigate('/families')
                     }}
                   />
                 </div>

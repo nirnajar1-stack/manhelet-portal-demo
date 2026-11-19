@@ -59,11 +59,11 @@ export const users: User[] = [
     affiliatedUnitIds: ['unit-mizrahi', 'unit-levi'],
   },
   {
-    id: 'u-family-cohen',
-    name: 'משפחת כהן',
+    id: 'u-family-alon',
+    name: 'איתי אלון',
     role: 'family',
-    title: 'משפחה מטופלת',
-    avatarInitials: 'כ',
+    title: 'משפחת אלון',
+    avatarInitials: 'אא',
   },
 ]
 
