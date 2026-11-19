@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { RehabBreadcrumbs } from '@/components/rehab/RehabBreadcrumbs'
+import { RehabStageJourney } from '@/components/rehab/RehabStageJourney'
 import { AssumptionBanner } from '@/components/ui/assumption'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Panel } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/input'
 import { getMember, getUnit } from '@/data/mock'
+import { formatRelativeHe, cn } from '@/lib/utils'
 import {
   RehabWorkflowError,
   addComment,
@@ -23,7 +25,6 @@ import {
   resolveActorFromPortalUser,
   updateStageStatus,
 } from '@/lib/rehab-workflow/store'
-import { cn } from '@/lib/utils'
 import { useApp } from '@/state/AppContext'
 import {
   domainLabelHe,
@@ -154,10 +155,17 @@ export function RehabGoalDetail() {
     }
   }
 
-  const useHorizontalStepper = stages.length > 0 && stages.length <= 5
+  const activityTabParam = params.get('tab')
+  const initialStageTab: StageTab =
+    activityTabParam === 'tasks' ||
+    activityTabParam === 'visits' ||
+    activityTabParam === 'details' ||
+    activityTabParam === 'activity'
+      ? activityTabParam
+      : 'activity'
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 pb-28 sm:pb-24">
       <RehabBreadcrumbs
         items={[
           { label: 'יחידות טיפול', to: '/units' },
@@ -193,6 +201,12 @@ export function RehabGoalDetail() {
               {goalMgmtLabelHe[goal.mgmtStatus]}
             </Badge>
             <Badge tone="muted">{domainLabelHe[goal.domain]}</Badge>
+            {timeline[0] && (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-soft-cyan px-2.5 py-1 text-[11px] font-medium text-ink-navy">
+                <span className="rehab-pulse h-1.5 w-1.5 rounded-full bg-success" aria-hidden />
+                עודכן {formatRelativeHe(timeline[0].occurredAt)}
+              </span>
+            )}
           </div>
           <p className="mt-1 text-[13px] text-slate-gray">
             {member?.name ?? '—'} · אחראי {goal.ownerNameHe ?? '—'} · התחלה{' '}
@@ -217,44 +231,11 @@ export function RehabGoalDetail() {
         </div>
       </div>
 
-      {/* Stage progress */}
-      <Panel className="!py-3">
-        <h2 className="mb-3 text-[14px] font-semibold text-slate-gray">
-          שלבי המטרה
-        </h2>
-        {useHorizontalStepper ? (
-          <ol className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-stretch">
-            {stages.map((s, i) => (
-              <li key={s.id} className="flex min-w-0 flex-1 items-stretch gap-2">
-                <StageStepButton
-                  stage={s}
-                  selected={selected?.id === s.id}
-                  onSelect={() => selectStage(s.id)}
-                />
-                {i < stages.length - 1 && (
-                  <span
-                    className="hidden w-4 shrink-0 self-center border-t border-hairline sm:block"
-                    aria-hidden
-                  />
-                )}
-              </li>
-            ))}
-          </ol>
-        ) : (
-          <ol className="space-y-1.5">
-            {stages.map((s) => (
-              <li key={s.id}>
-                <StageStepButton
-                  stage={s}
-                  selected={selected?.id === s.id}
-                  onSelect={() => selectStage(s.id)}
-                  wide
-                />
-              </li>
-            ))}
-          </ol>
-        )}
-      </Panel>
+      <RehabStageJourney
+        stages={stages}
+        selectedId={selected?.id}
+        onSelect={selectStage}
+      />
 
       {closeOpen && (
         <CloseGoalPanel
@@ -294,6 +275,7 @@ export function RehabGoalDetail() {
               tasks={tasks}
               memberName={member?.name}
               goalName={goal.nameHe}
+              initialTab={initialStageTab}
               onChanged={refresh}
               onNavigateTask={(id) => navigate(`/tasks/${id}`)}
               onRequestComplete={() => setCompleteStage(selected)}
@@ -334,12 +316,24 @@ export function RehabGoalDetail() {
           </Panel>
 
           <Panel>
-            <h2 className="mb-2 text-[15px] font-semibold">פעילות אחרונה</h2>
+            <h2 className="mb-2 flex items-center gap-2 text-[15px] font-semibold">
+              פעילות אחרונה
+              {timeline[0] && (
+                <span className="rehab-pulse h-2 w-2 rounded-full bg-dusk-blue" aria-hidden />
+              )}
+            </h2>
             <ul className="space-y-2">
-              {timeline.slice(0, 6).map((ev) => (
-                <li key={ev.id} className="border-s-2 border-dusk-blue/50 ps-2">
+              {timeline.slice(0, 8).map((ev, i) => (
+                <li
+                  key={ev.id}
+                  className={cn(
+                    'border-s-2 ps-2',
+                    i === 0 ? 'border-gold' : 'border-dusk-blue/50',
+                  )}
+                >
                   <div className="text-[11px] text-mist-gray">
-                    {ev.occurredAt.replace('T', ' ').slice(0, 16)}
+                    {formatRelativeHe(ev.occurredAt)}
+                    {ev.actorNameHe ? ` · ${ev.actorNameHe}` : ''}
                   </div>
                   <div className="text-[13px]">{ev.titleHe}</div>
                 </li>
@@ -371,61 +365,6 @@ export function RehabGoalDetail() {
         </aside>
       </div>
     </div>
-  )
-}
-
-function StageStepButton({
-  stage,
-  selected,
-  onSelect,
-  wide,
-}: {
-  stage: RehabPersonalStage
-  selected: boolean
-  onSelect: () => void
-  wide?: boolean
-}) {
-  const done = stage.status === 'completed' || stage.status === 'skipped'
-  const active = stage.status === 'in_progress'
-  const paused = stage.status === 'paused'
-  return (
-    <button
-      type="button"
-      onClick={onSelect}
-      className={cn(
-        'w-full rounded-md border px-3 py-2 text-start transition-colors',
-        selected
-          ? 'border-gold bg-gold/15 ring-1 ring-gold/40'
-          : 'border-hairline bg-paper hover:bg-pebble',
-        active && !selected && 'border-dusk-blue/60',
-        done && 'opacity-80',
-      )}
-    >
-      <div className="flex items-center gap-2">
-        <span
-          className={cn(
-            'flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-bold',
-            done && 'bg-success-bg text-success',
-            active && 'bg-dusk-blue text-ink-navy',
-            paused && 'bg-warning-bg text-warning-text',
-            !done && !active && !paused && 'bg-pebble text-slate-gray',
-          )}
-        >
-          {done ? '✓' : stage.seq}
-        </span>
-        <div className={cn('min-w-0', wide && 'flex-1')}>
-          <div className="truncate text-[13px] font-semibold">{stage.nameHe}</div>
-          <div className="text-[11px] text-mist-gray">
-            {stageStatusLabelHe[stage.status]}
-            {stage.completedAt
-              ? ` · ${stage.completedAt.slice(0, 10)}`
-              : stage.startDate
-                ? ` · ${stage.startDate}`
-                : ''}
-          </div>
-        </div>
-      </div>
-    </button>
   )
 }
 
@@ -619,6 +558,7 @@ function StageWorkspace({
   tasks,
   memberName,
   goalName,
+  initialTab = 'activity',
   onChanged,
   onNavigateTask,
   onRequestComplete,
@@ -628,13 +568,18 @@ function StageWorkspace({
   tasks: Task[]
   memberName?: string
   goalName: string
+  initialTab?: StageTab
   onChanged: () => void
   onNavigateTask: (id: string) => void
   onRequestComplete: () => void
 }) {
   const stage = getStage(stageId)!
   const goal = getGoal(stage.personalGoalId)!
-  const [tab, setTab] = useState<StageTab>('activity')
+  const [tab, setTab] = useState<StageTab>(initialTab)
+
+  useEffect(() => {
+    setTab(initialTab)
+  }, [initialTab, stageId])
   const { showToast } = useApp()
   const [obsOpen, setObsOpen] = useState(false)
   const [obsBody, setObsBody] = useState('')
@@ -663,9 +608,10 @@ function StageWorkspace({
 
   void tick
   const state = getRehabState()
-  const observations = state.observations.filter(
-    (o) => o.personalStageId === stageId,
-  )
+  const observations = state.observations
+    .filter((o) => o.personalStageId === stageId)
+    .slice()
+    .sort((a, b) => b.observedAt.localeCompare(a.observedAt))
   const taskLinks = listTasksForStage(stageId)
   const visits = listVisitsForStage(stageId)
   const events = state.stageEvents.filter((e) => e.personalStageId === stageId)
@@ -952,7 +898,7 @@ function StageWorkspace({
                         {o.authorNameHe}
                       </span>
                       <span>·</span>
-                      <span>{o.observedAt.replace('T', ' ').slice(0, 16)}</span>
+                      <span>{formatRelativeHe(o.observedAt)}</span>
                       <Badge tone="muted">{observationKindLabelHe[o.kind]}</Badge>
                       <Badge tone="info">
                         {o.visibility === 'internal'
@@ -967,8 +913,7 @@ function StageWorkspace({
                       {comments.map((c) => (
                         <li key={c.id}>
                           <div className="text-[11px] text-mist-gray">
-                            {c.authorNameHe} ·{' '}
-                            {c.createdAt.replace('T', ' ').slice(0, 16)}
+                            {c.authorNameHe} · {formatRelativeHe(c.createdAt)}
                           </div>
                           <p className="text-[13px]">{c.bodyHe}</p>
                         </li>

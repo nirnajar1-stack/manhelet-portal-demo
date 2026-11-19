@@ -106,7 +106,8 @@ function personalStages(): RehabPersonalStage[] {
     ...danEmp[1],
     status: 'in_progress' as PersonalStageStatus,
     startDate: '2026-10-12',
-    lastActivityAt: '2026-11-06T09:00:00.000Z',
+    targetDate: '2026-11-30',
+    lastActivityAt: '2026-11-18T16:40:00.000Z',
   }
 
   const danInd = mk(PG_DAN_IND, T_INDEP, 'ps-dan-i')
@@ -121,7 +122,8 @@ function personalStages(): RehabPersonalStage[] {
     ...danInd[1],
     status: 'in_progress' as PersonalStageStatus,
     startDate: '2026-10-18',
-    lastActivityAt: '2026-11-05T12:00:00.000Z',
+    targetDate: '2026-12-05',
+    lastActivityAt: '2026-11-17T11:20:00.000Z',
   }
 
   return [...danEmp, ...danInd, ...mk(PG_NOA_SOC, T_SOCIAL, 'ps-noa-s')]
@@ -177,10 +179,11 @@ export function createInitialRehabWorkflowSeed(): RehabWorkflowState {
       ownerNameHe: 'ניר נ.',
       startDate: '2026-09-20',
       targetDate: '2027-01-20',
-      notesHe: 'מחזור ראשון — דמה',
+      notesHe:
+        'מחזור ראשון לדניאל מזרחי — מיקוד בתחזוקה/לוגיסטיקה. חסם תיאום מול מרכז הכשרה בטיפול מת״ם.',
       cycleNumber: 1,
       createdAt: '2026-09-20T08:00:00.000Z',
-      updatedAt: '2026-11-06T09:00:00.000Z',
+      updatedAt: '2026-11-18T16:40:00.000Z',
     },
     {
       id: PG_DAN_IND,
@@ -196,9 +199,10 @@ export function createInitialRehabWorkflowSeed(): RehabWorkflowState {
       ownerNameHe: 'יואב מלווה',
       startDate: '2026-09-28',
       targetDate: '2026-12-28',
+      notesHe: 'מקביל לתעסוקה — שגרת בוקר וניהול זמן כבסיס להכשרה.',
       cycleNumber: 1,
       createdAt: '2026-09-28T08:00:00.000Z',
-      updatedAt: '2026-11-05T12:00:00.000Z',
+      updatedAt: '2026-11-17T11:20:00.000Z',
     },
     {
       id: PG_NOA_SOC,
@@ -225,7 +229,7 @@ export function createInitialRehabWorkflowSeed(): RehabWorkflowState {
       personalStageId: 'ps-dan-e-1',
       kind: 'progress',
       bodyHe:
-        'דניאל השלים מיפוי כישורים ראשוני. זוהו תחומי עניין בתחזוקה ובלוגיסטיקה.',
+        'דניאל השלים מיפוי כישורים ראשוני. זוהו תחומי עניין בתחזוקה ובלוגיסטיקה קלה; מתאים למסלול הכשרה קצר לפני השמה.',
       observedAt: '2026-10-10T10:00:00.000Z',
       authorActorId: 'u-yael',
       authorNameHe: 'יואב מלווה',
@@ -233,15 +237,88 @@ export function createInitialRehabWorkflowSeed(): RehabWorkflowState {
       createdAt: '2026-10-10T10:00:00.000Z',
     },
     {
+      id: 'obs-1b',
+      personalStageId: 'ps-dan-e-1',
+      kind: 'decision',
+      bodyHe:
+        'סוכם עם דניאל ורות: יעד ביניים — תוכנית תעסוקתית כתובה עד סוף אוקטובר, עם דגש על מסלול תחזוקה.',
+      observedAt: '2026-10-10T11:15:00.000Z',
+      authorActorId: 'u-nir',
+      authorNameHe: 'ניר נ.',
+      visibility: 'shared',
+      createdAt: '2026-10-10T11:15:00.000Z',
+    },
+    {
       id: 'obs-2',
       personalStageId: 'ps-dan-e-2',
       kind: 'blocker',
-      bodyHe: 'חסם תיאום מול מרכז הכשרה — ממתין לאישור תקציבי דמה.',
+      bodyHe:
+        'חסם תיאום מול מרכז הכשרה — ממתין לאישור תקציבי דמה. בלי האישור לא ניתן לקבוע מועד קורס.',
       observedAt: '2026-11-06T09:00:00.000Z',
       authorActorId: 'u-yael',
       authorNameHe: 'יואב מלווה',
       visibility: 'internal',
       createdAt: '2026-11-06T09:00:00.000Z',
+    },
+    {
+      id: 'obs-3',
+      personalStageId: 'ps-dan-e-2',
+      kind: 'progress',
+      bodyHe:
+        'נבנתה טיוטת תוכנית תעסוקתית: 3 יעדים קצרי טווח (נוכחות, מיומנות בסיסית, שיחת הכנה למעסיק). דניאל חתם על הסכמה דמה להמשך.',
+      observedAt: '2026-11-12T14:20:00.000Z',
+      authorActorId: 'u-yael',
+      authorNameHe: 'יואב מלווה',
+      visibility: 'shared',
+      createdAt: '2026-11-12T14:20:00.000Z',
+    },
+    {
+      id: 'obs-4',
+      personalStageId: 'ps-dan-e-2',
+      kind: 'recommendation',
+      bodyHe:
+        'המלצת גורם מקצועי: לשלב מפגש הכנה קצר עם רות לפני תחילת ההכשרה — תמיכה משפחתית משפרת התמדה.',
+      observedAt: '2026-11-17T09:30:00.000Z',
+      authorActorId: 'u-dana',
+      authorNameHe: 'דנה מ.',
+      visibility: 'shared',
+      createdAt: '2026-11-17T09:30:00.000Z',
+    },
+    {
+      id: 'obs-5',
+      personalStageId: 'ps-dan-e-2',
+      kind: 'action_done',
+      bodyHe:
+        'נשלחה תזכורת לגורם ההכשרה + עודכנה משימת תיאום. ממתין למענה עד יום ה׳.',
+      observedAt: '2026-11-18T16:40:00.000Z',
+      authorActorId: 'u-nir',
+      authorNameHe: 'ניר נ.',
+      visibility: 'internal',
+      createdAt: '2026-11-18T16:40:00.000Z',
+    },
+    {
+      id: 'obs-i-1',
+      personalStageId: 'ps-dan-i-2',
+      kind: 'progress',
+      bodyHe:
+        'זיהוי תחומים לשיפור: שגרת בוקר וניהול זמן לפני יציאה. רות מדווחת על שיפור קל בנוכחות בבית.',
+      observedAt: '2026-11-05T13:00:00.000Z',
+      authorActorId: 'u-yael',
+      authorNameHe: 'יואב מלווה',
+      visibility: 'shared',
+      createdAt: '2026-11-05T13:00:00.000Z',
+    },
+    {
+      id: 'obs-i-2',
+      personalStageId: 'ps-dan-i-2',
+      kind: 'condition_change',
+      bodyHe:
+        'דניאל דיווח על עומס לקראת ריאיון הכשרה — הותאם לוח זמנים עם פחות משימות באותו יום.',
+      observedAt: '2026-11-17T11:20:00.000Z',
+      authorActorId: 'u-yael',
+      authorNameHe: 'יואב מלווה',
+      visibility: 'internal',
+      createdAt: '2026-11-17T11:20:00.000Z',
     },
   ]
 
@@ -253,6 +330,30 @@ export function createInitialRehabWorkflowSeed(): RehabWorkflowState {
       authorActorId: 'u-nir',
       authorNameHe: 'ניר נ.',
       createdAt: '2026-11-07T08:00:00.000Z',
+    },
+    {
+      id: 'cmt-2',
+      observationId: 'obs-2',
+      bodyHe: 'יואב: העברתי את פרטי הקשר למרכז — ממתין לחזרה.',
+      authorActorId: 'u-yael',
+      authorNameHe: 'יואב מלווה',
+      createdAt: '2026-11-08T10:15:00.000Z',
+    },
+    {
+      id: 'cmt-3',
+      observationId: 'obs-3',
+      bodyHe: 'ניר: טיוטה נראית טוב — נא לצרף את שלושת היעדים גם למשימת התיאום.',
+      authorActorId: 'u-nir',
+      authorNameHe: 'ניר נ.',
+      createdAt: '2026-11-12T16:00:00.000Z',
+    },
+    {
+      id: 'cmt-4',
+      observationId: 'obs-4',
+      bodyHe: 'מת״ם: מקבלים את ההמלצה — נתאם מפגש קצר עם רות בביקור הבא.',
+      authorActorId: 'u-nir',
+      authorNameHe: 'ניר נ.',
+      createdAt: '2026-11-17T15:05:00.000Z',
     },
   ]
 
@@ -267,11 +368,45 @@ export function createInitialRehabWorkflowSeed(): RehabWorkflowState {
       visitDate: '2026-11-05',
       visitTypeHe: 'ביקור בית',
       status: 'completed',
-      summaryHe: 'בוצעה הערכת תפקוד ושיחה קצרה על תעסוקה.',
+      summaryHe:
+        'בוצעה הערכת תפקוד ושיחה קצרה על תעסוקה. רות השתתפה בחלק המשפחתי — ללא קישור אוטומטי למטרותיה.',
       performedByNameHe: 'יואב מלווה',
       participantMemberIds: ['m-miz-1', 'm-miz-2'],
       secondaryStageIds: ['ps-dan-e-2'],
       createdAt: '2026-11-05T14:00:00.000Z',
+    },
+    {
+      id: 'rv-2',
+      primaryPersonId: 'person-daniel',
+      portalMemberId: 'm-miz-1',
+      portalUnitId: 'unit-mizrahi',
+      activityAffiliation: 'rehab',
+      rehabPrimaryStageId: 'ps-dan-e-2',
+      visitDate: '2026-11-16',
+      visitTypeHe: 'מפגש ליווי',
+      status: 'completed',
+      summaryHe:
+        'עברנו על טיוטת התוכנית התעסוקתית. דניאל תרגל הצגה עצמית קצרה לקראת שיחת הכשרה.',
+      performedByNameHe: 'יואב מלווה',
+      participantMemberIds: ['m-miz-1'],
+      secondaryStageIds: [],
+      createdAt: '2026-11-16T12:30:00.000Z',
+    },
+    {
+      id: 'rv-3',
+      primaryPersonId: 'person-daniel',
+      portalMemberId: 'm-miz-1',
+      portalUnitId: 'unit-mizrahi',
+      activityAffiliation: 'rehab',
+      rehabPrimaryStageId: 'ps-dan-e-2',
+      visitDate: '2026-11-20',
+      visitTypeHe: 'ביקור בית',
+      status: 'planned',
+      summaryHe: 'מתוכנן: עדכון חסם הכשרה + שיחה קצרה עם רות על תמיכה.',
+      performedByNameHe: 'יואב מלווה',
+      participantMemberIds: ['m-miz-1', 'm-miz-2'],
+      secondaryStageIds: ['ps-dan-i-2'],
+      createdAt: '2026-11-18T09:00:00.000Z',
     },
   ]
 
@@ -290,6 +425,7 @@ export function createInitialRehabWorkflowSeed(): RehabWorkflowState {
         toStatus: 'completed',
         actorNameHe: 'יואב מלווה',
         occurredAt: '2026-10-10T10:00:00.000Z',
+        reasonHe: 'מיפוי כישורים הושלם',
       },
       {
         id: 'se-2',
@@ -299,6 +435,22 @@ export function createInitialRehabWorkflowSeed(): RehabWorkflowState {
         actorNameHe: 'יואב מלווה',
         occurredAt: '2026-10-12T09:00:00.000Z',
       },
+      {
+        id: 'se-3',
+        personalStageId: 'ps-dan-i-1',
+        fromStatus: 'in_progress',
+        toStatus: 'completed',
+        actorNameHe: 'יואב מלווה',
+        occurredAt: '2026-10-15T10:00:00.000Z',
+      },
+      {
+        id: 'se-4',
+        personalStageId: 'ps-dan-i-2',
+        fromStatus: 'not_started',
+        toStatus: 'in_progress',
+        actorNameHe: 'יואב מלווה',
+        occurredAt: '2026-10-18T09:00:00.000Z',
+      },
     ],
     goalEvents: [
       {
@@ -306,8 +458,16 @@ export function createInitialRehabWorkflowSeed(): RehabWorkflowState {
         personalGoalId: PG_DAN_EMP,
         toStatus: 'active',
         actorNameHe: 'ניר נ.',
-        reasonHe: 'פתיחת מטרת שיקום אישית',
+        reasonHe: 'פתיחת מטרת שיקום אישית — השתלבות בתעסוקה',
         occurredAt: '2026-09-20T08:00:00.000Z',
+      },
+      {
+        id: 'ge-2',
+        personalGoalId: PG_DAN_IND,
+        toStatus: 'active',
+        actorNameHe: 'ניר נ.',
+        reasonHe: 'פתיחת מטרה מקבילה — חיזוק עצמאות אישית',
+        occurredAt: '2026-09-28T08:00:00.000Z',
       },
     ],
     visits,

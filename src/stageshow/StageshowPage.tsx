@@ -56,6 +56,11 @@ export function StageshowPage() {
         <p className="ss-page__sub">
           שלושה סיפורי מוצר קצרים — משימות, שיקום ותצפיות — בסגנון הפורטל.
         </p>
+        <p className="ss-page__sub" style={{ marginTop: '0.75rem' }}>
+          <Link to="/?tour=1&tourStep=0">התחלת סיור מבקר בפורטל החי ←</Link>
+          {' · '}
+          <Link to="/rehab/goals/pg-dan-emp">מסע שלבי השיקום (משפחת מזרחי)</Link>
+        </p>
       </header>
 
       <div className="ss-page__grid">
