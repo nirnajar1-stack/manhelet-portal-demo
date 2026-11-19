@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import {
   Bell,
   BookOpen,
@@ -18,6 +18,7 @@ import {
   Users,
   X,
 } from 'lucide-react'
+import { BrandLogo } from '@/components/shell/BrandLogo'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { fetchNotifications } from '@/api/stubs'
@@ -115,10 +116,13 @@ export function AppShell() {
           דלג לתוכן הראשי
         </a>
         <header className="sticky top-0 z-40 border-b border-hairline bg-paper/95 backdrop-blur">
-          <div className="mx-auto flex h-14 max-w-[1200px] items-center justify-between px-4 sm:px-6">
-            <Link to="/family" className="text-[16px] font-semibold tracking-tight text-ink-navy">
-              הפורטל למשפחות
-            </Link>
+          <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between gap-4 px-4 sm:px-6">
+            <div className="flex min-w-0 items-center gap-3">
+              <BrandLogo to="/family" size="sm" />
+              <span className="hidden text-[15px] font-semibold tracking-tight text-ink-navy sm:inline">
+                הפורטל למשפחות
+              </span>
+            </div>
             <div className="flex items-center gap-2">
               <Button
                 variant="ghost"
@@ -136,7 +140,7 @@ export function AppShell() {
             </div>
           </div>
         </header>
-        <main id="main-content" className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
+        <main id="main-content" className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6 sm:py-10">
           <Outlet />
         </main>
         {toast && <Toast message={toast} />}
@@ -152,7 +156,7 @@ export function AppShell() {
         דלג לתוכן הראשי
       </a>
       <header className="sticky top-0 z-40 border-b border-hairline bg-paper">
-        <div className="flex h-14 items-center gap-2 px-3 sm:gap-3 sm:px-4 lg:gap-4 lg:px-6">
+        <div className="flex h-16 items-center gap-2.5 px-3 sm:gap-4 sm:px-5 lg:gap-5 lg:px-6">
           <button
             type="button"
             className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] text-ink-navy transition-colors duration-200 hover:bg-soft-cyan lg:hidden"
@@ -164,19 +168,15 @@ export function AppShell() {
             <Menu className="h-5 w-5" aria-hidden />
           </button>
 
-          <Link
+          {/* Header mark on <lg; lg+ uses the sidebar plate so chrome stays airy */}
+          <BrandLogo
             to="/"
-            className="hidden min-w-[160px] shrink-0 rounded-[10px] py-1 sm:block focus-visible:outline-none"
-          >
-            <div className="text-[14px] font-semibold leading-tight tracking-tight text-ink-navy">
-              מנהלת החטופים,
-            </div>
-            <div className="mt-0.5 text-[11px] leading-tight text-slate-gray">
-              הנעדרים והשבים · משרד רה״מ
-            </div>
-          </Link>
+            size="sm"
+            className="min-w-0 lg:hidden"
+            imgClassName="max-w-[10rem] sm:max-w-[12rem]"
+          />
 
-          <div className="relative mx-auto flex min-w-0 w-full max-w-2xl flex-1 items-center gap-2">
+          <div className="relative mx-auto hidden min-w-0 w-full max-w-2xl flex-1 items-center gap-2.5 sm:flex">
             <div className="relative w-full min-w-0">
               <Search
                 className="pointer-events-none absolute end-3 top-1/2 h-4 w-4 -translate-y-1/2 text-mist-gray"
@@ -193,13 +193,22 @@ export function AppShell() {
                 aria-label="חיפוש מרכזי"
               />
             </div>
-            <span className="hidden shrink-0 items-center gap-1 rounded-[10px] bg-pebble px-2.5 py-1.5 text-[11px] font-medium text-slate-gray xl:inline-flex">
+            <span className="hidden shrink-0 items-center gap-1.5 rounded-[10px] bg-pebble px-3 py-1.5 text-[11px] font-medium text-slate-gray xl:inline-flex">
               <ShieldCheck className="h-3.5 w-3.5 text-signal-blue" aria-hidden />
               ממשלתי מאובטח
             </span>
           </div>
+          <div className="mx-auto min-w-0 flex-1 sm:hidden" aria-hidden />
 
-          <div className="flex shrink-0 items-center gap-0.5 sm:gap-2">
+          <div className="flex shrink-0 items-center gap-1 sm:gap-2.5">
+            <button
+              type="button"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-[10px] text-slate-gray transition-colors duration-200 hover:bg-soft-cyan sm:hidden"
+              aria-label="חיפוש"
+              onClick={() => navigate('/tasks')}
+            >
+              <Search className="h-5 w-5" aria-hidden />
+            </button>
             <Button
               size="sm"
               className="hidden sm:inline-flex"
@@ -347,8 +356,17 @@ export function AppShell() {
       </header>
 
       <div className="mx-auto flex max-w-[1440px]">
-        <aside className="sticky top-14 hidden h-[calc(100vh-3.5rem)] w-[248px] shrink-0 flex-col bg-ink-navy lg:flex">
-          <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-4" aria-label="ניווט ראשי">
+        <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-[264px] shrink-0 flex-col bg-ink-navy lg:flex">
+          <div className="border-b border-paper/15 px-3.5 pb-5 pt-5">
+            <BrandLogo
+              to="/"
+              size="lg"
+              surface="plate"
+              className="w-full justify-center"
+              imgClassName="max-w-full"
+            />
+          </div>
+          <nav className="flex flex-1 flex-col gap-1.5 overflow-y-auto p-4 pt-5" aria-label="ניווט ראשי">
             {nav.map((item) => (
               <NavLink
                 key={item.to}
@@ -393,12 +411,12 @@ export function AppShell() {
             ))}
           </nav>
 
-          <div className="border-t border-paper/20 p-4">
-            <p className="mb-2.5 px-1 text-[11px] font-semibold tracking-wide text-paper/70">
+          <div className="border-t border-paper/20 p-5">
+            <p className="mb-3 px-1 text-[11px] font-semibold tracking-wide text-paper/70">
               החלפת סביבה
             </p>
             <div
-              className="space-y-0.5 rounded-xl bg-paper/10 p-1.5"
+              className="space-y-1 rounded-xl bg-paper/10 p-2"
               role="radiogroup"
               aria-label="החלפת סביבה"
             >
@@ -430,7 +448,7 @@ export function AppShell() {
                 }}
               />
             </div>
-            <p className="mt-4 px-1 text-[11px] leading-relaxed text-paper/60">
+            <p className="mt-5 px-1 text-[11px] leading-relaxed text-paper/60">
               אבטיפוס · נתוני דמה · אין Salesforce
             </p>
           </div>
@@ -450,16 +468,16 @@ export function AppShell() {
               aria-label="תפריט ניווט"
               className="absolute inset-y-0 end-0 flex w-[min(20rem,88vw)] flex-col border-s border-paper/15 bg-ink-navy shadow-elevated motion-fade-in"
             >
-              <div className="flex items-center justify-between border-b border-paper/20 px-4 py-3.5">
-                <div>
-                  <div className="text-[15px] font-semibold text-paper">
-                    מנהלת החטופים
-                  </div>
-                  <div className="mt-0.5 text-[11px] text-paper/60">תפריט ניווט</div>
-                </div>
+              <div className="flex items-center justify-between gap-3 border-b border-paper/20 px-4 py-5">
+                <BrandLogo
+                  to="/"
+                  size="md"
+                  surface="plate"
+                  imgClassName="max-w-[12rem]"
+                />
                 <button
                   type="button"
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-[10px] text-paper hover:bg-paper/10"
+                  className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] text-paper hover:bg-paper/10"
                   onClick={() => setMobileOpen(false)}
                   aria-label="סגור"
                 >
@@ -467,7 +485,7 @@ export function AppShell() {
                 </button>
               </div>
               <nav
-                className="flex flex-1 flex-col gap-0.5 overflow-y-auto p-3"
+                className="flex flex-1 flex-col gap-1.5 overflow-y-auto p-4 pt-5"
                 aria-label="ניווט ראשי"
               >
                 {mobilePrimaryNav.map((item) => (
@@ -554,7 +572,7 @@ export function AppShell() {
           </div>
         )}
 
-        <main id="main-content" className="min-w-0 flex-1 px-4 py-5 pb-24 sm:py-6 sm:pb-6 lg:px-8 lg:py-8">
+        <main id="main-content" className="min-w-0 flex-1 px-4 py-6 pb-24 sm:px-6 sm:py-8 sm:pb-8 lg:px-10 lg:py-10">
           <Outlet />
         </main>
       </div>
