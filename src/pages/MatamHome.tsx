@@ -151,8 +151,8 @@ export function MatamHome() {
 
   return (
     <div className="page-stack motion-fade-in">
-      <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-end lg:justify-between">
-        <div>
+      <div className="flex flex-col gap-4 sm:gap-5 lg:flex-row lg:items-end lg:justify-between">
+        <div className="max-w-2xl">
           <h1 className="page-title">
             {greetingHe()}, {currentUser.name.split(' ')[0]}
           </h1>
@@ -190,20 +190,20 @@ export function MatamHome() {
         </div>
       </div>
 
-      <Panel className="border-ink-navy/10 bg-gradient-to-l from-ink-navy/[0.04] via-paper to-gold/15 !py-4">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <Panel className="border-ink-navy/10 bg-gradient-to-l from-ink-navy/[0.04] via-paper to-gold/15 !px-5 !py-5 sm:!px-6 sm:!py-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
           <div className="min-w-0">
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2.5">
               <span className="rehab-pulse h-2 w-2 rounded-full bg-gold" aria-hidden />
-              <h2 className="text-[15px] font-semibold text-ink-navy">
+              <h2 className="text-[16px] font-semibold text-ink-navy">
                 תיק חי · משפחת מזרחי
               </h2>
             </div>
-            <p className="mt-1 max-w-2xl text-[13px] leading-relaxed text-slate-gray">
+            <p className="mt-2 max-w-2xl text-[13px] leading-relaxed text-slate-gray sm:text-[14px]">
               {livingStoryBlurbHe}
             </p>
           </div>
-          <div className="flex flex-wrap gap-2 shrink-0">
+          <div className="flex flex-wrap gap-2.5 shrink-0">
             <Button
               size="sm"
               variant="outline"
@@ -254,8 +254,8 @@ export function MatamHome() {
       </div>
 
       {waitingUnits.length > 0 && (
-        <div className="rounded-xl border border-danger/20 bg-danger-soft/60 px-4 py-3.5">
-          <div className="mb-2.5 flex items-center gap-2">
+        <div className="rounded-xl border border-danger/20 bg-danger-soft/60 px-4 py-4 sm:px-5 sm:py-5">
+          <div className="mb-3 flex items-center gap-2">
             <AlertTriangle className="h-3.5 w-3.5 text-danger" aria-hidden />
             <h2 className="text-[13px] font-semibold text-ink-navy">
               יחידות הממתינות לך
@@ -265,7 +265,7 @@ export function MatamHome() {
             {waitingUnits.map((u) => (
               <li
                 key={u.id}
-                className="flex flex-col gap-2 py-3 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between sm:gap-1.5 sm:py-2.5"
+                className="flex flex-col gap-2 py-3.5 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between sm:gap-2 sm:py-3"
               >
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-1.5">
@@ -290,9 +290,9 @@ export function MatamHome() {
         </div>
       )}
 
-      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_280px] xl:gap-6">
+      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_288px] xl:gap-8">
         <Panel className="!p-0 overflow-hidden">
-          <div className="flex flex-col gap-2 border-b border-hairline px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
+          <div className="flex flex-col gap-2 border-b border-hairline px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-5">
             <h2 className="text-[17px] font-semibold tracking-tight text-ink-navy">
               המשימות ביחידות שלי
             </h2>
@@ -349,8 +349,8 @@ export function MatamHome() {
         </Panel>
 
         <aside className="space-y-0 divide-y divide-hairline rounded-xl border border-hairline bg-paper">
-          <div className="p-4 sm:p-5">
-            <h3 className="section-label mb-3">משפחות אחרונות</h3>
+          <div className="p-5 sm:p-6">
+            <h3 className="section-label mb-3.5">משפחות אחרונות</h3>
             <ul className="space-y-1">
               {recentFamilies.map((u) => (
                 <li key={u.id}>
