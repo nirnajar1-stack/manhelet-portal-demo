@@ -40,7 +40,7 @@ npm run preview
 | מרכז ידע ונהלים | `/knowledge` |
 | בית המנהלת | `/org` |
 | סביבת מולקולה | `/molecule` |
-| פורטל משפחות | `/family` |
+| פורטל משפחות | `/families` |
 | סייר מודל שיקום (דמו) | `/rehab-demo` |
 
 ### סייר מודל שיקום (`rehab_demo/`)

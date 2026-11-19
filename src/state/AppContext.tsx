@@ -57,7 +57,7 @@ const AppContext = createContext<AppState | null>(null)
 const roleDefaultUser: Record<UserRole, string> = {
   matam: 'u-nir',
   molecule: 'u-dana',
-  family: 'u-family-cohen',
+  family: 'u-family-alon',
 }
 
 const USER_STORAGE_KEY = 'manhelet-portal-demo-user'
