@@ -232,12 +232,48 @@ export interface FamiliesProgramCard {
   dateLabel: string
   timeLabel?: string
   location: string
-  imageTone: 'nature' | 'craft' | 'photo' | 'bridge' | 'sport' | 'community'
+  imageTone: 'nature' | 'craft' | 'photo' | 'bridge' | 'sport' | 'community' | 'warmth'
+  /** Path under public/, e.g. /families/nature.jpg */
+  imageSrc: string
+  /** Hebrew accessible description of the illustration */
+  imageAlt: string
   registeredMembers?: string[]
   poll?: boolean
   ctaPrimary: string
   ctaSecondary?: string
 }
+
+/** Shared illustrative photo map (family-friendly, no real victims/PII). */
+export const familiesImageAssets = {
+  nature: {
+    src: '/families/nature.jpg',
+    alt: 'משפחה בטיול שביל חופי בשמש — גב אל המצלמה, נוף ים וצמחייה',
+  },
+  craft: {
+    src: '/families/craft.jpg',
+    alt: 'ידי הורה וילד מעצבים חימר על אובניים בסדנת קדרות',
+  },
+  photo: {
+    src: '/families/photo.jpg',
+    alt: 'בני נוער לומדים צילום בחוץ עם מצלמות, גב אל המצלמה',
+  },
+  bridge: {
+    src: '/families/bridge.jpg',
+    alt: 'גשר עץ מעל נחל ביער — אווירת הפוגה וטבע שקט',
+  },
+  sport: {
+    src: '/families/sport.jpg',
+    alt: 'ערכת ספורט ופנאי ביתית: מזרן, חבל, משקולות קלות ובקבוק מים',
+  },
+  community: {
+    src: '/families/community.jpg',
+    alt: 'מעגל שיחה קהילתי באולם מואר — מפגש תומך ומזמין',
+  },
+  warmth: {
+    src: '/families/warmth.jpg',
+    alt: 'סלון ביתי חם בשעת ערב — ספה, שמיכה, ספרי ילדים וכוס תה',
+  },
+} as const
 
 export const familiesPrograms: FamiliesProgramCard[] = [
   {
@@ -252,6 +288,8 @@ export const familiesPrograms: FamiliesProgramCard[] = [
     timeLabel: '16:00–18:30',
     location: 'מרכז קהילתי שפיים',
     imageTone: 'photo',
+    imageSrc: familiesImageAssets.photo.src,
+    imageAlt: familiesImageAssets.photo.alt,
     registeredMembers: ['יונתן אלון', 'נועם אלון'],
     ctaPrimary: 'פרטי הרישום',
     ctaSecondary: 'שינוי משתתפים',
@@ -268,6 +306,8 @@ export const familiesPrograms: FamiliesProgramCard[] = [
     timeLabel: '19:00',
     location: 'אולם קהילה · מרכז המנהלת',
     imageTone: 'community',
+    imageSrc: familiesImageAssets.community.src,
+    imageAlt: familiesImageAssets.community.alt,
     poll: true,
     ctaPrimary: 'מעוניינים',
     ctaSecondary: 'שוקלים',
@@ -283,6 +323,8 @@ export const familiesPrograms: FamiliesProgramCard[] = [
     dateLabel: 'ה׳–ש׳, 6–8 ביוני',
     location: 'גליל עליון',
     imageTone: 'bridge',
+    imageSrc: familiesImageAssets.bridge.src,
+    imageAlt: familiesImageAssets.bridge.alt,
     ctaPrimary: 'מעקב אחר הבקשה',
     ctaSecondary: 'פרטים',
   },
@@ -297,6 +339,8 @@ export const familiesPrograms: FamiliesProgramCard[] = [
     dateLabel: 'מימוש עד סוף יוני',
     location: 'משלוח לבית / מלון',
     imageTone: 'sport',
+    imageSrc: familiesImageAssets.sport.src,
+    imageAlt: familiesImageAssets.sport.alt,
     ctaPrimary: 'הזמנת ערכה ובחירת כתובת',
   },
   {
@@ -311,6 +355,8 @@ export const familiesPrograms: FamiliesProgramCard[] = [
     timeLabel: '09:00–12:00',
     location: 'שמורת חוף השרון',
     imageTone: 'nature',
+    imageSrc: familiesImageAssets.nature.src,
+    imageAlt: familiesImageAssets.nature.alt,
     ctaPrimary: 'הרשמה חינם',
     ctaSecondary: 'פרטים',
   },
@@ -326,6 +372,8 @@ export const familiesPrograms: FamiliesProgramCard[] = [
     timeLabel: '16:30–18:00',
     location: 'מלון שפיים · חדר יצירה',
     imageTone: 'craft',
+    imageSrc: familiesImageAssets.craft.src,
+    imageAlt: familiesImageAssets.craft.alt,
     ctaPrimary: 'מעוניינים / פרטים',
     ctaSecondary: 'שמירת מקום',
   },

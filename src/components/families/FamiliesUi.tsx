@@ -94,21 +94,37 @@ export function FamStepper({
 }
 
 export function FamEventImage({
-  tone,
+  src,
+  alt,
   label,
   className,
 }: {
-  tone: 'nature' | 'craft' | 'photo' | 'bridge' | 'sport' | 'community'
+  src: string
+  alt: string
+  /** Optional category chip overlaid on the photo (decorative). */
   label?: string
   className?: string
 }) {
   return (
     <div
-      className={cn('fam-img', `fam-img--${tone}`, className)}
-      role="img"
-      aria-label={label ?? 'תמונת אירוע'}
+      className={cn(
+        'fam-img',
+        label && 'fam-img--has-label',
+        className,
+      )}
     >
-      {label ? <span className="fam-img__label">{label}</span> : null}
+      <img
+        src={src}
+        alt={alt}
+        className="fam-img__photo"
+        loading="lazy"
+        decoding="async"
+      />
+      {label ? (
+        <span className="fam-img__label" aria-hidden>
+          {label}
+        </span>
+      ) : null}
     </div>
   )
 }

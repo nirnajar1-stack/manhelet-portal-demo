@@ -17,6 +17,7 @@ import {
   familiesCompanion,
   familiesHotlines,
   familiesNextMeeting,
+  familiesImageAssets,
   familiesPortalProfile,
   familiesPrograms,
   familiesRequests,
@@ -55,19 +56,28 @@ export function FamiliesHome() {
           {familiesSyncBanner}
         </div>
 
-        <FamCard enter={0} className="flex items-start gap-3">
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-soft-cyan text-signal-blue">
-            <HomeIcon className="h-5 w-5" aria-hidden />
-          </span>
-          <div>
-            <p className="text-[12px] text-slate-gray">{todayLabel}</p>
-            <h1 className="mt-0.5 text-[22px] font-semibold tracking-tight text-ink-navy sm:text-[26px]">
-              בוקר טוב, {familiesPortalProfile.viewerFirstName}
-            </h1>
-            <p className="mt-1 max-w-xl text-[14px] text-slate-gray">
-              כאן תראו את ההתקדמות במעבר, סטטוס הבקשות, והמלווה האישי — הכול במקום
-              אחד.
-            </p>
+        <FamCard enter={0} className="!p-0 overflow-hidden">
+          <div className="grid sm:grid-cols-[minmax(0,1fr)_min(42%,280px)]">
+            <div className="flex items-start gap-3 p-4 sm:p-5">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-soft-cyan text-signal-blue">
+                <HomeIcon className="h-5 w-5" aria-hidden />
+              </span>
+              <div>
+                <p className="text-[12px] text-slate-gray">{todayLabel}</p>
+                <h1 className="mt-0.5 text-[22px] font-semibold tracking-tight text-ink-navy sm:text-[26px]">
+                  בוקר טוב, {familiesPortalProfile.viewerFirstName}
+                </h1>
+                <p className="mt-1 max-w-xl text-[14px] text-slate-gray">
+                  כאן תראו את ההתקדמות במעבר, סטטוס הבקשות, והמלווה האישי — הכול
+                  במקום אחד.
+                </p>
+              </div>
+            </div>
+            <FamEventImage
+              src={familiesImageAssets.warmth.src}
+              alt={familiesImageAssets.warmth.alt}
+              className="hidden !min-h-[140px] !rounded-none sm:block sm:h-full"
+            />
           </div>
         </FamCard>
 
@@ -142,9 +152,10 @@ export function FamiliesHome() {
             {homeEvents.map((ev) => (
               <FamCard key={ev.id} className="!p-3 sm:!p-4">
                 <FamEventImage
-                  tone={ev.imageTone}
+                  src={ev.imageSrc}
+                  alt={ev.imageAlt}
                   label={ev.kind === 'event' ? 'אירוע' : undefined}
-                  className="mb-3 min-h-[120px]"
+                  className="mb-3 aspect-[16/10] max-h-44 sm:max-h-none"
                 />
                 <h3 className="text-[14px] font-semibold text-ink-navy">
                   {ev.title}

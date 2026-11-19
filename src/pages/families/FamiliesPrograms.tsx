@@ -120,25 +120,21 @@ export function FamiliesPrograms() {
                   p.kind === 'benefit' && 'border-signal-blue/25 bg-badge-bg/40',
                 )}
               >
-                <div
-                  className={cn(
-                    'grid gap-4',
-                    p.kind !== 'community' && 'sm:grid-cols-[200px_minmax(0,1fr)]',
-                  )}
-                >
-                  {p.kind !== 'community' && (
-                    <FamEventImage
-                      tone={p.imageTone}
-                      label={
-                        p.kind === 'benefit'
-                          ? 'הטבה'
-                          : p.kind === 'respite'
-                            ? 'הפוגה'
+                <div className="grid gap-4 sm:grid-cols-[200px_minmax(0,1fr)]">
+                  <FamEventImage
+                    src={p.imageSrc}
+                    alt={p.imageAlt}
+                    label={
+                      p.kind === 'benefit'
+                        ? 'הטבה'
+                        : p.kind === 'respite'
+                          ? 'הפוגה'
+                          : p.kind === 'community'
+                            ? 'קהילה'
                             : 'אירוע'
-                      }
-                      className="min-h-[140px] sm:min-h-full"
-                    />
-                  )}
+                    }
+                    className="aspect-[16/10] max-h-40 sm:aspect-auto sm:max-h-none sm:min-h-[148px]"
+                  />
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
                       <h2 className="text-[15px] font-semibold text-ink-navy">
