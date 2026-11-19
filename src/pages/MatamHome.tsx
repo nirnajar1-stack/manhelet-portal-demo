@@ -14,7 +14,13 @@ import { AssumptionBanner } from '@/components/ui/assumption'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Panel } from '@/components/ui/card'
+import { VisitorTourLauncher } from '@/components/visitor/VisitorTour'
 import { orgNews } from '@/data/mock'
+import {
+  VISITOR_GOAL_ID,
+  VISITOR_UNIT_ID,
+  visitorStoryBlurbHe,
+} from '@/data/visitor-demo'
 import { matamCaseloadTasks, visibleUnits } from '@/lib/access'
 import { greetingHe, cn, formatRelativeHe } from '@/lib/utils'
 import { useApp } from '@/state/AppContext'
@@ -165,6 +171,7 @@ export function MatamHome() {
           </p>
         </div>
         <div className="flex flex-wrap gap-2.5">
+          <VisitorTourLauncher />
           <Button
             variant="outline"
             size="sm"
@@ -184,6 +191,37 @@ export function MatamHome() {
           </Button>
         </div>
       </div>
+
+      <Panel className="border-ink-navy/10 bg-gradient-to-l from-ink-navy/[0.04] via-paper to-gold/15 !py-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="rehab-pulse h-2 w-2 rounded-full bg-gold" aria-hidden />
+              <h2 className="text-[15px] font-semibold text-ink-navy">
+                הדגמה חיה · משפחת מזרחי
+              </h2>
+            </div>
+            <p className="mt-1 max-w-2xl text-[13px] leading-relaxed text-slate-gray">
+              {visitorStoryBlurbHe}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2 shrink-0">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => navigate(`/units/${VISITOR_UNIT_ID}?tab=rehab`)}
+            >
+              תיק השיקום
+            </Button>
+            <Button
+              size="sm"
+              onClick={() => navigate(`/rehab/goals/${VISITOR_GOAL_ID}`)}
+            >
+              מסע השלבים
+            </Button>
+          </div>
+        </div>
+      </Panel>
 
       <AssumptionBanner className="hidden sm:flex">
         מדדים לפי יחידות טיפול באחריות המת״ם — כל המשימות ביחידות אלו, גם אם

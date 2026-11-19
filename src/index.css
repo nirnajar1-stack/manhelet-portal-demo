@@ -404,6 +404,41 @@
   }
 }
 
+/* Visitor demo — living cues */
+.rehab-pulse {
+  animation: rehab-pulse 1.8s var(--ease-portal) infinite;
+}
+
+@keyframes rehab-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(0.85);
+  }
+}
+
+.rehab-journey__fill {
+  transition: width 700ms var(--ease-portal);
+}
+
+.rehab-journey__active {
+  animation: rehab-journey-breathe 2.4s var(--ease-portal) infinite;
+}
+
+@keyframes rehab-journey-breathe {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .motion-fade-in {
     animation: none;
@@ -411,5 +446,14 @@
 
   .rehab-obs-highlight {
     animation: none;
+  }
+
+  .rehab-pulse,
+  .rehab-journey__active {
+    animation: none;
+  }
+
+  .rehab-journey__fill {
+    transition: none;
   }
 }

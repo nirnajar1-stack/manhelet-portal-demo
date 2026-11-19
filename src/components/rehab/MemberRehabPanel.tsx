@@ -7,6 +7,10 @@ import { Panel } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { getUnit, users } from '@/data/mock'
 import {
+  VISITOR_MEMBER_ID,
+  visitorStoryBlurbHe,
+} from '@/data/visitor-demo'
+import {
   getRehabState,
   getStagesForGoal,
   goalProgress,
@@ -190,6 +194,20 @@ export function MemberRehabPanel({ unitId, members, initialMemberId }: Props) {
           </Button>
         </div>
       </div>
+
+      {memberId === VISITOR_MEMBER_ID && (
+        <Panel className="border-dusk-blue/40 bg-gradient-to-l from-soft-cyan/80 via-paper to-gold/10 !py-3.5">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="rehab-pulse h-2 w-2 rounded-full bg-gold" aria-hidden />
+            <h3 className="text-[14px] font-semibold text-ink-navy">
+              סיפור תיק חי · משפחת מזרחי
+            </h3>
+          </div>
+          <p className="mt-1.5 text-[13px] leading-relaxed text-slate-gray">
+            {visitorStoryBlurbHe}
+          </p>
+        </Panel>
+      )}
 
       <div className="kpi-strip !grid-cols-2 sm:!grid-cols-4">
         <Kpi label="מטרות פעילות" value={kpis.active} />
