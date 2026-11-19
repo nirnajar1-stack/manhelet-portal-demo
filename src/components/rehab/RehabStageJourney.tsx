@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import { stageOutcomeCaptionsHe } from '@/data/visitor-demo'
+import { stageOutcomeCaptionsHe } from '@/data/living-demo'
 import {
   stageStatusLabelHe,
   type RehabPersonalStage,
@@ -13,8 +13,8 @@ interface Props {
 }
 
 /**
- * Hero stage journey for visitor walkthroughs — scannable path with
- * emphasized current stage, completed outcomes, and clear next steps.
+ * Rehab stage journey — scannable path with emphasized current stage,
+ * completed outcomes, and clear next steps.
  */
 export function RehabStageJourney({
   stages,

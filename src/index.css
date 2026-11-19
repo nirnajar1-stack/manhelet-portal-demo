@@ -404,7 +404,7 @@
   }
 }
 
-/* Visitor demo — living cues */
+/* Living rehab cues */
 .rehab-pulse {
   animation: rehab-pulse 1.8s var(--ease-portal) infinite;
 }

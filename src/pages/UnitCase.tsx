@@ -100,10 +100,8 @@ export function UnitCase() {
     )
   }
 
-  const tourOn = params.get('tour') === '1'
-
   return (
-    <div className={cn('page-stack', tourOn && 'pb-28 sm:pb-24')}>
+    <div className="page-stack">
       <div className="text-[12px] text-slate-gray">
         <Link to="/units" className="hover:text-ink-navy">
           יחידות טיפול

@@ -57,9 +57,9 @@ export function StageshowPage() {
           שלושה סיפורי מוצר קצרים — משימות, שיקום ותצפיות — בסגנון הפורטל.
         </p>
         <p className="ss-page__sub" style={{ marginTop: '0.75rem' }}>
-          <Link to="/?tour=1&tourStep=0">התחלת סיור מבקר בפורטל החי ←</Link>
+          <Link to="/units/unit-mizrahi?tab=rehab">תיק השיקום · משפחת מזרחי</Link>
           {' · '}
-          <Link to="/rehab/goals/pg-dan-emp">מסע שלבי השיקום (משפחת מזרחי)</Link>
+          <Link to="/rehab/goals/pg-dan-emp">מסע שלבי השיקום</Link>
         </p>
       </header>
 
