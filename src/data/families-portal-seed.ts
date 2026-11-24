@@ -3,6 +3,8 @@
  * Matches user mockup atmosphere (home / requests / companion / programs).
  */
 
+import { withBase } from '@/lib/base-path'
+
 export const familiesPortalProfile = {
   viewerFirstName: 'איתי',
   viewerFullName: 'איתי אלון',
@@ -246,31 +248,31 @@ export interface FamiliesProgramCard {
 /** Shared illustrative photo map (family-friendly, no real victims/PII). */
 export const familiesImageAssets = {
   nature: {
-    src: '/families/nature.jpg',
+    src: withBase('/families/nature.jpg'),
     alt: 'משפחה בטיול שביל חופי בשמש — גב אל המצלמה, נוף ים וצמחייה',
   },
   craft: {
-    src: '/families/craft.jpg',
+    src: withBase('/families/craft.jpg'),
     alt: 'ידי הורה וילד מעצבים חימר על אובניים בסדנת קדרות',
   },
   photo: {
-    src: '/families/photo.jpg',
+    src: withBase('/families/photo.jpg'),
     alt: 'בני נוער לומדים צילום בחוץ עם מצלמות, גב אל המצלמה',
   },
   bridge: {
-    src: '/families/bridge.jpg',
+    src: withBase('/families/bridge.jpg'),
     alt: 'גשר עץ מעל נחל ביער — אווירת הפוגה וטבע שקט',
   },
   sport: {
-    src: '/families/sport.jpg',
+    src: withBase('/families/sport.jpg'),
     alt: 'ערכת ספורט ופנאי ביתית: מזרן, חבל, משקולות קלות ובקבוק מים',
   },
   community: {
-    src: '/families/community.jpg',
+    src: withBase('/families/community.jpg'),
     alt: 'מעגל שיחה קהילתי באולם מואר — מפגש תומך ומזמין',
   },
   warmth: {
-    src: '/families/warmth.jpg',
+    src: withBase('/families/warmth.jpg'),
     alt: 'סלון ביתי חם בשעת ערב — ספה, שמיכה, ספרי ילדים וכוס תה',
   },
 } as const

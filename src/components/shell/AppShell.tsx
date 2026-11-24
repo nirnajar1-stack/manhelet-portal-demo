@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { flushSync } from 'react-dom'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import {
   Bell,
@@ -19,13 +20,14 @@ import {
   X,
 } from 'lucide-react'
 import { BrandLogo } from '@/components/shell/BrandLogo'
+import { EnvSwitcher } from '@/components/shell/EnvSwitcher'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { fetchNotifications } from '@/api/stubs'
 import { users } from '@/data/mock'
 import { cn } from '@/lib/utils'
 import { useApp } from '@/state/AppContext'
-import type { NotificationItem, UserRole } from '@/types'
+import type { NotificationItem } from '@/types'
 
 const matamNavPrimary = [
   { to: '/', label: 'סביבת העבודה שלי', icon: Home },
@@ -105,11 +107,12 @@ export function AppShell() {
     if (morePathActive) setMobileMoreOpen(true)
   }, [morePathActive, mobileOpen])
 
-  useEffect(() => {
-    if (onFamilyRoute && currentUser.role !== 'family') {
-      setRole('family')
-    }
-  }, [onFamilyRoute, currentUser.role, setRole])
+  /*
+   * Do NOT force role=family while on /families. That raced with "leave to
+   * staff" (setRole(matam) while still on the family path) and immediately
+   * re-applied family — trapping users in the families portal.
+   * Enter/leave only via EnvSwitcher / explicit setRole + navigate.
+   */
 
   /* Family chrome lives in FamiliesShell (dedicated nav + three-column layouts). */
   if (isFamily) {
@@ -294,7 +297,7 @@ export function AppShell() {
                         role="menuitem"
                         className="flex w-full cursor-pointer items-center gap-2 rounded-[10px] px-2.5 py-3 text-start transition-colors duration-200 hover:bg-pebble"
                         onClick={() => {
-                          switchUser(u.id)
+                          flushSync(() => switchUser(u.id))
                           if (u.role === 'molecule') navigate('/molecule')
                           else navigate('/')
                         }}
@@ -317,7 +320,7 @@ export function AppShell() {
                     role="menuitem"
                     className="mt-1 w-full cursor-pointer rounded-[10px] px-2.5 py-3 text-start text-[13px] font-medium text-signal-blue transition-colors duration-200 hover:bg-pebble"
                     onClick={() => {
-                      setRole('family' as UserRole)
+                      flushSync(() => setRole('family'))
                       navigate('/families')
                     }}
                   >
@@ -390,39 +393,7 @@ export function AppShell() {
             <p className="mb-3 px-1 text-[11px] font-semibold tracking-wide text-paper/70">
               החלפת סביבה
             </p>
-            <div
-              className="space-y-1 rounded-xl bg-paper/10 p-2"
-              role="radiogroup"
-              aria-label="החלפת סביבה"
-            >
-              <EnvOption
-                active={currentUser.role === 'matam'}
-                label="מת״מים ומנהלי תיק"
-                onDark
-                onClick={() => {
-                  setRole('matam')
-                  navigate('/')
-                }}
-              />
-              <EnvOption
-                active={currentUser.role === 'molecule'}
-                label="מרחב מולקולות"
-                onDark
-                onClick={() => {
-                  switchUser('u-dana')
-                  navigate('/molecule')
-                }}
-              />
-              <EnvOption
-                active={false}
-                label="תצוגת שירות למשפחות"
-                onDark
-                onClick={() => {
-                  setRole('family')
-                  navigate('/families')
-                }}
-              />
-            </div>
+            <EnvSwitcher onDark />
             <p className="mt-5 px-1 text-[11px] leading-relaxed text-paper/60">
               אבטיפוס · נתוני דמה · אין Salesforce
             </p>
@@ -506,42 +477,10 @@ export function AppShell() {
                 <p className="mb-2.5 px-1 text-[11px] font-semibold tracking-wide text-paper/70">
                   החלפת סביבה
                 </p>
-                <div
-                  className="space-y-0.5 rounded-xl bg-paper/10 p-1.5"
-                  role="radiogroup"
-                  aria-label="החלפת סביבה"
-                >
-                  <EnvOption
-                    active={currentUser.role === 'matam'}
-                    label="מת״מים ומנהלי תיק"
-                    onDark
-                    onClick={() => {
-                      setRole('matam')
-                      setMobileOpen(false)
-                      navigate('/')
-                    }}
-                  />
-                  <EnvOption
-                    active={currentUser.role === 'molecule'}
-                    label="מרחב מולקולות"
-                    onDark
-                    onClick={() => {
-                      switchUser('u-dana')
-                      setMobileOpen(false)
-                      navigate('/molecule')
-                    }}
-                  />
-                  <EnvOption
-                    active={false}
-                    label="תצוגת שירות למשפחות"
-                    onDark
-                    onClick={() => {
-                      setRole('family')
-                      setMobileOpen(false)
-                      navigate('/families')
-                    }}
-                  />
-                </div>
+                <EnvSwitcher
+                  onDark
+                  onAfterSwitch={() => setMobileOpen(false)}
+                />
               </div>
             </div>
           </div>
@@ -614,61 +553,6 @@ function MobileNavItem({
         </>
       )}
     </NavLink>
-  )
-}
-
-function EnvOption({
-  active,
-  label,
-  onClick,
-  onDark = false,
-}: {
-  active: boolean
-  label: string
-  onClick: () => void
-  onDark?: boolean
-}) {
-  return (
-    <button
-      type="button"
-      role="radio"
-      aria-checked={active}
-      onClick={onClick}
-      className={cn(
-        'flex min-h-11 w-full cursor-pointer items-center gap-2 rounded-[10px] px-2.5 py-2.5 text-start text-[13px] font-medium transition-colors duration-200',
-        onDark
-          ? active
-            ? 'bg-dusk-blue text-ink-navy'
-            : 'text-paper/85 hover:bg-paper/10 hover:text-paper'
-          : active
-            ? 'bg-paper text-ink-navy'
-            : 'text-slate-gray hover:bg-paper/70',
-      )}
-    >
-      <span
-        className={cn(
-          'flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full border',
-          active
-            ? onDark
-              ? 'border-ink-navy bg-gold'
-              : 'border-dusk-blue bg-dusk-blue'
-            : onDark
-              ? 'border-paper/55 bg-transparent'
-              : 'border-mist-gray bg-transparent',
-        )}
-        aria-hidden
-      >
-        {active && (
-          <span
-            className={cn(
-              'h-1.5 w-1.5 rounded-full',
-              onDark ? 'bg-ink-navy' : 'bg-paper',
-            )}
-          />
-        )}
-      </span>
-      {label}
-    </button>
   )
 }
 
