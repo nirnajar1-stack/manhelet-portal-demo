@@ -52,10 +52,6 @@ export function FamiliesHome() {
   return (
     <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_300px]">
       <div className="space-y-5">
-        <div className="fam-enter rounded-[10px] border border-signal-blue/25 bg-badge-bg px-3.5 py-2.5 text-[13px] text-signal-blue">
-          {familiesSyncBanner}
-        </div>
-
         <FamCard enter={0} className="!p-0 overflow-hidden">
           <div className="grid sm:grid-cols-[minmax(0,1fr)_min(42%,280px)]">
             <div className="flex items-start gap-3 p-4 sm:p-5">
@@ -80,6 +76,10 @@ export function FamiliesHome() {
             />
           </div>
         </FamCard>
+
+        <p className="fam-enter px-0.5 text-[12px] text-slate-gray">
+          {familiesSyncBanner}
+        </p>
 
         <FamCard enter={1}>
           <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
@@ -263,7 +263,7 @@ export function FamiliesHome() {
                 <span className="block text-[12px] font-medium text-ink-navy">
                   {h.title}
                 </span>
-                <span className="block text-[11px] text-slate-gray">{h.blurb}</span>
+                <span className="block text-[12px] text-slate-gray">{h.blurb}</span>
               </span>
             </a>
           ))}

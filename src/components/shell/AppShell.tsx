@@ -199,7 +199,8 @@ export function AppShell() {
             <button
               type="button"
               className="hidden h-11 w-11 items-center justify-center rounded-[10px] text-slate-gray transition-colors duration-200 hover:bg-soft-cyan md:inline-flex sm:h-9 sm:w-9"
-              aria-label="עזרה"
+              aria-label="עזרה ומרכז ידע"
+              onClick={() => navigate('/knowledge')}
             >
               <CircleHelp className="h-5 w-5" aria-hidden />
             </button>
@@ -394,7 +395,7 @@ export function AppShell() {
               החלפת סביבה
             </p>
             <EnvSwitcher onDark />
-            <p className="mt-5 px-1 text-[11px] leading-relaxed text-paper/60">
+            <p className="mt-5 px-1 text-[12px] leading-relaxed text-paper/60">
               אבטיפוס · נתוני דמה · אין Salesforce
             </p>
           </div>

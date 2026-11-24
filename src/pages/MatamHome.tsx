@@ -190,20 +190,21 @@ export function MatamHome() {
         </div>
       </div>
 
-      <Panel className="border-ink-navy/10 bg-gradient-to-l from-ink-navy/[0.04] via-paper to-gold/15 !px-5 !py-5 sm:!px-6 sm:!py-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+      {/* Compact living strip — keeps content without owning the first viewport */}
+      <Panel className="border-ink-navy/10 bg-gradient-to-l from-ink-navy/[0.03] via-paper to-gold/12 !px-4 !py-3.5 sm:!px-5 sm:!py-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
           <div className="min-w-0">
-            <div className="flex flex-wrap items-center gap-2.5">
+            <div className="flex flex-wrap items-center gap-2">
               <span className="rehab-pulse h-2 w-2 rounded-full bg-gold" aria-hidden />
-              <h2 className="text-[16px] font-semibold text-ink-navy">
+              <h2 className="text-[15px] font-semibold text-ink-navy">
                 תיק חי · משפחת מזרחי
               </h2>
             </div>
-            <p className="mt-2 max-w-2xl text-[13px] leading-relaxed text-slate-gray sm:text-[14px]">
+            <p className="mt-1 line-clamp-2 max-w-2xl text-[13px] leading-snug text-slate-gray">
               {livingStoryBlurbHe}
             </p>
           </div>
-          <div className="flex flex-wrap gap-2.5 shrink-0">
+          <div className="flex flex-wrap gap-2 shrink-0">
             <Button
               size="sm"
               variant="outline"
@@ -221,134 +222,138 @@ export function MatamHome() {
         </div>
       </Panel>
 
-      <AssumptionBanner className="hidden sm:flex">
-        מדדים לפי יחידות טיפול באחריות המת״ם — כל המשימות ביחידות אלו, גם אם
-        האחראי הניהולי הוא משתמש אחר.
-      </AssumptionBanner>
-
-      {/* KPI strip — stacks on xs, single surface on sm+ */}
-      <div className="kpi-strip grid-cols-1 sm:grid-cols-3" role="group" aria-label="מדדים אישיים">
-        {metrics.map((m) => (
-          <button
-            key={m.id}
-            type="button"
-            aria-pressed={metric === m.id}
-            onClick={() => setMetric((prev) => (prev === m.id ? null : m.id))}
-            className={cn(
-              'kpi-cell cursor-pointer',
-              m.emphasize && m.value > 0 && metric !== m.id && 'bg-gold-wash/40',
-            )}
-          >
-            <span
-              className={cn(
-                'kpi-value',
-                m.emphasize && m.value > 0 && 'text-warning-text',
-              )}
-            >
-              {m.value}
-            </span>
-            <span className="kpi-label">{m.label}</span>
-            <span className="meta-xs-hide text-[11px] text-mist-gray">{m.hint}</span>
-          </button>
-        ))}
-      </div>
-
-      {waitingUnits.length > 0 && (
-        <div className="rounded-xl border border-danger/20 bg-danger-soft/60 px-4 py-4 sm:px-5 sm:py-5">
-          <div className="mb-3 flex items-center gap-2">
-            <AlertTriangle className="h-3.5 w-3.5 text-danger" aria-hidden />
-            <h2 className="text-[13px] font-semibold text-ink-navy">
-              יחידות הממתינות לך
-            </h2>
-          </div>
-          <ul className="divide-y divide-danger/10">
-            {waitingUnits.map((u) => (
-              <li
-                key={u.id}
-                className="flex flex-col gap-2 py-3.5 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between sm:gap-2 sm:py-3"
-              >
-                <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-1.5">
-                    <span className="text-[14px] font-medium sm:text-[13px]">
-                      משפחת {u.familyName}
-                    </span>
-                    <Badge tone="danger">דורשת התייחסות</Badge>
-                  </div>
-                  <p className="meta-xs-hide mt-0.5 truncate text-[12px] text-slate-gray">
-                    {u.summary} · {u.overdueTasks} משימות חורגות
-                  </p>
-                </div>
-                <Link
-                  to={`/units/${u.id}`}
-                  className="inline-flex min-h-10 items-center text-[13px] font-semibold text-signal-blue hover:underline sm:min-h-0 sm:text-[12px]"
-                >
-                  מעבר לתיק ›
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_288px] xl:gap-8">
-        <Panel className="!p-0 overflow-hidden">
-          <div className="flex flex-col gap-2 border-b border-hairline px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-5">
-            <h2 className="text-[17px] font-semibold tracking-tight text-ink-navy">
-              המשימות ביחידות שלי
-            </h2>
-            <Link
-              to="/tasks"
-              className="inline-flex min-h-10 items-center gap-1 text-[13px] font-medium text-signal-blue hover:underline sm:min-h-0"
-            >
-              למרכז המשימות
-              <ChevronLeft className="h-3.5 w-3.5" />
-            </Link>
-          </div>
+        <div className="space-y-5">
+          <Panel className="!p-0 overflow-hidden">
+            <div className="flex flex-col gap-2 border-b border-hairline px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
+              <h2 className="text-[17px] font-semibold tracking-tight text-ink-navy">
+                המשימות ביחידות שלי
+              </h2>
+              <Link
+                to="/tasks"
+                className="inline-flex min-h-10 items-center gap-1 text-[13px] font-medium text-signal-blue hover:underline sm:min-h-0"
+              >
+                למרכז המשימות
+                <ChevronLeft className="h-3.5 w-3.5" />
+              </Link>
+            </div>
 
-          {!metric && (
-            <div
-              className="flex gap-1.5 overflow-x-auto border-b border-hairline px-3 py-2.5 sm:gap-1 sm:px-4 sm:py-2"
-              role="tablist"
-              aria-label="סינון משימות"
-            >
-              {tabs.map((t) => (
+            {!metric && (
+              <div
+                className="flex gap-1.5 overflow-x-auto border-b border-hairline px-3 py-2.5 sm:gap-1 sm:px-4 sm:py-2"
+                role="tablist"
+                aria-label="סינון משימות"
+              >
+                {tabs.map((t) => (
+                  <button
+                    key={t.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={tab === t.id}
+                    onClick={() => setTab(t.id)}
+                    className={cn(
+                      'filter-chip cursor-pointer',
+                      tab === t.id ? 'filter-chip-active' : 'filter-chip-idle',
+                    )}
+                  >
+                    {t.label}
+                    {typeof t.count === 'number' ? (
+                      <span className="meta-xs-hide">{` (${t.count})`}</span>
+                    ) : null}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {metric && (
+              <div className="flex items-center justify-between border-b border-hairline px-4 py-3 sm:px-5 sm:py-2.5">
+                <span className="text-[12px] text-slate-gray">מסונן לפי מדד אישי</span>
                 <button
-                  key={t.id}
                   type="button"
-                  role="tab"
-                  aria-selected={tab === t.id}
-                  onClick={() => setTab(t.id)}
+                  className="min-h-10 cursor-pointer text-[13px] font-semibold text-signal-blue hover:underline sm:min-h-8 sm:text-[12px]"
+                  onClick={() => setMetric(null)}
+                >
+                  נקה סינון
+                </button>
+              </div>
+            )}
+
+            <TaskList tasks={filtered} compact showOpenAction />
+          </Panel>
+
+          {/* KPI strip — after primary work queue so hierarchy stays task-first */}
+          <div>
+            <AssumptionBanner className="mb-3 hidden sm:flex">
+              מדדים לפי יחידות טיפול באחריות המת״ם — כל המשימות ביחידות אלו, גם אם
+              האחראי הניהולי הוא משתמש אחר.
+            </AssumptionBanner>
+            <div
+              className="kpi-strip grid-cols-1 sm:grid-cols-3"
+              role="group"
+              aria-label="מדדים אישיים"
+            >
+              {metrics.map((m) => (
+                <button
+                  key={m.id}
+                  type="button"
+                  aria-pressed={metric === m.id}
+                  onClick={() => setMetric((prev) => (prev === m.id ? null : m.id))}
                   className={cn(
-                    'filter-chip cursor-pointer',
-                    tab === t.id ? 'filter-chip-active' : 'filter-chip-idle',
+                    'kpi-cell cursor-pointer',
+                    m.emphasize && m.value > 0 && metric !== m.id && 'bg-gold-wash/40',
                   )}
                 >
-                  {t.label}
-                  {typeof t.count === 'number' ? (
-                    <span className="meta-xs-hide">{` (${t.count})`}</span>
-                  ) : null}
+                  <span
+                    className={cn(
+                      'kpi-value',
+                      m.emphasize && m.value > 0 && 'text-warning-text',
+                    )}
+                  >
+                    {m.value}
+                  </span>
+                  <span className="kpi-label">{m.label}</span>
+                  <span className="meta-xs-hide text-[12px] text-mist-gray">
+                    {m.hint}
+                  </span>
                 </button>
               ))}
             </div>
-          )}
+          </div>
+        </div>
 
-          {metric && (
-            <div className="flex items-center justify-between border-b border-hairline px-4 py-3 sm:px-5 sm:py-2.5">
-              <span className="text-[12px] text-slate-gray">מסונן לפי מדד אישי</span>
-              <button
-                type="button"
-                className="min-h-10 cursor-pointer text-[13px] font-semibold text-signal-blue hover:underline sm:min-h-8 sm:text-[12px]"
-                onClick={() => setMetric(null)}
-              >
-                נקה סינון
-              </button>
+        <aside className="space-y-0 divide-y divide-hairline rounded-xl border border-hairline bg-paper">
+          {waitingUnits.length > 0 && (
+            <div className="bg-danger-soft/50 p-4 sm:p-5">
+              <div className="mb-2.5 flex items-center gap-2">
+                <AlertTriangle className="h-3.5 w-3.5 text-danger" aria-hidden />
+                <h2 className="text-[13px] font-semibold text-ink-navy">
+                  יחידות הממתינות לך
+                </h2>
+              </div>
+              <ul className="space-y-2.5">
+                {waitingUnits.map((u) => (
+                  <li key={u.id} className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <span className="text-[13px] font-medium">
+                        משפחת {u.familyName}
+                      </span>
+                      <Badge tone="danger">דורשת התייחסות</Badge>
+                    </div>
+                    <p className="meta-xs-hide mt-0.5 truncate text-[12px] text-slate-gray">
+                      {u.overdueTasks} משימות חורגות
+                    </p>
+                    <Link
+                      to={`/units/${u.id}`}
+                      className="mt-1 inline-flex min-h-9 items-center text-[12px] font-semibold text-signal-blue hover:underline"
+                    >
+                      מעבר לתיק ›
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
 
-          <TaskList tasks={filtered} compact showOpenAction />
-        </Panel>
-
-        <aside className="space-y-0 divide-y divide-hairline rounded-xl border border-hairline bg-paper">
           <div className="p-5 sm:p-6">
             <h3 className="section-label mb-3.5">משפחות אחרונות</h3>
             <ul className="space-y-1">
@@ -361,7 +366,7 @@ export function MatamHome() {
                     <div className="text-[14px] font-medium sm:text-[13px]">
                       משפחת {u.familyName}
                     </div>
-                    <div className="meta-xs-hide text-[11px] text-mist-gray">
+                    <div className="meta-xs-hide text-[12px] text-mist-gray">
                       {u.region} · {formatRelativeHe(u.lastActivityAt)}
                     </div>
                   </Link>
@@ -413,7 +418,7 @@ export function MatamHome() {
             <div className="space-y-3">
               {nextEvent && (
                 <div>
-                  <div className="flex items-center gap-1.5 text-[11px] font-medium text-signal-blue">
+                  <div className="flex items-center gap-1.5 text-[12px] font-medium text-signal-blue">
                     <CalendarDays className="h-3 w-3" aria-hidden />
                     {nextEvent.date}
                   </div>
@@ -427,7 +432,7 @@ export function MatamHome() {
                   <FileText className="mt-0.5 h-3.5 w-3.5 shrink-0 text-slate-gray" aria-hidden />
                   <div>
                     <p className="text-[13px] font-medium">{procedure.title}</p>
-                    <p className="text-[11px] text-mist-gray">PDF · להורדה</p>
+                    <p className="text-[12px] text-mist-gray">PDF · להורדה</p>
                   </div>
                 </div>
               )}
