@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
   getGoal,
   getStage,
@@ -78,9 +79,9 @@ export function RehabStageSelector({
         {emptyHref && (
           <>
             {' '}
-            <a href={emptyHref} className="text-signal-blue hover:underline">
+            <Link to={emptyHref} className="text-signal-blue hover:underline">
               מעבר לניהול השיקום
-            </a>
+            </Link>
           </>
         )}
       </div>
@@ -163,9 +164,9 @@ export function RehabStageSelector({
               {emptyHref && (
                 <>
                   {' '}
-                  <a href={emptyHref} className="text-signal-blue hover:underline">
+                  <Link to={emptyHref} className="text-signal-blue hover:underline">
                     ניהול השיקום
-                  </a>
+                  </Link>
                 </>
               )}
             </div>

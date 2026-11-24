@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom'
+import { withBase } from '@/lib/base-path'
 import { cn } from '@/lib/utils'
 
 /** Official Manhelet lockup — shield + Hebrew wordmark (navy / gold / white). */
-export const MANHELET_LOGO_SRC = '/brand/manhelet-logo.jpg'
+export const MANHELET_LOGO_SRC = withBase('/brand/manhelet-logo.jpg')
 export const MANHELET_LOGO_ALT =
   'מנהלת החטופים והנעדרים השבים ומשפחותיהם · משרד ראש הממשלה'
 

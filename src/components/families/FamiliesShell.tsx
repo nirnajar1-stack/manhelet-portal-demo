@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { flushSync } from 'react-dom'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import {
   CalendarHeart,
@@ -11,6 +12,7 @@ import {
   X,
 } from 'lucide-react'
 import { BrandLogo } from '@/components/shell/BrandLogo'
+import { EnvSwitcher } from '@/components/shell/EnvSwitcher'
 import { Button } from '@/components/ui/button'
 import {
   familiesCompanion,
@@ -132,6 +134,11 @@ export function FamiliesShell() {
     setMobileOpen(false)
   }, [location.pathname])
 
+  function leaveToStaff() {
+    flushSync(() => setRole('matam'))
+    navigate('/')
+  }
+
   return (
     <div className="min-h-screen bg-cloud">
       <header className="sticky top-0 z-40 border-b border-hairline bg-paper/95 backdrop-blur">
@@ -174,14 +181,7 @@ export function FamiliesShell() {
                 פניות ושירות
               </a>
             </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                setRole('matam')
-                navigate('/')
-              }}
-            >
+            <Button variant="ghost" size="sm" onClick={leaveToStaff}>
               <span className="hidden sm:inline">מעבר לעובדים</span>
               <span className="sm:hidden">עובדים</span>
             </Button>
@@ -202,6 +202,12 @@ export function FamiliesShell() {
           <CompanionMini />
           <NavList />
           <div className="mt-auto space-y-3 pt-4">
+            <div>
+              <p className="mb-2 px-1 text-[11px] font-semibold tracking-wide text-slate-gray">
+                החלפת סביבה
+              </p>
+              <EnvSwitcher />
+            </div>
             <FamilyFooterCard />
             <a
               href="tel:*8855"
@@ -243,15 +249,14 @@ export function FamiliesShell() {
             </div>
             <CompanionMini compact />
             <NavList onNavigate={() => setMobileOpen(false)} />
+            <div>
+              <p className="mb-2 px-1 text-[11px] font-semibold tracking-wide text-slate-gray">
+                החלפת סביבה
+              </p>
+              <EnvSwitcher onAfterSwitch={() => setMobileOpen(false)} />
+            </div>
             <FamilyFooterCard />
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                setRole('matam')
-                navigate('/')
-              }}
-            >
+            <Button variant="outline" size="sm" onClick={leaveToStaff}>
               מעבר לתצוגת עובדים
             </Button>
           </div>

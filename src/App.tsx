@@ -27,6 +27,7 @@ import { RehabProgramDetail } from '@/pages/rehab-demo/RehabProgramDetail'
 import { RehabPrograms } from '@/pages/rehab-demo/RehabPrograms'
 import { RehabScenarios } from '@/pages/rehab-demo/RehabScenarios'
 import { StageshowPage } from '@/stageshow/StageshowPage'
+import { routerBasename } from '@/lib/base-path'
 import { AppProvider, useApp } from '@/state/AppContext'
 
 function RoleHome() {
@@ -81,7 +82,7 @@ function Bootstrap() {
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={routerBasename()}>
       <AppProvider>
         <Bootstrap />
       </AppProvider>

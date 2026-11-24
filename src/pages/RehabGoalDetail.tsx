@@ -575,6 +575,7 @@ function StageWorkspace({
 }) {
   const stage = getStage(stageId)!
   const goal = getGoal(stage.personalGoalId)!
+  const navigate = useNavigate()
   const [tab, setTab] = useState<StageTab>(initialTab)
 
   useEffect(() => {
@@ -663,7 +664,9 @@ function StageWorkspace({
             size="sm"
             variant="outline"
             onClick={() =>
-              (window.location.href = `/tasks/new?unitId=${goal.portalUnitId}&memberId=${goal.portalMemberId}&rehabStageId=${stage.id}&affiliation=rehab`)
+              navigate(
+                `/tasks/new?unitId=${goal.portalUnitId}&memberId=${goal.portalMemberId}&rehabStageId=${stage.id}&affiliation=rehab`,
+              )
             }
           >
             פתיחת משימה
@@ -672,7 +675,9 @@ function StageWorkspace({
             size="sm"
             variant="outline"
             onClick={() =>
-              (window.location.href = `/units/${goal.portalUnitId}?tab=visits&action=visit&memberId=${goal.portalMemberId}&rehabStageId=${stage.id}&affiliation=rehab`)
+              navigate(
+                `/units/${goal.portalUnitId}?tab=visits&action=visit&memberId=${goal.portalMemberId}&rehabStageId=${stage.id}&affiliation=rehab`,
+              )
             }
           >
             תיעוד ביקור
@@ -977,7 +982,9 @@ function StageWorkspace({
                           type="button"
                           className="text-[12px] font-medium text-signal-blue hover:underline"
                           onClick={() => {
-                            window.location.href = `/tasks/new?unitId=${goal.portalUnitId}&memberId=${goal.portalMemberId}&rehabStageId=${stage.id}&affiliation=rehab&fromObs=${o.id}`
+                            navigate(
+                              `/tasks/new?unitId=${goal.portalUnitId}&memberId=${goal.portalMemberId}&rehabStageId=${stage.id}&affiliation=rehab&fromObs=${o.id}`,
+                            )
                           }}
                         >
                           יצירת משימה מהתצפית
